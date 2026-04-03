@@ -1,0 +1,35 @@
+import 'package:sqflite/sqflite.dart';
+import '../../../domain/entities/loan.dart';
+
+class LoanLocalDataSource {
+  final Database db;
+
+  LoanLocalDataSource(this.db);
+
+  Future<void> saveLoan(Loan loan) async {
+    await db.insert('loans', {
+      'id': loan.id,
+      'farmerId': loan.farmerId,
+      'amount': loan.amount,
+      'status': loan.status.name,
+      'createdAt': loan.createdAt.toIso8601String(),
+      'isSynced': loan.isSynced ? 1 : 0,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Loan>> getLoans() async {
+    final data = await db.query('loans');
+    return data
+        .map(
+          (e) => Loan(
+            id: e['id'] as String,
+            farmerId: e['farmerId'] as String,
+            amount: e['amount'] as double,
+            status: LoanStatus.values.firstWhere((s) => s.name == e['status']),
+            createdAt: DateTime.parse(e['createdAt'] as String),
+            isSynced: (e['isSynced'] as int) == 1,
+          ),
+        )
+        .toList();
+  }
+}
