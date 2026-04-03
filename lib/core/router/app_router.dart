@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -34,9 +38,49 @@ import '../../features/shell/presentation/screens/app_shell.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/weather/presentation/screens/weather_screen.dart';
 
+/// A [ChangeNotifier] that calls [notifyListeners] whenever the given stream
+/// emits a value. Used to make [GoRouter] react to Firebase Auth state changes.
+class _GoRouterRefreshStream extends ChangeNotifier {
+  _GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _sub = stream.listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _sub;
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
+  }
+}
+
 final appRouterProvider = Provider<GoRouter>((ref) {
+  final refreshListenable = _GoRouterRefreshStream(
+    FirebaseAuth.instance.authStateChanges(),
+  );
+  ref.onDispose(refreshListenable.dispose);
+
   return GoRouter(
     initialLocation: '/',
+    refreshListenable: refreshListenable,
+    redirect: (context, state) {
+      final user = FirebaseAuth.instance.currentUser;
+      final loc = state.matchedLocation;
+
+      // Splash and onboarding are always accessible.
+      if (loc == '/' || loc == '/onboarding') return null;
+
+      final isAuthRoute = loc == '/login' || loc == '/register';
+
+      // Not signed in → send to login (except on auth routes).
+      if (user == null && !isAuthRoute) return '/login';
+
+      // Already signed in → bounce away from auth routes.
+      if (user != null && isAuthRoute) return '/home';
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',
@@ -118,7 +162,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: '/services',
             builder: (context, state) => const ServicesScreen(),
           ),
-          // --- New feature routes ---
           GoRoute(
             path: '/knowledge',
             builder: (context, state) => const KnowledgeBaseScreen(),

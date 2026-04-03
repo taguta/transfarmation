@@ -17,6 +17,7 @@ class FarmRepositoryImpl implements FarmRepository {
     await local.saveFarm(farm);
     try {
       await remote.sendFarm(farm);
+      await db.update('farms', {'isSynced': 1}, where: 'id = ?', whereArgs: [farm.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': farm.id,
@@ -44,6 +45,7 @@ class FarmRepositoryImpl implements FarmRepository {
     await local.saveField(farmId, field);
     try {
       await remote.sendField(farmId, field);
+      await db.update('farm_fields', {'isSynced': 1}, where: 'id = ?', whereArgs: [field.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': field.id,
@@ -68,6 +70,7 @@ class FarmRepositoryImpl implements FarmRepository {
     await local.saveLivestock(farmId, record);
     try {
       await remote.sendLivestock(farmId, record);
+      await db.update('livestock_records', {'isSynced': 1}, where: 'id = ?', whereArgs: [record.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': record.id,

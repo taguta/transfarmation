@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../database/sqlite_service.dart'; // SqliteService.init()
+import '../database/data_seeder.dart';
+
 
 // Loan
 import '../../features/financing/infrastructure/datasource/local/loan_sqlite.dart';
 import '../../features/financing/infrastructure/datasource/remote/loan_firestore.dart';
 import '../../features/financing/infrastructure/repositories/loan_repository_impl.dart';
 import '../sync/sync_service.dart';
+import '../sync/firestore_listener.dart';
 
 // Farm records
 import '../../features/farm_records/infrastructure/datasource/local/farm_sqlite.dart';
@@ -69,7 +72,16 @@ final firestoreProvider = Provider<FirebaseFirestore>((ref) {
 /// Call this once at app startup and override databaseProvider.
 Future<Database> initDatabase() => SqliteService.init();
 
+final dataSeederProvider = Provider<DataSeeder>((ref) {
+  return DataSeeder(
+    ref.watch(databaseProvider),
+    ref.watch(farmLocalDataSourceProvider),
+    ref.watch(loanLocalDataSourceProvider),
+  );
+});
+
 // ── Loan ────────────────────────────────────────────────────
+
 
 final loanLocalDataSourceProvider = Provider<LoanLocalDataSource>((ref) {
   return LoanLocalDataSource(ref.watch(databaseProvider));
@@ -95,6 +107,15 @@ final syncServiceProvider = Provider<SyncService>((ref) {
     ref.watch(loanRemoteDataSourceProvider),
     ref.watch(firestoreProvider),
   );
+});
+
+final firestoreListenerProvider = Provider<FirestoreListener>((ref) {
+  final listener = FirestoreListener(
+    ref.watch(firestoreProvider),
+    ref.watch(databaseProvider),
+  );
+  ref.onDispose(listener.dispose);
+  return listener;
 });
 
 // ── Farm records ────────────────────────────────────────────

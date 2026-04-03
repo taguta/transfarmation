@@ -41,6 +41,7 @@ class SavingsRepositoryImpl implements SavingsRepository {
     await local.saveTransaction(transaction);
     try {
       await remote.sendTransaction(transaction);
+      await db.update('savings_transactions', {'isSynced': 1}, where: 'id = ?', whereArgs: [transaction.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': transaction.id,

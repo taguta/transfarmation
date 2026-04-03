@@ -31,7 +31,8 @@ class _FarmRecordScreenState extends ConsumerState<FarmRecordScreen> with Single
 
   @override
   Widget build(BuildContext context) {
-    final farms = ref.watch(farmListProvider);
+    final farmsAsync = ref.watch(farmListProvider);
+    final farms = farmsAsync.value ?? [];
     final selectedIndex = ref.watch(selectedFarmIndexProvider);
     final farm = farms.isNotEmpty ? farms[selectedIndex] : null;
     final summary = ref.watch(farmSummaryProvider);

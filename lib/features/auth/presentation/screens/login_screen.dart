@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
@@ -16,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -24,20 +27,46 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // MVP: skip auth, navigate to home
-      context.go('/home');
+  Future<void> _login() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() => _isLoading = true);
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      // GoRouter's refreshListenable detects the auth state change
+      // and redirects to /home automatically.
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage(e.code))),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
+
+  String _errorMessage(String code) => switch (code) {
+    'user-not-found' => 'No account found with this email.',
+    'wrong-password' => 'Incorrect password.',
+    'invalid-credential' => 'Invalid email or password.',
+    'user-disabled' => 'This account has been disabled.',
+    'invalid-email' => 'Please enter a valid email address.',
+    'too-many-requests' => 'Too many attempts. Please try again later.',
+    _ => 'Sign in failed. Please try again.',
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Form(
+        child: ResponsiveCenter(
+          maxWidth: Breakpoints.formWidth,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.xxl),
+            child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -81,11 +110,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    labelText: 'Email or Phone',
+                    labelText: 'Email',
                     prefixIcon: Icon(Icons.person_outline_rounded),
                   ),
-                  validator:
-                      (v) => (v == null || v.isEmpty) ? 'Required' : null,
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Required';
+                    if (!v.contains('@')) return 'Enter a valid email address';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: AppSpacing.lg),
 
@@ -116,9 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Forgot Password link sent to email')),
-                    ),
+                    onPressed: _isLoading ? null : _sendPasswordReset,
                     child: const Text('Forgot Password?'),
                   ),
                 ),
@@ -129,8 +159,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Sign In'),
+                    onPressed: _isLoading ? null : _login,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Sign In'),
                   ),
                 ),
 
@@ -145,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         horizontal: AppSpacing.lg,
                       ),
                       child: Text(
-                        'or continue with',
+                        'or',
                         style: AppTextStyles.caption.copyWith(
                           color: AppColors.textTertiary,
                         ),
@@ -157,9 +196,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: AppSpacing.xxl),
 
-                // Social login placeholder
                 OutlinedButton.icon(
-                  onPressed: () => context.go('/home'),
+                  onPressed: _isLoading
+                      ? null
+                      : () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Phone login coming soon'),
+                            ),
+                          ),
                   icon: const Icon(Icons.phone_android_rounded),
                   label: const Text('Continue with Phone'),
                 ),
@@ -177,16 +221,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.go('/register'),
+                      onPressed: _isLoading
+                          ? null
+                          : () => context.go('/register'),
                       child: const Text('Sign Up'),
                     ),
                   ],
                 ),
               ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _sendPasswordReset() async {
+    final email = _emailController.text.trim();
+    if (email.isEmpty || !email.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter your email above first')),
+      );
+      return;
+    }
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Password reset email sent to $email')),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage(e.code))),
+        );
+      }
+    }
   }
 }

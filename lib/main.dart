@@ -7,18 +7,28 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
 import 'core/sync/connectivity_sync_notifier.dart';
+import 'core/sync/firestore_listener.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
+import 'features/farm_records/infrastructure/datasource/local/farm_sqlite.dart';
+import 'features/financing/infrastructure/datasource/local/loan_sqlite.dart';
+import 'core/database/data_seeder.dart';
+
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Hive.initFlutter();
+  // Run `flutterfire configure` to generate lib/firebase_options.dart, then replace
+  // the line below with:
+  //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp();
   final db = await initDatabase();
+  await DataSeeder(db, FarmLocalDataSource(db), LoanLocalDataSource(db)).seedIfEmpty();
 
   FlutterNativeSplash.remove();
+
 
   runApp(
     ProviderScope(
@@ -43,6 +53,8 @@ class _TransfarmationAppState extends ConsumerState<TransfarmationApp> {
     super.initState();
     // Start watching network connectivity and auto-syncing on reconnect.
     ref.read(connectivitySyncProvider).start();
+    // Start real-time Firestore → SQLite listeners (self-starts on auth sign-in).
+    ref.read(firestoreListenerProvider).start();
     // Flush any pending queue items accumulated while the app was closed.
     ref.read(syncServiceProvider).processQueue();
   }

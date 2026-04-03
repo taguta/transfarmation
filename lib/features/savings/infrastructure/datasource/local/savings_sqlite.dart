@@ -16,8 +16,8 @@ class SavingsLocalDataSource {
       'maxMembers': group.maxMembers,
       'status': group.status,
       'nextPayoutDate': group.nextPayoutDate.toIso8601String(),
-      'nextRecipient': group.nextRecipient,
-      'totalPool': group.totalPool,
+      'nextPayoutMember': group.nextRecipient,
+      'totalSaved': group.totalPool,
       'isSynced': 0,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -36,8 +36,8 @@ class SavingsLocalDataSource {
             maxMembers: r['maxMembers'] as int? ?? 10,
             status: r['status'] as String? ?? 'active',
             nextPayoutDate: DateTime.parse(r['nextPayoutDate'] as String),
-            nextRecipient: r['nextRecipient'] as String? ?? '',
-            totalPool: (r['totalPool'] as num?)?.toDouble() ?? 0,
+            nextRecipient: r['nextPayoutMember'] as String? ?? '',
+            totalPool: (r['totalSaved'] as num?)?.toDouble() ?? 0,
           ),
         )
         .toList();

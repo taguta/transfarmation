@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
@@ -19,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
   String _selectedRole = 'Farmer';
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -29,11 +33,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _register() {
-    if (_formKey.currentState?.validate() ?? false) {
-      context.go('/home');
+  Future<void> _register() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() => _isLoading = true);
+    try {
+      final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      // Set display name so it's accessible via User.displayName.
+      await cred.user?.updateDisplayName(_nameController.text.trim());
+
+      // Write the farmer profile to Firestore under users/{uid}.
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(cred.user!.uid)
+          .set({
+        'name': _nameController.text.trim(),
+        'phone': _phoneController.text.trim(),
+        'email': _emailController.text.trim(),
+        'role': _selectedRole.toLowerCase(),
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // GoRouter's refreshListenable detects the auth state change
+      // and redirects to /home automatically.
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage(e.code))),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
+
+  String _errorMessage(String code) => switch (code) {
+    'email-already-in-use' => 'An account already exists with this email.',
+    'invalid-email' => 'Please enter a valid email address.',
+    'weak-password' => 'Password is too weak. Use at least 6 characters.',
+    'operation-not-allowed' => 'Email registration is not enabled.',
+    _ => 'Registration failed. Please try again.',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +84,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.go('/login'),
+          onPressed: _isLoading ? null : () => context.go('/login'),
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.xxl),
-          child: Form(
+        child: ResponsiveCenter(
+          maxWidth: Breakpoints.formWidth,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.xxl),
+            child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,13 +141,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    labelText: 'Email (optional)',
+                    labelText: 'Email',
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Required';
+                    if (!v.contains('@')) return 'Enter a valid email address';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: AppSpacing.lg),
 
-                // Role selector
                 DropdownButtonFormField<String>(
                   initialValue: _selectedRole,
                   decoration: const InputDecoration(
@@ -152,8 +201,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: _register,
-                    child: const Text('Create Account'),
+                    onPressed: _isLoading ? null : _register,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Create Account'),
                   ),
                 ),
 
@@ -169,12 +227,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => context.go('/login'),
+                      onPressed: _isLoading ? null : () => context.go('/login'),
                       child: const Text('Sign In'),
                     ),
                   ],
                 ),
               ],
+              ),
             ),
           ),
         ),

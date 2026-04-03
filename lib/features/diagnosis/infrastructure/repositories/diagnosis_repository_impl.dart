@@ -17,6 +17,7 @@ class DiagnosisRepositoryImpl implements DiagnosisRepository {
     await local.saveDiagnosis(result);
     try {
       await remote.sendDiagnosis(result);
+      await db.update('diagnosis_results', {'isSynced': 1}, where: 'id = ?', whereArgs: [result.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': result.id,

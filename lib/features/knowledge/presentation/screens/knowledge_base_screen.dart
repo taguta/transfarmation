@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../providers/knowledge_providers.dart';
@@ -33,13 +34,15 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
 
   @override
   Widget build(BuildContext context) {
+    final padding = context.pagePadding;
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ResponsiveCenter(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(padding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -60,8 +63,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
 
             // Search bar
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: padding),
               child: TextField(
                 onChanged: (v) => setState(() => _searchQuery = v),
                 decoration: InputDecoration(
@@ -106,6 +108,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
               ),
             ),
           ],
+        ),
         ),
       ),
     );

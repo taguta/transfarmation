@@ -19,6 +19,7 @@ class LoanRepositoryImpl implements LoanRepository {
 
     try {
       await remote.sendLoan(loan);
+      await db.update('loans', {'isSynced': 1}, where: 'id = ?', whereArgs: [loan.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': loan.id,
@@ -36,6 +37,6 @@ class LoanRepositoryImpl implements LoanRepository {
 
   @override
   Future<List<Loan>> getLoans(String farmerId) {
-    return local.getLoans();
+    return local.getLoans(farmerId);
   }
 }

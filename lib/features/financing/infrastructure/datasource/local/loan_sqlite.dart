@@ -17,8 +17,12 @@ class LoanLocalDataSource {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Loan>> getLoans() async {
-    final data = await db.query('loans');
+  Future<List<Loan>> getLoans(String farmerId) async {
+    final data = await db.query(
+      'loans',
+      where: 'farmerId = ?',
+      whereArgs: [farmerId],
+    );
     return data
         .map(
           (e) => Loan(

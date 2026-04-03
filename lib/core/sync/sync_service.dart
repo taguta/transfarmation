@@ -45,6 +45,7 @@ class SyncService {
             jsonDecode(item['payload'] as String) as Map<String, dynamic>;
 
         await _processItem(type, payload);
+        await _markSynced(type, payload);
 
         await db.delete(
           'sync_queue',
@@ -62,6 +63,34 @@ class SyncService {
           whereArgs: [item['id']],
         );
       }
+    }
+  }
+
+  /// Flips isSynced = 1 on the local SQLite row after a successful remote write.
+  /// Types that write to subcollections only (group_order_join, contract_application)
+  /// have no top-level local row to mark, so they are skipped.
+  Future<void> _markSynced(String type, Map<String, dynamic> payload) async {
+    final id = payload['id'] as String?;
+    if (id == null) return;
+
+    final table = switch (type) {
+      'loan' => 'loans',
+      'farm' => 'farms',
+      'farm_field' => 'farm_fields',
+      'livestock' => 'livestock_records',
+      'savings_transaction' => 'savings_transactions',
+      'diagnosis' => 'diagnosis_results',
+      'subsidy_application' => 'subsidy_applications',
+      _ => null, // group_order_join, contract_application — subcollections only
+    };
+
+    if (table != null) {
+      await db.update(
+        table,
+        {'isSynced': 1},
+        where: 'id = ?',
+        whereArgs: [id],
+      );
     }
   }
 

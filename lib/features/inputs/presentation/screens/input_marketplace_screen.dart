@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/farm_input.dart';
@@ -31,15 +32,17 @@ class _InputMarketplaceScreenState
   @override
   Widget build(BuildContext context) {
     final inputs = ref.watch(inputCategoryProvider(_selectedCategory));
+    final padding = context.pagePadding;
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
+        child: ResponsiveCenter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -110,6 +113,7 @@ class _InputMarketplaceScreenState
             ),
           ],
         ),
+      ),
       ),
     );
   }

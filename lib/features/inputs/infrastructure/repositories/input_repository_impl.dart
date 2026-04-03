@@ -30,6 +30,7 @@ class InputRepositoryImpl implements InputRepository {
     await local.saveSubsidyApplication(application);
     try {
       await remote.sendSubsidyApplication(application);
+      await db.update('subsidy_applications', {'isSynced': 1}, where: 'id = ?', whereArgs: [application.id]);
     } catch (_) {
       await db.insert('sync_queue', {
         'id': application.id,

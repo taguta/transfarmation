@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
@@ -9,157 +10,162 @@ class MarketplaceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = context.pagePadding;
+    final gridColumns = context.gridColumns(mobile: 2, tablet: 3, desktop: 4);
+
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Marketplace',
-                    style: AppTextStyles.h1.copyWith(
-                      color: AppColors.textPrimary,
+        child: ResponsiveCenter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Marketplace',
+                      style: AppTextStyles.h1.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Buy and sell farm produce',
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
+                    const SizedBox(height: 2),
+                    Text(
+                      'Buy and sell farm produce',
+                      style: AppTextStyles.bodyMd.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            // Search bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search produce, seeds, equipment...',
-                  prefixIcon: const Icon(Icons.search_rounded),
-                  filled: true,
-                  fillColor: AppColors.surfaceElevated,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.full),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xl,
-                    vertical: AppSpacing.md,
+              // Search bar
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search produce, seeds, equipment...',
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    filled: true,
+                    fillColor: AppColors.surfaceElevated,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.full),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl,
+                      vertical: AppSpacing.md,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-            // Category chips
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: Row(
-                children: const [
-                  _CategoryChip(
-                    label: 'All',
-                    icon: Icons.grid_view_rounded,
-                    selected: true,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  _CategoryChip(
-                    label: 'Grains',
-                    icon: Icons.grain_rounded,
-                    selected: false,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  _CategoryChip(
-                    label: 'Vegetables',
-                    icon: Icons.eco_rounded,
-                    selected: false,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  _CategoryChip(
-                    label: 'Livestock',
-                    icon: Icons.pets_rounded,
-                    selected: false,
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  _CategoryChip(
-                    label: 'Equipment',
-                    icon: Icons.handyman_rounded,
-                    selected: false,
-                  ),
-                ],
+              // Category chips
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: Row(
+                  children: const [
+                    _CategoryChip(
+                      label: 'All',
+                      icon: Icons.grid_view_rounded,
+                      selected: true,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    _CategoryChip(
+                      label: 'Grains',
+                      icon: Icons.grain_rounded,
+                      selected: false,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    _CategoryChip(
+                      label: 'Vegetables',
+                      icon: Icons.eco_rounded,
+                      selected: false,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    _CategoryChip(
+                      label: 'Livestock',
+                      icon: Icons.pets_rounded,
+                      selected: false,
+                    ),
+                    SizedBox(width: AppSpacing.sm),
+                    _CategoryChip(
+                      label: 'Equipment',
+                      icon: Icons.handyman_rounded,
+                      selected: false,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.lg),
 
-            // Listings
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                mainAxisSpacing: AppSpacing.md,
-                crossAxisSpacing: AppSpacing.md,
-                childAspectRatio: 0.72,
-                children: const [
-                  _ProduceCard(
-                    name: 'Maize (Grade A)',
-                    seller: 'Moyo Farm',
-                    price: '\$280/ton',
-                    location: 'Marondera',
-                    icon: Icons.grass_rounded,
-                    color: AppColors.primary,
-                  ),
-                  _ProduceCard(
-                    name: 'Soya Beans',
-                    seller: 'Chirinda Agri',
-                    price: '\$520/ton',
-                    location: 'Rusape',
-                    icon: Icons.grain_rounded,
-                    color: AppColors.marketplace,
-                  ),
-                  _ProduceCard(
-                    name: 'Tobacco (Flue)',
-                    seller: 'Nyanga Estates',
-                    price: '\$3.20/kg',
-                    location: 'Nyanga',
-                    icon: Icons.eco_rounded,
-                    color: AppColors.secondary,
-                  ),
-                  _ProduceCard(
-                    name: 'Groundnuts',
-                    seller: 'Mutare Farms',
-                    price: '\$1,100/ton',
-                    location: 'Mutare',
-                    icon: Icons.spa_rounded,
-                    color: AppColors.veterinary,
-                  ),
-                  _ProduceCard(
-                    name: 'Tomatoes (Fresh)',
-                    seller: 'Green Valley',
-                    price: '\$0.80/kg',
-                    location: 'Harare',
-                    icon: Icons.local_florist_rounded,
-                    color: AppColors.error,
-                  ),
-                  _ProduceCard(
-                    name: 'Cotton Lint',
-                    seller: 'Lowveld Co-op',
-                    price: '\$1.50/kg',
-                    location: 'Chiredzi',
-                    icon: Icons.cloud_rounded,
-                    color: AppColors.info,
-                  ),
-                ],
+              // Listings grid — columns adapt per screen size
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: gridColumns,
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  mainAxisSpacing: AppSpacing.md,
+                  crossAxisSpacing: AppSpacing.md,
+                  childAspectRatio: 0.72,
+                  children: const [
+                    _ProduceCard(
+                      name: 'Maize (Grade A)',
+                      seller: 'Moyo Farm',
+                      price: '\$280/ton',
+                      location: 'Marondera',
+                      icon: Icons.grass_rounded,
+                      color: AppColors.primary,
+                    ),
+                    _ProduceCard(
+                      name: 'Soya Beans',
+                      seller: 'Chirinda Agri',
+                      price: '\$520/ton',
+                      location: 'Rusape',
+                      icon: Icons.grain_rounded,
+                      color: AppColors.marketplace,
+                    ),
+                    _ProduceCard(
+                      name: 'Tobacco (Flue)',
+                      seller: 'Nyanga Estates',
+                      price: '\$3.20/kg',
+                      location: 'Nyanga',
+                      icon: Icons.eco_rounded,
+                      color: AppColors.secondary,
+                    ),
+                    _ProduceCard(
+                      name: 'Groundnuts',
+                      seller: 'Mutare Farms',
+                      price: '\$1,100/ton',
+                      location: 'Mutare',
+                      icon: Icons.spa_rounded,
+                      color: AppColors.veterinary,
+                    ),
+                    _ProduceCard(
+                      name: 'Tomatoes (Fresh)',
+                      seller: 'Green Valley',
+                      price: '\$0.80/kg',
+                      location: 'Harare',
+                      icon: Icons.local_florist_rounded,
+                      color: AppColors.error,
+                    ),
+                    _ProduceCard(
+                      name: 'Cotton Lint',
+                      seller: 'Lowveld Co-op',
+                      price: '\$1.50/kg',
+                      location: 'Chiredzi',
+                      icon: Icons.cloud_rounded,
+                      color: AppColors.info,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
