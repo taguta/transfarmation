@@ -136,7 +136,7 @@ class _ContractCard extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.earthBrown.withOpacity(0.1),
+                  color: AppColors.earthBrown.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Icon(_typeIcon(contract.buyerType), size: 20, color: AppColors.earthBrown),
@@ -157,7 +157,7 @@ class _ContractCard extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Text(
@@ -174,7 +174,7 @@ class _ContractCard extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
-              color: AppColors.forestGreen.withOpacity(0.05),
+              color: AppColors.forestGreen.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(AppRadius.md),
             ),
             child: Row(
@@ -228,7 +228,7 @@ class _ContractCard extends ConsumerWidget {
               children: contract.buyerProvides.map((p) => Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.forestGreen.withOpacity(0.08),
+                  color: AppColors.forestGreen.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Text(p, style: AppTextStyles.labelSm.copyWith(color: AppColors.forestGreen)),
@@ -299,7 +299,7 @@ class _DetailChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.borderLight.withOpacity(0.5),
+          color: AppColors.borderLight.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         child: Row(
@@ -328,9 +328,9 @@ class _BenefitsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.earthBrown.withOpacity(0.05),
+        color: AppColors.earthBrown.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.earthBrown.withOpacity(0.15)),
+        border: Border.all(color: AppColors.earthBrown.withValues(alpha: 0.15)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

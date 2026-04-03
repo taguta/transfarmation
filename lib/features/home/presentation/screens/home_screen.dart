@@ -233,6 +233,56 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: AppSpacing.md),
+        GridView.count(
+          crossAxisCount: 4,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
+          children: [
+            _ActionTile(
+              icon: Icons.store_rounded,
+              label: 'Farm\nInputs',
+              color: AppColors.marketplace,
+              onTap: () => context.go('/inputs'),
+            ),
+            _ActionTile(
+              icon: Icons.group_rounded,
+              label: 'Savings\nGroups',
+              color: AppColors.primary,
+              onTap: () => context.go('/savings'),
+            ),
+            _ActionTile(
+              icon: Icons.shopping_cart_rounded,
+              label: 'Group\nBuying',
+              color: AppColors.advisory,
+              onTap: () => context.go('/group-buying'),
+            ),
+            _ActionTile(
+              icon: Icons.handshake_rounded,
+              label: 'Contracts',
+              color: AppColors.earthBrown,
+              onTap: () => context.go('/contracts'),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => context.go('/services'),
+            icon: const Icon(Icons.apps_rounded, size: 18),
+            label: const Text('All Services'),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              side: BorderSide(color: AppColors.border),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

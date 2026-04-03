@@ -94,7 +94,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
                 SizedBox(
                   width: 56,
                   child: Text(
-                    '${_area.toStringAsFixed(1)}',
+                    _area.toStringAsFixed(1),
                     style: AppTextStyles.labelLg.copyWith(
                       color: AppColors.primary,
                     ),

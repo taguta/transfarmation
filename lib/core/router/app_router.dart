@@ -29,13 +29,19 @@ import '../../features/notifications/presentation/screens/notifications_screen.d
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/savings/presentation/screens/savings_group_screen.dart';
+import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/shell/presentation/screens/app_shell.dart';
+import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/weather/presentation/screens/weather_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: '/',
     routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
@@ -76,8 +82,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
               GoRoute(
                 path: 'repayments',
-                builder: (context, state) =>
-                    const RepaymentDashboardScreen(),
+                builder: (context, state) => const RepaymentDashboardScreen(),
               ),
             ],
           ),
@@ -109,6 +114,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: '/notifications',
             builder: (context, state) => const NotificationsScreen(),
           ),
+          GoRoute(
+            path: '/services',
+            builder: (context, state) => const ServicesScreen(),
+          ),
           // --- New feature routes ---
           GoRoute(
             path: '/knowledge',
@@ -116,15 +125,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: 'crop/:id',
-                builder: (context, state) => CropDetailScreen(cropId: state.pathParameters['id']!),
+                builder:
+                    (context, state) =>
+                        CropDetailScreen(cropId: state.pathParameters['id']!),
               ),
               GoRoute(
                 path: 'livestock/:id',
-                builder: (context, state) => LivestockDetailScreen(livestockId: state.pathParameters['id']!),
+                builder:
+                    (context, state) => LivestockDetailScreen(
+                      livestockId: state.pathParameters['id']!,
+                    ),
               ),
               GoRoute(
                 path: 'pest/:id',
-                builder: (context, state) => PestDiseaseDetailScreen(pestId: state.pathParameters['id']!),
+                builder:
+                    (context, state) => PestDiseaseDetailScreen(
+                      pestId: state.pathParameters['id']!,
+                    ),
               ),
             ],
           ),

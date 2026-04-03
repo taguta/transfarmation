@@ -1,0 +1,29 @@
+flutter_native_splash:
+  # Background color - white for a clean look
+  color: "#FFFFFF"
+  color_dark: "#1B2E1B"
+
+  # Logo image
+  image: "assets/transfarmation.jpeg"
+  image_dark: "assets/transfarmation.jpeg"
+
+  # Branding image (shown at the bottom) - optional
+  # branding: "assets/branding.png"
+
+  # Android 12+ settings
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#1B2E1B"
+    image: "assets/transfarmation.jpeg"
+    image_dark: "assets/transfarmation.jpeg"
+
+  # Platform settings
+  android: true
+  ios: true
+  web: true
+
+  # Web image mode: contain, cover, or stretch
+  web_image_mode: center
+
+  # Fullscreen mode
+  fullscreen: false

@@ -171,7 +171,7 @@ class _FarmChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppRadius.full),
       ),
       child: Row(
@@ -221,9 +221,9 @@ class _StatCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
         ),
         child: Column(
           children: [
@@ -297,7 +297,7 @@ class _FieldCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Text(
@@ -420,7 +420,7 @@ class _LivestockCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.earthBrown.withOpacity(0.1),
+                  color: AppColors.earthBrown.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Icon(_typeIcon(record.type), size: 20, color: AppColors.earthBrown),
@@ -445,7 +445,7 @@ class _LivestockCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.harvestGold.withOpacity(0.1),
+                    color: AppColors.harvestGold.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                   child: Text(
@@ -574,7 +574,7 @@ class _ExpensesTab extends StatelessWidget {
                 Container(
                   width: 36, height: 36,
                   decoration: BoxDecoration(
-                    color: _categoryColor(entry.value.category).withOpacity(0.1),
+                    color: _categoryColor(entry.value.category).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Icon(_categoryIcon(entry.value.category), size: 18, color: _categoryColor(entry.value.category)),
@@ -667,7 +667,7 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.landscape_rounded, size: 64, color: AppColors.textSecondary.withOpacity(0.3)),
+            Icon(Icons.landscape_rounded, size: 64, color: AppColors.textSecondary.withValues(alpha: 0.3)),
             const SizedBox(height: AppSpacing.lg),
             Text('No Farm Records', style: AppTextStyles.h3.copyWith(color: AppColors.textSecondary)),
             const SizedBox(height: AppSpacing.sm),

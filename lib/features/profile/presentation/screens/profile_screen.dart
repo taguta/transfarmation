@@ -123,7 +123,7 @@ class ProfileScreen extends ConsumerWidget {
                   value: themeMode == ThemeMode.dark,
                   onChanged:
                       (_) => ref.read(themeModeProvider.notifier).toggle(),
-                  activeColor: AppColors.primary,
+                  activeTrackColor: AppColors.primary,
                 ),
                 onTap: () => ref.read(themeModeProvider.notifier).toggle(),
               ),
