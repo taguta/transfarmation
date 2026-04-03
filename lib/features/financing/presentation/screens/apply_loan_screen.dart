@@ -210,7 +210,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
           ),
           const SizedBox(height: AppSpacing.lg),
           DropdownButtonFormField<String>(
-            value: _province,
+            initialValue: _province,
             decoration: const InputDecoration(
               labelText: 'Province',
               prefixIcon: Icon(Icons.location_on_outlined),
@@ -266,7 +266,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
           ),
           const SizedBox(height: AppSpacing.xxl),
           DropdownButtonFormField<String>(
-            value: _cropType,
+            initialValue: _cropType,
             decoration: const InputDecoration(
               labelText: 'Primary Crop',
               prefixIcon: Icon(Icons.grass_rounded),
@@ -288,7 +288,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
           ),
           const SizedBox(height: AppSpacing.lg),
           DropdownButtonFormField<String>(
-            value: _farmingType,
+            initialValue: _farmingType,
             decoration: const InputDecoration(
               labelText: 'Farming Type',
               prefixIcon: Icon(Icons.water_drop_outlined),
@@ -367,7 +367,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
           ),
           const SizedBox(height: AppSpacing.lg),
           DropdownButtonFormField<String>(
-            value: _loanPurpose,
+            initialValue: _loanPurpose,
             decoration: const InputDecoration(
               labelText: 'Loan Purpose',
               prefixIcon: Icon(Icons.category_outlined),
@@ -398,7 +398,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
           ),
           const SizedBox(height: AppSpacing.lg),
           DropdownButtonFormField<String>(
-            value: _repaymentPeriod,
+            initialValue: _repaymentPeriod,
             decoration: const InputDecoration(
               labelText: 'Repayment Period',
               prefixIcon: Icon(Icons.calendar_today_outlined),

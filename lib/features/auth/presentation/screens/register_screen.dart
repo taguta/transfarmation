@@ -104,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 // Role selector
                 DropdownButtonFormField<String>(
-                  value: _selectedRole,
+                  initialValue: _selectedRole,
                   decoration: const InputDecoration(
                     labelText: 'I am a...',
                     prefixIcon: Icon(Icons.badge_outlined),

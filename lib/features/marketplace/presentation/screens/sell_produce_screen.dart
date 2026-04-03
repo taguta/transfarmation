@@ -136,7 +136,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         children: [
           // Category
           DropdownButtonFormField<String>(
-            value: _category,
+            initialValue: _category,
             items:
                 _categories
                     .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -198,7 +198,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: _unit,
+                  initialValue: _unit,
                   items:
                       _units
                           .map(
@@ -264,7 +264,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
 
         // Quality grade
         DropdownButtonFormField<String>(
-          value: _quality,
+          initialValue: _quality,
           items:
               _qualities
                   .map((q) => DropdownMenuItem(value: q, child: Text(q)))
@@ -303,7 +303,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
       children: [
         // Location
         DropdownButtonFormField<String>(
-          value: _location.isEmpty ? null : _location,
+          initialValue: _location.isEmpty ? null : _location,
           items:
               _provinces
                   .map((p) => DropdownMenuItem(value: p, child: Text(p)))

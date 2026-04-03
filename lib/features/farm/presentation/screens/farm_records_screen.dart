@@ -411,9 +411,8 @@ class _CropCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final daysToHarvest = crop.expectedHarvest != null
-        ? crop.expectedHarvest!.difference(DateTime.now()).inDays
-        : null;
+    final daysToHarvest = crop.expectedHarvest
+        ?.difference(DateTime.now()).inDays;
     final growthProgress = crop.expectedHarvest != null
         ? 1 -
             (crop.expectedHarvest!.difference(DateTime.now()).inDays /

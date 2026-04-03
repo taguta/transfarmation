@@ -60,7 +60,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             ),
             const SizedBox(height: AppSpacing.sm),
             DropdownButtonFormField<String>(
-              value: _selectedCrop,
+              initialValue: _selectedCrop,
               items: _crops
                   .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                   .toList(),

@@ -400,7 +400,7 @@ class RepaymentDashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
             DropdownButtonFormField<String>(
-              value: 'EcoCash',
+              initialValue: 'EcoCash',
               decoration: const InputDecoration(
                 labelText: 'Payment Method',
                 prefixIcon: Icon(Icons.account_balance_wallet_outlined),
