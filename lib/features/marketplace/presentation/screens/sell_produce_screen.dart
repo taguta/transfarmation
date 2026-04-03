@@ -97,18 +97,22 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         steps: [
           Step(
             title: const Text('Product Details'),
-            subtitle: _currentStep > 0 && _produceName.isNotEmpty
-                ? Text('$_produceName · $_quantity $_unit')
-                : null,
+            subtitle:
+                _currentStep > 0 && _produceName.isNotEmpty
+                    ? Text('$_produceName · $_quantity $_unit')
+                    : null,
             isActive: _currentStep >= 0,
             state: _currentStep > 0 ? StepState.complete : StepState.indexed,
             content: _buildProductStep(),
           ),
           Step(
             title: const Text('Pricing & Quality'),
-            subtitle: _currentStep > 1 && _pricePerUnit > 0
-                ? Text('\$${_pricePerUnit.toStringAsFixed(2)}/$_unit · $_quality')
-                : null,
+            subtitle:
+                _currentStep > 1 && _pricePerUnit > 0
+                    ? Text(
+                      '\$${_pricePerUnit.toStringAsFixed(2)}/$_unit · $_quality',
+                    )
+                    : null,
             isActive: _currentStep >= 1,
             state: _currentStep > 1 ? StepState.complete : StepState.indexed,
             content: _buildPricingStep(),
@@ -133,9 +137,10 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           // Category
           DropdownButtonFormField<String>(
             value: _category,
-            items: _categories
-                .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                .toList(),
+            items:
+                _categories
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
             onChanged: (v) => setState(() => _category = v!),
             decoration: const InputDecoration(
               labelText: 'Category',
@@ -151,8 +156,8 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               hintText: 'e.g., White Maize, Cherry Tomatoes',
               prefixIcon: Icon(Icons.grass_rounded),
             ),
-            validator: (v) =>
-                v == null || v.isEmpty ? 'Enter produce name' : null,
+            validator:
+                (v) => v == null || v.isEmpty ? 'Enter produce name' : null,
             onChanged: (v) => _produceName = v,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -175,8 +180,9 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               Expanded(
                 flex: 2,
                 child: TextFormField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Quantity',
                     prefixIcon: Icon(Icons.scale_rounded),
@@ -186,17 +192,19 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
                     if (double.tryParse(v) == null) return 'Invalid number';
                     return null;
                   },
-                  onChanged: (v) =>
-                      _quantity = double.tryParse(v) ?? 0,
+                  onChanged: (v) => _quantity = double.tryParse(v) ?? 0,
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: _unit,
-                  items: _units
-                      .map((u) => DropdownMenuItem(value: u, child: Text(u)))
-                      .toList(),
+                  items:
+                      _units
+                          .map(
+                            (u) => DropdownMenuItem(value: u, child: Text(u)),
+                          )
+                          .toList(),
                   onChanged: (v) => setState(() => _unit = v!),
                   decoration: const InputDecoration(labelText: 'Unit'),
                 ),
@@ -257,9 +265,10 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         // Quality grade
         DropdownButtonFormField<String>(
           value: _quality,
-          items: _qualities
-              .map((q) => DropdownMenuItem(value: q, child: Text(q)))
-              .toList(),
+          items:
+              _qualities
+                  .map((q) => DropdownMenuItem(value: q, child: Text(q)))
+                  .toList(),
           onChanged: (v) => setState(() => _quality = v!),
           decoration: const InputDecoration(
             labelText: 'Quality Grade',
@@ -274,9 +283,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           onChanged: (v) => setState(() => _negotiable = v),
           title: Text(
             'Price is negotiable',
-            style: AppTextStyles.labelMd.copyWith(
-              color: AppColors.textPrimary,
-            ),
+            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
           ),
           subtitle: Text(
             'Buyers can make counter-offers',
@@ -297,16 +304,16 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         // Location
         DropdownButtonFormField<String>(
           value: _location.isEmpty ? null : _location,
-          items: _provinces
-              .map((p) => DropdownMenuItem(value: p, child: Text(p)))
-              .toList(),
+          items:
+              _provinces
+                  .map((p) => DropdownMenuItem(value: p, child: Text(p)))
+                  .toList(),
           onChanged: (v) => setState(() => _location = v ?? ''),
           decoration: const InputDecoration(
             labelText: 'Location / Province',
             prefixIcon: Icon(Icons.location_on_rounded),
           ),
-          validator: (v) =>
-              v == null || v.isEmpty ? 'Select a location' : null,
+          validator: (v) => v == null || v.isEmpty ? 'Select a location' : null,
         ),
         const SizedBox(height: AppSpacing.lg),
 
@@ -316,9 +323,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           onChanged: (v) => setState(() => _deliveryAvailable = v),
           title: Text(
             'Delivery available',
-            style: AppTextStyles.labelMd.copyWith(
-              color: AppColors.textPrimary,
-            ),
+            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
           ),
           subtitle: Text(
             'You can deliver to the buyer',
@@ -335,8 +340,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           maxLines: 3,
           decoration: const InputDecoration(
             labelText: 'Description (optional)',
-            hintText:
-                'Describe condition, harvest date, certifications, etc.',
+            hintText: 'Describe condition, harvest date, certifications, etc.',
             prefixIcon: Icon(Icons.description_rounded),
             alignLabelWithHint: true,
           ),
@@ -361,14 +365,32 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
                 ),
               ),
               const Divider(height: AppSpacing.xl),
-              _PreviewRow(label: 'Product', value: _produceName.isEmpty ? '–' : '$_produceName${_variety.isNotEmpty ? ' ($_variety)' : ''}'),
+              _PreviewRow(
+                label: 'Product',
+                value:
+                    _produceName.isEmpty
+                        ? '–'
+                        : '$_produceName${_variety.isNotEmpty ? ' ($_variety)' : ''}',
+              ),
               _PreviewRow(label: 'Category', value: _category),
               _PreviewRow(label: 'Quantity', value: '$_quantity $_unit'),
-              _PreviewRow(label: 'Price', value: '\$${_pricePerUnit.toStringAsFixed(2)}/$_unit'),
+              _PreviewRow(
+                label: 'Price',
+                value: '\$${_pricePerUnit.toStringAsFixed(2)}/$_unit',
+              ),
               _PreviewRow(label: 'Quality', value: _quality),
-              _PreviewRow(label: 'Location', value: _location.isEmpty ? '–' : _location),
-              _PreviewRow(label: 'Negotiable', value: _negotiable ? 'Yes' : 'No'),
-              _PreviewRow(label: 'Delivery', value: _deliveryAvailable ? 'Available' : 'Pickup only'),
+              _PreviewRow(
+                label: 'Location',
+                value: _location.isEmpty ? '–' : _location,
+              ),
+              _PreviewRow(
+                label: 'Negotiable',
+                value: _negotiable ? 'Yes' : 'No',
+              ),
+              _PreviewRow(
+                label: 'Delivery',
+                value: _deliveryAvailable ? 'Available' : 'Pickup only',
+              ),
               if (_description != null)
                 _PreviewRow(label: 'Description', value: _description!),
             ],
@@ -421,15 +443,11 @@ class _PreviewRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: AppTextStyles.bodySm.copyWith(
-              color: AppColors.textTertiary,
-            ),
+            style: AppTextStyles.bodySm.copyWith(color: AppColors.textTertiary),
           ),
           Text(
             value,
-            style: AppTextStyles.labelMd.copyWith(
-              color: AppColors.textPrimary,
-            ),
+            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
           ),
         ],
       ),

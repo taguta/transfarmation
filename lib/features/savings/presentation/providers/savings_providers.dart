@@ -134,7 +134,7 @@ final savingsGroupsProvider =
     );
 
 final savingsTransactionsProvider = Provider<List<SavingsTransaction>>((ref) {
-  return const [
+  return [
     SavingsTransaction(
       id: 'st-001',
       groupId: 'sg-001',

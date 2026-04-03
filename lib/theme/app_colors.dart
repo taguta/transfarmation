@@ -68,6 +68,12 @@ abstract final class AppColors {
   static const Color advisory = Color(0xFF5C6BC0);         // Indigo
   static const Color veterinary = Color(0xFFEF6C00);       // Deep orange
 
+  // ─── Semantic Aliases ───────────────────────────────────────
+  static const Color forestGreen = primary;                 // #2E7D32
+  static const Color harvestGold = accent;                  // #F9A825
+  static const Color earthBrown = secondary;                // #795548
+  static const Color borderLight = border;                  // Soft sage border
+
   // ─── Gradients ──────────────────────────────────────────────
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [Color(0xFF43A047), Color(0xFF2E7D32), Color(0xFF1B5E20)],

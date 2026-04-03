@@ -164,36 +164,74 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildQuickActions(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 4,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: AppSpacing.md,
-      crossAxisSpacing: AppSpacing.md,
+    return Column(
       children: [
-        _ActionTile(
-          icon: Icons.add_card_rounded,
-          label: 'Apply\nLoan',
-          color: AppColors.financing,
-          onTap: () => context.go('/financing/apply'),
+        GridView.count(
+          crossAxisCount: 4,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
+          children: [
+            _ActionTile(
+              icon: Icons.add_card_rounded,
+              label: 'Apply\nLoan',
+              color: AppColors.financing,
+              onTap: () => context.go('/financing/apply'),
+            ),
+            _ActionTile(
+              icon: Icons.sell_outlined,
+              label: 'Sell\nProduce',
+              color: AppColors.marketplace,
+              onTap: () => context.go('/marketplace/sell'),
+            ),
+            _ActionTile(
+              icon: Icons.landscape_rounded,
+              label: 'My\nFarm',
+              color: AppColors.primary,
+              onTap: () => context.go('/farm'),
+            ),
+            _ActionTile(
+              icon: Icons.support_agent_rounded,
+              label: 'Ask\nExpert',
+              color: AppColors.advisory,
+              onTap: () => context.go('/expert'),
+            ),
+          ],
         ),
-        _ActionTile(
-          icon: Icons.sell_outlined,
-          label: 'Sell\nProduce',
-          color: AppColors.marketplace,
-          onTap: () => context.go('/marketplace/sell'),
-        ),
-        _ActionTile(
-          icon: Icons.landscape_rounded,
-          label: 'My\nFarm',
-          color: AppColors.primary,
-          onTap: () => context.go('/farm'),
-        ),
-        _ActionTile(
-          icon: Icons.support_agent_rounded,
-          label: 'Ask\nExpert',
-          color: AppColors.advisory,
-          onTap: () => context.go('/expert'),
+        const SizedBox(height: AppSpacing.md),
+        GridView.count(
+          crossAxisCount: 4,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: AppSpacing.md,
+          crossAxisSpacing: AppSpacing.md,
+          children: [
+            _ActionTile(
+              icon: Icons.menu_book_rounded,
+              label: 'Knowledge\nBase',
+              color: AppColors.forestGreen,
+              onTap: () => context.go('/knowledge'),
+            ),
+            _ActionTile(
+              icon: Icons.cloud_rounded,
+              label: 'Weather\nAlerts',
+              color: Colors.blue,
+              onTap: () => context.go('/weather'),
+            ),
+            _ActionTile(
+              icon: Icons.camera_alt_rounded,
+              label: 'AI\nDiagnosis',
+              color: Colors.deepOrange,
+              onTap: () => context.go('/diagnosis'),
+            ),
+            _ActionTile(
+              icon: Icons.trending_up_rounded,
+              label: 'Market\nPrices',
+              color: AppColors.harvestGold,
+              onTap: () => context.go('/market-prices'),
+            ),
+          ],
         ),
       ],
     );
