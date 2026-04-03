@@ -1,11 +1,11 @@
 flutter_launcher_icons:
-  image_path: "assets/transfarmation.jpeg"
+  image_path: "assets/transfarmation_icon.png"
 
   # Android
   android: true
   min_sdk_android: 21
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/transfarmation.jpeg"
+  adaptive_icon_foreground: "assets/transfarmation_icon.png"
 
   # iOS
   ios: true
@@ -14,17 +14,17 @@ flutter_launcher_icons:
   # Web
   web:
     generate: true
-    image_path: "assets/transfarmation.jpeg"
+    image_path: "assets/transfarmation_icon.png"
     background_color: "#FFFFFF"
     theme_color: "#2E7D32"
 
   # Windows
   windows:
     generate: true
-    image_path: "assets/transfarmation.jpeg"
+    image_path: "assets/transfarmation_icon.png"
     icon_size: 48
 
   # macOS
   macos:
     generate: true
-    image_path: "assets/transfarmation.jpeg"
+    image_path: "assets/transfarmation_icon.png"

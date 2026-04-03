@@ -20,24 +20,27 @@ class LoanStatusScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'My Financing',
-                        style: AppTextStyles.h1.copyWith(
-                          color: AppColors.textPrimary,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'My Financing',
+                          style: AppTextStyles.h1.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        'Track your loans and repayments',
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.textSecondary,
+                        const SizedBox(height: 2),
+                        Text(
+                          'Track your loans and repayments',
+                          style: AppTextStyles.bodyMd.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: AppSpacing.sm),
                   FilledButton.icon(
                     onPressed: () => context.go('/financing/apply'),
                     icon: const Icon(Icons.add, size: 18),
@@ -267,121 +270,122 @@ class _LoanListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: status == 'approved' && repaidPercent < 1.0
-          ? () => context.go('/financing/repayments')
-          : null,
+      onTap:
+          status == 'approved' && repaidPercent < 1.0
+              ? () => context.go('/financing/repayments')
+              : null,
       child: Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(AppSpacing.sm),
-                decoration: BoxDecoration(
-                  color: _statusColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: _statusColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  child: Icon(
+                    Icons.account_balance_rounded,
+                    color: _statusColor,
+                    size: 20,
+                  ),
                 ),
-                child: Icon(
-                  Icons.account_balance_rounded,
-                  color: _statusColor,
-                  size: 20,
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTextStyles.labelLg.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        lender,
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _statusColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(AppRadius.full),
+                  ),
+                  child: Text(
+                    _statusLabel,
+                    style: AppTextStyles.labelSm.copyWith(color: _statusColor),
+                  ),
+                ),
+              ],
+            ),
+            if (status == 'approved' && repaidPercent < 1.0) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '\$${amount.toStringAsFixed(0)}',
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  Text(
+                    '${(repaidPercent * 100).toInt()}% repaid',
+                    style: AppTextStyles.labelSm.copyWith(
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.full),
+                child: LinearProgressIndicator(
+                  value: repaidPercent,
+                  backgroundColor: AppColors.border,
+                  color: AppColors.primary,
+                  minHeight: 4,
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.textPrimary,
-                      ),
+            ] else ...[
+              const SizedBox(height: AppSpacing.md),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '\$${amount.toStringAsFixed(0)}',
+                    style: AppTextStyles.h3.copyWith(
+                      color: AppColors.textPrimary,
                     ),
-                    Text(
-                      lender,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textTertiary,
-                      ),
+                  ),
+                  Text(
+                    date,
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.textTertiary,
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                  vertical: AppSpacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  color: _statusColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(AppRadius.full),
-                ),
-                child: Text(
-                  _statusLabel,
-                  style: AppTextStyles.labelSm.copyWith(color: _statusColor),
-                ),
+                  ),
+                ],
               ),
             ],
-          ),
-          if (status == 'approved' && repaidPercent < 1.0) ...[
-            const SizedBox(height: AppSpacing.lg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '\$${amount.toStringAsFixed(0)}',
-                  style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Text(
-                  '${(repaidPercent * 100).toInt()}% repaid',
-                  style: AppTextStyles.labelSm.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.full),
-              child: LinearProgressIndicator(
-                value: repaidPercent,
-                backgroundColor: AppColors.border,
-                color: AppColors.primary,
-                minHeight: 4,
-              ),
-            ),
-          ] else ...[
-            const SizedBox(height: AppSpacing.md),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '\$${amount.toStringAsFixed(0)}',
-                  style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Text(
-                  date,
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ),
           ],
-        ],
+        ),
       ),
-    ),
     );
   }
 }

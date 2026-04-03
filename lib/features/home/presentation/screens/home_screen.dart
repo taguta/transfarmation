@@ -167,7 +167,7 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         GridView.count(
-          crossAxisCount: 4,
+          crossAxisCount: 3,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: AppSpacing.md,
@@ -197,16 +197,6 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.advisory,
               onTap: () => context.go('/expert'),
             ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.md),
-        GridView.count(
-          crossAxisCount: 4,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: AppSpacing.md,
-          crossAxisSpacing: AppSpacing.md,
-          children: [
             _ActionTile(
               icon: Icons.menu_book_rounded,
               label: 'Knowledge\nBase',
@@ -231,16 +221,6 @@ class HomeScreen extends StatelessWidget {
               color: AppColors.harvestGold,
               onTap: () => context.go('/market-prices'),
             ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.md),
-        GridView.count(
-          crossAxisCount: 4,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: AppSpacing.md,
-          crossAxisSpacing: AppSpacing.md,
-          children: [
             _ActionTile(
               icon: Icons.store_rounded,
               label: 'Farm\nInputs',
@@ -573,10 +553,11 @@ class _ActionTile extends StatelessWidget {
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 52,
-            height: 52,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -584,13 +565,16 @@ class _ActionTile extends StatelessWidget {
             child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(
-            label,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textSecondary,
+          Flexible(
+            child: Text(
+              label,
+              style: AppTextStyles.caption.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
           ),
         ],
       ),

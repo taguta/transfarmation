@@ -271,27 +271,37 @@ class _ProduceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      price,
-                      style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.primary,
+                    Flexible(
+                      child: Text(
+                        price,
+                        style: AppTextStyles.labelLg.copyWith(
+                          color: AppColors.primary,
+                        ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on_outlined,
-                          size: 12,
-                          color: AppColors.textTertiary,
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          location,
-                          style: AppTextStyles.caption.copyWith(
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 12,
                             color: AppColors.textTertiary,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 2),
+                          Flexible(
+                            child: Text(
+                              location,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.caption.copyWith(
+                                color: AppColors.textTertiary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
