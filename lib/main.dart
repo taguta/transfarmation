@@ -1,26 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
+import 'core/sync/connectivity_sync_notifier.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Hive.initFlutter();
+  await Firebase.initializeApp();
+  final db = await initDatabase();
+
   FlutterNativeSplash.remove();
 
-  runApp(const ProviderScope(child: TransfarmationApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+      ],
+      child: const TransfarmationApp(),
+    ),
+  );
 }
 
-class TransfarmationApp extends ConsumerWidget {
+class TransfarmationApp extends ConsumerStatefulWidget {
   const TransfarmationApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TransfarmationApp> createState() => _TransfarmationAppState();
+}
+
+class _TransfarmationAppState extends ConsumerState<TransfarmationApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Start watching network connectivity and auto-syncing on reconnect.
+    ref.read(connectivitySyncProvider).start();
+    // Flush any pending queue items accumulated while the app was closed.
+    ref.read(syncServiceProvider).processQueue();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
     final router = ref.watch(appRouterProvider);
 

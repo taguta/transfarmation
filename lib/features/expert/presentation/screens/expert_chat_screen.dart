@@ -127,11 +127,15 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.call_outlined),
-            onPressed: () {},
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Calling Dr. Chipo...')),
+            ),
           ),
           IconButton(
             icon: const Icon(Icons.more_vert),
-            onPressed: () {},
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('More options')),
+            ),
           ),
         ],
       ),
@@ -246,7 +250,9 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
           IconButton(
             icon: const Icon(Icons.camera_alt_outlined),
             color: AppColors.textTertiary,
-            onPressed: () {},
+            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Opening attachment picker...')),
+            ),
           ),
           Expanded(
             child: TextField(

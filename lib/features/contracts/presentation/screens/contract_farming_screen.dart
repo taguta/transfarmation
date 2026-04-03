@@ -277,7 +277,7 @@ class _ContractCard extends ConsumerWidget {
                 ),
               if (contract.status == 'applied')
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: null,
                   child: const Text('Applied ✓'),
                 ),
             ],

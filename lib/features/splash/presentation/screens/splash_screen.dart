@@ -48,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               clipBehavior: Clip.antiAlias,
               child: Image.asset(
-                'assets/transfarmation.jpeg',
+                'assets/transfarmation_icon.png',
                 fit: BoxFit.contain,
               ),
             )

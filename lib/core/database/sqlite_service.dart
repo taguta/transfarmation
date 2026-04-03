@@ -6,13 +6,16 @@ class SqliteService {
   static Future<Database> init() async {
     return openDatabase(
       join(await getDatabasesPath(), 'agrolink.db'),
-      version: 2,
+      version: 3,
       onCreate: (db, version) async {
         await _createAllTables(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
           await _createV2Tables(db);
+        }
+        if (oldVersion < 3) {
+          await _migrateToV3(db);
         }
       },
     );
@@ -36,7 +39,8 @@ class SqliteService {
         id TEXT PRIMARY KEY,
         type TEXT,
         payload TEXT,
-        retryCount INTEGER DEFAULT 0
+        retryCount INTEGER DEFAULT 0,
+        lastAttemptedAt TEXT
       )
     ''');
 
@@ -284,5 +288,11 @@ class SqliteService {
     await db.execute('CREATE INDEX IF NOT EXISTS idx_savings_tx_groupId ON savings_transactions(groupId)');
     await db.execute('CREATE INDEX IF NOT EXISTS idx_group_orders_coopId ON group_orders(cooperativeId)');
     await db.execute('CREATE INDEX IF NOT EXISTS idx_sync_queue_type ON sync_queue(type)');
+  }
+
+  static Future<void> _migrateToV3(Database db) async {
+    await db.execute(
+      'ALTER TABLE sync_queue ADD COLUMN lastAttemptedAt TEXT',
+    );
   }
 }

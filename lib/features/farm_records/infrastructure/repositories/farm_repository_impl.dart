@@ -42,10 +42,50 @@ class FarmRepositoryImpl implements FarmRepository {
   @override
   Future<void> saveField(String farmId, FarmField field) async {
     await local.saveField(farmId, field);
+    try {
+      await remote.sendField(farmId, field);
+    } catch (_) {
+      await db.insert('sync_queue', {
+        'id': field.id,
+        'type': 'farm_field',
+        'payload': jsonEncode({
+          'farmId': farmId,
+          'id': field.id,
+          'name': field.name,
+          'hectares': field.hectares,
+          'currentCrop': field.currentCrop,
+          'season': field.season,
+          'status': field.status,
+          'yieldTonnes': field.yieldTonnes,
+        }),
+        'retryCount': 0,
+      });
+    }
   }
 
   @override
   Future<void> saveLivestock(String farmId, LivestockRecord record) async {
     await local.saveLivestock(farmId, record);
+    try {
+      await remote.sendLivestock(farmId, record);
+    } catch (_) {
+      await db.insert('sync_queue', {
+        'id': record.id,
+        'type': 'livestock',
+        'payload': jsonEncode({
+          'farmId': farmId,
+          'id': record.id,
+          'type': record.type,
+          'tagNumber': record.tagNumber,
+          'name': record.name,
+          'breed': record.breed,
+          'sex': record.sex,
+          'dateOfBirth': record.dateOfBirth?.toIso8601String(),
+          'weight': record.weight,
+          'status': record.status,
+        }),
+        'retryCount': 0,
+      });
+    }
   }
 }

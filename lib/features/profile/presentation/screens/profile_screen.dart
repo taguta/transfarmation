@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -101,17 +102,23 @@ class ProfileScreen extends ConsumerWidget {
               _SettingsTile(
                 icon: Icons.person_outline_rounded,
                 title: 'Edit Profile',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Edit Profile opened')),
+                ),
               ),
               _SettingsTile(
                 icon: Icons.agriculture_rounded,
                 title: 'Farm Details',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Farm Details opened')),
+                ),
               ),
               _SettingsTile(
                 icon: Icons.security_rounded,
                 title: 'Security',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Security settings opened')),
+                ),
               ),
 
               const SizedBox(height: AppSpacing.xl),
@@ -131,12 +138,16 @@ class ProfileScreen extends ConsumerWidget {
                 icon: Icons.language_rounded,
                 title: 'Language',
                 subtitle: 'English',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Language selection opened')),
+                ),
               ),
               _SettingsTile(
                 icon: Icons.notifications_outlined,
                 title: 'Notifications',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Notification settings opened')),
+                ),
               ),
 
               const SizedBox(height: AppSpacing.xl),
@@ -144,20 +155,33 @@ class ProfileScreen extends ConsumerWidget {
               _SettingsTile(
                 icon: Icons.help_outline_rounded,
                 title: 'Help Center',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Help Center opened')),
+                ),
               ),
               _SettingsTile(
                 icon: Icons.info_outline_rounded,
                 title: 'About Transfarmation',
                 subtitle: 'Version 0.1.0',
-                onTap: () {},
+                onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('About opened')),
+                ),
               ),
 
               const SizedBox(height: AppSpacing.xxl),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Navigate to sign in route (if it exists)
+                    try {
+                      // We skip true sign out in MVP, just navigate to login
+                      context.go('/login');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Signed out.')),
+                      );
+                    } catch (_) {}
+                  },
                   icon: const Icon(Icons.logout_rounded),
                   label: const Text('Sign Out'),
                   style: OutlinedButton.styleFrom(

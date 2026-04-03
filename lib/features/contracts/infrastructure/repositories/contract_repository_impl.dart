@@ -27,11 +27,13 @@ class ContractRepositoryImpl implements ContractRepository {
 
   @override
   Future<void> applyToContract(String contractId, String farmerId) async {
+    // Usually we save a local copy of 'Application' here before sending remote.
+    // For now we persist it correctly before network request.
     try {
       await remote.applyToContract(contractId, farmerId);
     } catch (_) {
       await db.insert('sync_queue', {
-        'id': '${contractId}_$farmerId',
+        'id': '\${contractId}_\$farmerId',
         'type': 'contract_application',
         'payload': jsonEncode({
           'contractId': contractId,

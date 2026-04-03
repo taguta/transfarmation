@@ -44,4 +44,28 @@ class FarmRemoteDataSource {
       });
     }
   }
+
+  Future<void> sendField(String farmId, FarmField field) async {
+    await firestore.collection('farms').doc(farmId).collection('fields').doc(field.id).set({
+      'name': field.name,
+      'hectares': field.hectares,
+      'currentCrop': field.currentCrop,
+      'season': field.season,
+      'status': field.status,
+      'yieldTonnes': field.yieldTonnes,
+    });
+  }
+
+  Future<void> sendLivestock(String farmId, LivestockRecord record) async {
+    await firestore.collection('farms').doc(farmId).collection('livestock').doc(record.id).set({
+      'type': record.type,
+      'tagNumber': record.tagNumber,
+      'name': record.name,
+      'breed': record.breed,
+      'sex': record.sex,
+      'dateOfBirth': record.dateOfBirth?.toIso8601String(),
+      'weight': record.weight,
+      'status': record.status,
+    });
+  }
 }

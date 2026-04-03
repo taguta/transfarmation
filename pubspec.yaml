@@ -44,4 +44,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/transfarmation.jpeg
+    - assets/transfarmation_icon.png
+    - assets/transfarmation_icon_512.png

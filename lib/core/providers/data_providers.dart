@@ -8,7 +8,7 @@ import '../database/sqlite_service.dart'; // SqliteService.init()
 import '../../features/financing/infrastructure/datasource/local/loan_sqlite.dart';
 import '../../features/financing/infrastructure/datasource/remote/loan_firestore.dart';
 import '../../features/financing/infrastructure/repositories/loan_repository_impl.dart';
-import '../../features/financing/infrastructure/sync/sync_service.dart';
+import '../sync/sync_service.dart';
 
 // Farm records
 import '../../features/farm_records/infrastructure/datasource/local/farm_sqlite.dart';

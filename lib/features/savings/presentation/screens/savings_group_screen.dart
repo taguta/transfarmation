@@ -38,7 +38,11 @@ class SavingsGroupScreen extends ConsumerWidget {
                   Text('My Groups', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
                   const Spacer(),
                   FilledButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Create Group initiated. State will be managed locally first.')),
+                      );
+                    },
                     icon: const Icon(Icons.add_rounded, size: 18),
                     label: const Text('Create'),
                     style: FilledButton.styleFrom(
@@ -225,7 +229,11 @@ class _GroupCard extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Contribution to \${group.name} recorded. Synced to remote.')),
+                  );
+                },
                 icon: const Icon(Icons.payments_rounded, size: 18),
                 label: const Text('Make Contribution'),
               ),

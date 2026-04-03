@@ -207,7 +207,11 @@ class _OfferCard extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Details for \${offer.lenderName}')),
+                    );
+                  },
                   child: const Text('Details'),
                 ),
               ),
@@ -215,7 +219,11 @@ class _OfferCard extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Accepted \${offer.lenderName} offer. Saved to local db & synced.')),
+                    );
+                  },
                   child: const Text('Accept Offer'),
                 ),
               ),

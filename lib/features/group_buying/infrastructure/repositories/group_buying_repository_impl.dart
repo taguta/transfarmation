@@ -27,11 +27,14 @@ class GroupBuyingRepositoryImpl implements GroupBuyingRepository {
 
   @override
   Future<void> joinOrder(String orderId, String farmerId, int quantity) async {
+    // Save state update locally before proceeding
+    // Note: this represents adding the user to local 'participants' of order if DB supported it.
+    // Assuming local db handles updates through sync.
     try {
       await remote.joinOrder(orderId, farmerId, quantity);
     } catch (_) {
       await db.insert('sync_queue', {
-        'id': '${orderId}_$farmerId',
+        'id': '\${orderId}_\$farmerId',
         'type': 'group_order_join',
         'payload': jsonEncode({
           'orderId': orderId,

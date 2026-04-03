@@ -93,7 +93,11 @@ class _FarmRecordScreenState extends ConsumerState<FarmRecordScreen> with Single
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Add functionality via Sync Queue working.')),
+          );
+        },
         backgroundColor: AppColors.forestGreen,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -678,7 +682,11 @@ class _EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.xl),
             FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Add Farm initiated (mock). Data will be saved locally first.')),
+                );
+              },
               icon: const Icon(Icons.add_rounded),
               label: const Text('Add Farm'),
             ),

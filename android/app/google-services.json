@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "953657246968",
+    "project_id": "tinostaguta",
+    "storage_bucket": "tinostaguta.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953657246968:android:c6928b248d88330817e70d",
+        "android_client_info": {
+          "package_name": "com.example.insurance_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953657246968-n0caim1l6n9t7dlgd7p20vb53s1luqun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkJlOHCXTbtd1cba0PARmVHiGGdTUULS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953657246968-n0caim1l6n9t7dlgd7p20vb53s1luqun.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "953657246968-90104f9isq12kh055qsqgkhdooup735m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.insuranceApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953657246968:android:2be5a22fbfda634417e70d",
+        "android_client_info": {
+          "package_name": "com.example.transfarmation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953657246968-n0caim1l6n9t7dlgd7p20vb53s1luqun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkJlOHCXTbtd1cba0PARmVHiGGdTUULS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953657246968-n0caim1l6n9t7dlgd7p20vb53s1luqun.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "953657246968-90104f9isq12kh055qsqgkhdooup735m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.insuranceApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

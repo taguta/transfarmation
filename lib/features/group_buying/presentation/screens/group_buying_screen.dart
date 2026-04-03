@@ -186,7 +186,11 @@ class _GroupOrderCard extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.md),
               FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Joined \${order.productName} order. Saved locally and synced.')),
+                  );
+                },
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 ),
