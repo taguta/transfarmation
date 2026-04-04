@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/cooperative.dart';
 import '../providers/group_buying_providers.dart';
+import '../../../../core/providers/data_providers.dart';
 
 class GroupBuyingScreen extends ConsumerWidget {
   const GroupBuyingScreen({super.key});
@@ -23,7 +25,16 @@ class GroupBuyingScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Group Buying', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    onPressed: () => context.pop(),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text('Group Buying', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                ],
+              ),
               const SizedBox(height: 2),
               Text('Buy together, save together',
                   style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
@@ -71,14 +82,24 @@ class GroupBuyingScreen extends ConsumerWidget {
 }
 
 // --- Group order card ---
-class _GroupOrderCard extends StatelessWidget {
+class _GroupOrderCard extends ConsumerStatefulWidget {
   final Cooperative coop;
   final GroupOrder order;
   const _GroupOrderCard({required this.coop, required this.order});
 
   @override
+  ConsumerState<_GroupOrderCard> createState() => _GroupOrderCardState();
+}
+
+class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
+  bool _isJoining = false;
+
+  @override
   Widget build(BuildContext context) {
+    final coop = widget.coop;
+    final order = widget.order;
     final daysLeft = order.deadline.difference(DateTime.now()).inDays;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -187,15 +208,33 @@ class _GroupOrderCard extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.md),
               FilledButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Joined \${order.productName} order. Saved locally and synced.')),
-                  );
+                onPressed: _isJoining ? null : () async {
+                  setState(() => _isJoining = true);
+                  try {
+                    final repo = ref.read(groupBuyingRepositoryImplProvider);
+                    await repo.joinOrder(order.id, 'farmer-001', 1);
+                    ref.invalidate(cooperativesProvider);
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Joined ${order.productName} order. Saved locally and synced.')),
+                      );
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to join: $e')),
+                      );
+                    }
+                  } finally {
+                    if (mounted) setState(() => _isJoining = false);
+                  }
                 },
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 ),
-                child: const Text('Join'),
+                child: _isJoining
+                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                    : const Text('Join'),
               ),
             ],
           ),

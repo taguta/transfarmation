@@ -1,92 +1,105 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/loan.dart';
+import '../providers/loan_providers.dart';
 
-class RepaymentDashboardScreen extends StatelessWidget {
+class RepaymentDashboardScreen extends ConsumerWidget {
   const RepaymentDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // MVP mock data for the active loan
-    final loan = Loan(
-      id: 'loan-001',
-      farmerId: 'farmer-001',
-      amount: 1200,
-      status: LoanStatus.approved,
-      createdAt: DateTime(2026, 1, 15),
-      isSynced: true,
-      farmName: 'Moyo Family Farm',
-      cropType: 'Maize',
-      purpose: 'Input Purchase',
-      repaymentPeriod: '6 months',
-      farmSize: 12,
-      amountRepaid: 480,
-      lenderName: 'AgriFinance ZW',
-    );
-
-    final schedule = [
-      _ScheduleItem('Jan 2026', 200, true),
-      _ScheduleItem('Feb 2026', 200, true),
-      _ScheduleItem('Mar 2026', 80, true),
-      _ScheduleItem('Apr 2026', 224, false),
-      _ScheduleItem('May 2026', 224, false),
-      _ScheduleItem('Jun 2026', 224, false),
-    ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loanAsync = ref.watch(loanProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Repayment Dashboard'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Loan summary card
-            _buildLoanSummary(loan),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Progress ring
-            _buildRepaymentProgress(loan),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Quick pay button
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton.icon(
-                onPressed: () => _showPaymentSheet(context),
-                icon: const Icon(Icons.payment_rounded),
-                label: const Text('Make Payment'),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Payment breakdown
-            _buildPaymentBreakdown(loan),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Schedule
-            Text(
-              'Repayment Schedule',
-              style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            ...schedule.map((s) => _buildScheduleRow(s)),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Payment history
-            Text(
-              'Payment History',
-              style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _buildPaymentHistory(),
-            const SizedBox(height: AppSpacing.xxxl),
-          ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.pop(),
         ),
+      ),
+      body: loanAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (loans) {
+          final activeLoans = loans.where(
+            (l) => l.status == LoanStatus.approved || l.status == LoanStatus.disbursed,
+          ).toList();
+
+          if (activeLoans.isEmpty) {
+            return Center(
+              child: Text(
+                'No active loans found.',
+                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary),
+              ),
+            );
+          }
+
+          final loan = activeLoans.first;
+
+          final schedule = [
+            _ScheduleItem('Jan 2026', 200, true),
+            _ScheduleItem('Feb 2026', 200, true),
+            _ScheduleItem('Mar 2026', 80, true),
+            _ScheduleItem('Apr 2026', 224, false),
+            _ScheduleItem('May 2026', 224, false),
+            _ScheduleItem('Jun 2026', 224, false),
+          ];
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Loan summary card
+                _buildLoanSummary(loan),
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Progress ring
+                _buildRepaymentProgress(loan),
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Quick pay button
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _showPaymentSheet(context),
+                    icon: const Icon(Icons.payment_rounded),
+                    label: const Text('Make Payment'),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Payment breakdown
+                _buildPaymentBreakdown(loan),
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Schedule
+                Text(
+                  'Repayment Schedule',
+                  style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                ...schedule.map((s) => _buildScheduleRow(s)),
+                const SizedBox(height: AppSpacing.xxl),
+
+                // Payment history
+                Text(
+                  'Payment History',
+                  style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _buildPaymentHistory(),
+                const SizedBox(height: AppSpacing.xxxl),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

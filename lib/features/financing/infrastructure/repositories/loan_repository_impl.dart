@@ -39,4 +39,9 @@ class LoanRepositoryImpl implements LoanRepository {
   Future<List<Loan>> getLoans(String farmerId) {
     return local.getLoans(farmerId);
   }
+
+  @override
+  Future<List<LoanOffer>> getLoanOffers() {
+    return local.getLoanOffers();
+  }
 }

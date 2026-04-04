@@ -1,19 +1,26 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
-class SellProduceScreen extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../../core/providers/data_providers.dart';
+
+class SellProduceScreen extends ConsumerStatefulWidget {
   const SellProduceScreen({super.key});
 
   @override
-  State<SellProduceScreen> createState() => _SellProduceScreenState();
+  ConsumerState<SellProduceScreen> createState() => _SellProduceScreenState();
 }
 
-class _SellProduceScreenState extends State<SellProduceScreen> {
+class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
   final _formKey = GlobalKey<FormState>();
   int _currentStep = 0;
+  bool _isConnecting = false;
 
   // Step 1 — Product info
   String _category = 'Grains';
@@ -42,9 +49,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
   ];
 
   static const _units = ['tons', 'kg', 'bags', 'crates', 'heads'];
-
   static const _qualities = ['Grade A', 'Grade B', 'Grade C', 'Ungraded'];
-
   static const _provinces = [
     'Harare',
     'Bulawayo',
@@ -71,8 +76,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
       body: Stepper(
         currentStep: _currentStep,
         onStepContinue: _onContinue,
-        onStepCancel:
-            _currentStep > 0 ? () => setState(() => _currentStep--) : null,
+        onStepCancel: _currentStep > 0 ? () => setState(() => _currentStep--) : null,
         controlsBuilder: (context, details) {
           final isLastStep = _currentStep == 2;
           return Padding(
@@ -80,13 +84,15 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
             child: Row(
               children: [
                 FilledButton(
-                  onPressed: details.onStepContinue,
-                  child: Text(isLastStep ? 'Post Listing' : 'Continue'),
+                  onPressed: _isConnecting ? null : details.onStepContinue,
+                  child: _isConnecting 
+                    ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)) 
+                    : Text(isLastStep ? 'Post Listing' : 'Continue'),
                 ),
                 if (_currentStep > 0) ...[
                   const SizedBox(width: AppSpacing.md),
                   OutlinedButton(
-                    onPressed: details.onStepCancel,
+                    onPressed: _isConnecting ? null : details.onStepCancel,
                     child: const Text('Back'),
                   ),
                 ],
@@ -97,8 +103,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         steps: [
           Step(
             title: const Text('Product Details'),
-            subtitle:
-                _currentStep > 0 && _produceName.isNotEmpty
+            subtitle: _currentStep > 0 && _produceName.isNotEmpty
                     ? Text('$_produceName · $_quantity $_unit')
                     : null,
             isActive: _currentStep >= 0,
@@ -107,11 +112,8 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           ),
           Step(
             title: const Text('Pricing & Quality'),
-            subtitle:
-                _currentStep > 1 && _pricePerUnit > 0
-                    ? Text(
-                      '\$${_pricePerUnit.toStringAsFixed(2)}/$_unit · $_quality',
-                    )
+            subtitle: _currentStep > 1 && _pricePerUnit > 0
+                    ? Text('\$${_pricePerUnit.toStringAsFixed(2)}/$_unit · $_quality')
                     : null,
             isActive: _currentStep >= 1,
             state: _currentStep > 1 ? StepState.complete : StepState.indexed,
@@ -137,10 +139,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
           // Category
           DropdownButtonFormField<String>(
             initialValue: _category,
-            items:
-                _categories
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                    .toList(),
+            items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
             onChanged: (v) => setState(() => _category = v!),
             decoration: const InputDecoration(
               labelText: 'Category',
@@ -156,8 +155,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               hintText: 'e.g., White Maize, Cherry Tomatoes',
               prefixIcon: Icon(Icons.grass_rounded),
             ),
-            validator:
-                (v) => v == null || v.isEmpty ? 'Enter produce name' : null,
+            validator: (v) => v == null || v.isEmpty ? 'Enter produce name' : null,
             onChanged: (v) => _produceName = v,
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -180,9 +178,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               Expanded(
                 flex: 2,
                 child: TextFormField(
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: const InputDecoration(
                     labelText: 'Quantity',
                     prefixIcon: Icon(Icons.scale_rounded),
@@ -199,12 +195,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               Expanded(
                 child: DropdownButtonFormField<String>(
                   initialValue: _unit,
-                  items:
-                      _units
-                          .map(
-                            (u) => DropdownMenuItem(value: u, child: Text(u)),
-                          )
-                          .toList(),
+                  items: _units.map((u) => DropdownMenuItem(value: u, child: Text(u))).toList(),
                   onChanged: (v) => setState(() => _unit = v!),
                   decoration: const InputDecoration(labelText: 'Unit'),
                 ),
@@ -265,10 +256,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         // Quality grade
         DropdownButtonFormField<String>(
           initialValue: _quality,
-          items:
-              _qualities
-                  .map((q) => DropdownMenuItem(value: q, child: Text(q)))
-                  .toList(),
+          items: _qualities.map((q) => DropdownMenuItem(value: q, child: Text(q))).toList(),
           onChanged: (v) => setState(() => _quality = v!),
           decoration: const InputDecoration(
             labelText: 'Quality Grade',
@@ -304,10 +292,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
         // Location
         DropdownButtonFormField<String>(
           initialValue: _location.isEmpty ? null : _location,
-          items:
-              _provinces
-                  .map((p) => DropdownMenuItem(value: p, child: Text(p)))
-                  .toList(),
+          items: _provinces.map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(),
           onChanged: (v) => setState(() => _location = v ?? ''),
           decoration: const InputDecoration(
             labelText: 'Location / Province',
@@ -367,10 +352,7 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
               const Divider(height: AppSpacing.xl),
               _PreviewRow(
                 label: 'Product',
-                value:
-                    _produceName.isEmpty
-                        ? '–'
-                        : '$_produceName${_variety.isNotEmpty ? ' ($_variety)' : ''}',
+                value: _produceName.isEmpty ? '–' : '$_produceName${_variety.isNotEmpty ? ' ($_variety)' : ''}',
               ),
               _PreviewRow(label: 'Category', value: _category),
               _PreviewRow(label: 'Quantity', value: '$_quantity $_unit'),
@@ -400,31 +382,74 @@ class _SellProduceScreenState extends State<SellProduceScreen> {
     );
   }
 
-  void _onContinue() {
+  Future<void> _onContinue() async {
+    if (_currentStep == 0) {
+      if (!(_formKey.currentState?.validate() ?? false)) return;
+    }
+    
     if (_currentStep < 2) {
       setState(() => _currentStep++);
       return;
     }
 
-    // Final step — post listing
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Text('$_produceName listed on marketplace!'),
-          ],
-        ),
-        backgroundColor: AppColors.success,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-      ),
-    );
+    if (_location.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a location')));
+      return;
+    }
 
-    context.pop();
+    setState(() => _isConnecting = true);
+
+    try {
+      final db = ref.read(databaseProvider);
+      
+      final listingData = {
+        'id': const Uuid().v4(),
+        'produceName': _produceName,
+        'category': _category,
+        'quantity': _quantity,
+        'pricePerUnit': _pricePerUnit,
+        'location': _location,
+        'timestamp': DateTime.now().toIso8601String(),
+        'isSynced': 0,
+      };
+
+      await db.insert('marketplace_listings', listingData);
+
+      // Append to the offline-first sync queue
+      await db.insert('sync_queue', {
+        'id': const Uuid().v4(),
+        'type': 'marketplace_listing',
+        'payload': jsonEncode(listingData),
+        'createdAt': DateTime.now().toIso8601String(),
+        'retryCount': 0,
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text('$_produceName listed on marketplace!'),
+              ],
+            ),
+            backgroundColor: AppColors.success,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+          ),
+        );
+        context.pop();
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isConnecting = false);
+    }
   }
 }
 

@@ -28,6 +28,31 @@ class Farm {
 
   int get activeCrops =>
       crops.where((c) => c.status != CropStatus.harvested && c.status != CropStatus.fallow).length;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'farmerId': farmerId,
+      'name': name,
+      'province': province,
+      'sizeHectares': sizeHectares,
+      'farmingMethod': farmingMethod.name,
+      'crops': crops.map((e) => e.toJson()).toList(),
+      'livestock': livestock.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  factory Farm.fromJson(Map<String, dynamic> json) {
+    return Farm(
+      id: json['id'],
+      farmerId: json['farmerId'],
+      name: json['name'],
+      province: json['province'],
+      sizeHectares: json['sizeHectares'],
+      farmingMethod: FarmingMethod.values.firstWhere((e) => e.name == json['farmingMethod'], orElse: () => FarmingMethod.rainfed),
+      crops: (json['crops'] as List).map((e) => CropRecord.fromJson(e)).toList(),
+      livestock: (json['livestock'] as List).map((e) => LivestockRecord.fromJson(e)).toList(),
+    );
+  }
 }
 
 class CropRecord {
@@ -55,6 +80,34 @@ class CropRecord {
 
   double get yieldPerHectare =>
       (actualYield != null && areHectares > 0) ? actualYield! / areHectares : 0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'cropName': cropName,
+      'areHectares': areHectares,
+      'status': status.name,
+      'plantedDate': plantedDate.toIso8601String(),
+      'expectedHarvest': expectedHarvest?.toIso8601String(),
+      'expectedYield': expectedYield,
+      'actualYield': actualYield,
+      'notes': notes,
+    };
+  }
+
+  factory CropRecord.fromJson(Map<String, dynamic> json) {
+    return CropRecord(
+      id: json['id'],
+      cropName: json['cropName'],
+      areHectares: json['areHectares'],
+      status: CropStatus.values.firstWhere((e) => e.name == json['status'], orElse: () => CropStatus.planted),
+      plantedDate: DateTime.parse(json['plantedDate']),
+      expectedHarvest: json['expectedHarvest'] != null ? DateTime.parse(json['expectedHarvest']) : null,
+      expectedYield: json['expectedYield'],
+      actualYield: json['actualYield'],
+      notes: json['notes'],
+    );
+  }
 }
 
 class LivestockRecord {
@@ -69,4 +122,22 @@ class LivestockRecord {
     required this.count,
     this.healthStatus,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'count': count,
+      'healthStatus': healthStatus,
+    };
+  }
+
+  factory LivestockRecord.fromJson(Map<String, dynamic> json) {
+    return LivestockRecord(
+      id: json['id'],
+      type: json['type'],
+      count: json['count'],
+      healthStatus: json['healthStatus'],
+    );
+  }
 }

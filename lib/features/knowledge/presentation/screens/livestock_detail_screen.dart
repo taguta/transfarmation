@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -20,7 +21,15 @@ class LivestockDetailScreen extends ConsumerWidget {
       data: (items) {
         final item = items.where((l) => l.id == livestockId).firstOrNull;
         if (item == null) {
-          return Scaffold(appBar: AppBar(), body: const Center(child: Text('Not found')));
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () => context.pop(),
+              ),
+            ),
+            body: const Center(child: Text('Not found')),
+          );
         }
         return _LivestockDetailBody(item: item);
       },
@@ -38,6 +47,10 @@ class _LivestockDetailBody extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () => context.pop(),
+            ),
             expandedHeight: 160,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(

@@ -35,6 +35,19 @@ class SqliteService {
     ''');
 
     await db.execute('''
+      CREATE TABLE loan_offers(
+        id TEXT PRIMARY KEY,
+        lenderName TEXT NOT NULL,
+        interestRate REAL NOT NULL,
+        amount REAL NOT NULL,
+        repaymentPeriod TEXT NOT NULL,
+        monthlyPayment REAL NOT NULL,
+        conditions TEXT NOT NULL,
+        isRecommended INTEGER DEFAULT 0
+      )
+    ''');
+
+    await db.execute('''
       CREATE TABLE sync_queue(
         id TEXT PRIMARY KEY,
         type TEXT,
@@ -277,6 +290,41 @@ class SqliteService {
         price REAL,
         previousPrice REAL,
         fetchedAt TEXT
+      )
+    ''');
+
+    // ─── Notifications ──────────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS notifications(
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        body TEXT NOT NULL,
+        type TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        isRead INTEGER DEFAULT 0,
+        actionRoute TEXT
+      )
+    ''');
+
+    // ─── Farm Profile ───────────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS farm_profile(
+        id TEXT PRIMARY KEY,
+        data TEXT NOT NULL
+      )
+    ''');
+
+    // ─── Marketplace Listings ────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS marketplace_listings(
+        id TEXT PRIMARY KEY,
+        produceName TEXT NOT NULL,
+        category TEXT NOT NULL,
+        quantity REAL NOT NULL,
+        pricePerUnit REAL NOT NULL,
+        location TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        isSynced INTEGER DEFAULT 0
       )
     ''');
 

@@ -81,6 +81,7 @@ class SyncService {
       'savings_transaction' => 'savings_transactions',
       'diagnosis' => 'diagnosis_results',
       'subsidy_application' => 'subsidy_applications',
+      'marketplace_listing' => 'marketplace_listings',
       _ => null, // group_order_join, contract_application — subcollections only
     };
 
@@ -141,6 +142,12 @@ class SyncService {
       case 'subsidy_application':
         await firestore
             .collection('subsidy_applications')
+            .doc(payload['id'])
+            .set(payload);
+
+      case 'marketplace_listing':
+        await firestore
+            .collection('marketplace_listings')
             .doc(payload['id'])
             .set(payload);
 

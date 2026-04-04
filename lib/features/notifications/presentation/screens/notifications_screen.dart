@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../../domain/entities/notification.dart';
 import '../providers/notification_providers.dart';
 
 class NotificationsScreen extends ConsumerWidget {
@@ -11,7 +12,7 @@ class NotificationsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifications = ref.watch(notificationProvider);
+    final notificationsAsync = ref.watch(notificationProvider);
     final unread = ref.watch(unreadCountProvider);
 
     return Scaffold(
@@ -35,8 +36,12 @@ class NotificationsScreen extends ConsumerWidget {
             ),
         ],
       ),
-      body: notifications.isEmpty
-          ? Center(
+      body: notificationsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (notifications) {
+          if (notifications.isEmpty) {
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -54,27 +59,30 @@ class NotificationsScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-            )
-          : ListView.separated(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-              itemCount: notifications.length,
-              separatorBuilder: (_, __) =>
-                  const Divider(height: 1, indent: 72),
-              itemBuilder: (context, index) {
-                final n = notifications[index];
-                return _NotificationTile(
-                  notification: n,
-                  onTap: () {
-                    ref
-                        .read(notificationProvider.notifier)
-                        .markAsRead(n.id);
-                    if (n.actionRoute != null) {
-                      context.go(n.actionRoute!);
-                    }
-                  },
-                );
-              },
-            ),
+            );
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+            itemCount: notifications.length,
+            separatorBuilder: (_, __) =>
+                const Divider(height: 1, indent: 72),
+            itemBuilder: (context, index) {
+              final n = notifications[index];
+              return _NotificationTile(
+                notification: n,
+                onTap: () {
+                  ref
+                      .read(notificationProvider.notifier)
+                      .markAsRead(n.id);
+                  if (n.actionRoute != null) {
+                    context.go(n.actionRoute!);
+                  }
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

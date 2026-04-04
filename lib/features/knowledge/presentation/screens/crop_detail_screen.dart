@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -22,7 +23,12 @@ class CropDetailScreen extends ConsumerWidget {
         final crop = crops.where((c) => c.id == cropId).firstOrNull;
         if (crop == null) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                onPressed: () => context.pop(),
+              ),
+            ),
             body: const Center(child: Text('Crop not found')),
           );
         }
@@ -42,6 +48,10 @@ class _CropDetailBody extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () => context.pop(),
+            ),
             expandedHeight: 160,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(

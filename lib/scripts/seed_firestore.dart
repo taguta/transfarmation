@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../features/farm/presentation/providers/farm_providers.dart';
-import '../features/financing/presentation/providers/loan_providers.dart';
 import '../features/inputs/presentation/providers/input_providers.dart';
 import '../features/savings/presentation/providers/savings_providers.dart';
 import '../features/notifications/presentation/providers/notification_providers.dart';
@@ -16,7 +15,7 @@ Future<void> seedMockDataToFirestore() async {
 
   try {
     print('Seeding inputs...');
-    final inputs = container.read(inputsProvider);
+    final inputs = await container.read(inputsProvider.future);
     final inputBatch = firestore.batch();
     for (var input in inputs) {
       final doc = firestore.collection('inputs').doc(input.id);
@@ -38,7 +37,7 @@ Future<void> seedMockDataToFirestore() async {
     print('Successfully seeded ${inputs.length} inputs.');
 
     print('Seeding savings groups...');
-    final groups = container.read(savingsGroupsProvider);
+    final groups = await container.read(savingsGroupsProvider.future);
     final groupBatch = firestore.batch();
     for (var group in groups) {
       final doc = firestore.collection('savings_groups').doc(group.id);
@@ -54,21 +53,26 @@ Future<void> seedMockDataToFirestore() async {
         'nextPayoutDate': group.nextPayoutDate.toIso8601String(),
         'nextRecipient': group.nextRecipient,
         'totalPool': group.totalPool,
-        'members': group.members.map((m) => {
-          'id': m.id,
-          'name': m.name,
-          'payoutOrder': m.payoutOrder,
-          'hasReceivedPayout': m.hasReceivedPayout,
-          'totalContributed': m.totalContributed,
-          'isCurrentPayer': m.isCurrentPayer,
-        }).toList(),
+        'members':
+            group.members
+                .map(
+                  (m) => {
+                    'id': m.id,
+                    'name': m.name,
+                    'payoutOrder': m.payoutOrder,
+                    'hasReceivedPayout': m.hasReceivedPayout,
+                    'totalContributed': m.totalContributed,
+                    'isCurrentPayer': m.isCurrentPayer,
+                  },
+                )
+                .toList(),
       });
     }
     await groupBatch.commit();
     print('Successfully seeded ${groups.length} savings groups.');
 
     print('Seeding farm data...');
-    final farm = container.read(farmProvider);
+    final farm = await container.read(farmProvider.future);
     await firestore.collection('farms').doc(farm.id).set({
       'id': farm.id,
       'farmerId': farm.farmerId,
@@ -76,39 +80,49 @@ Future<void> seedMockDataToFirestore() async {
       'province': farm.province,
       'sizeHectares': farm.sizeHectares,
       'farmingMethod': farm.farmingMethod.toString(),
-      'crops': farm.crops.map((c) => {
-        'id': c.id,
-        'cropName': c.cropName,
-        'areHectares': c.areHectares,
-        'status': c.status.toString(),
-        'plantedDate': c.plantedDate?.toIso8601String(),
-        'expectedHarvest': c.expectedHarvest?.toIso8601String(),
-        'expectedYield': c.expectedYield,
-        'actualYield': c.actualYield,
-        'notes': c.notes,
-      }).toList(),
-      'livestock': farm.livestock.map((l) => {
-        'id': l.id,
-        'type': l.type,
-        'count': l.count,
-        'healthStatus': l.healthStatus,
-      }).toList(),
+      'crops':
+          farm.crops
+              .map(
+                (c) => {
+                  'id': c.id,
+                  'cropName': c.cropName,
+                  'areHectares': c.areHectares,
+                  'status': c.status.toString(),
+                  'plantedDate': c.plantedDate.toIso8601String(),
+                  'expectedHarvest': c.expectedHarvest?.toIso8601String(),
+                  'expectedYield': c.expectedYield,
+                  'actualYield': c.actualYield,
+                  'notes': c.notes,
+                },
+              )
+              .toList(),
+      'livestock':
+          farm.livestock
+              .map(
+                (l) => {
+                  'id': l.id,
+                  'type': l.type,
+                  'count': l.count,
+                  'healthStatus': l.healthStatus,
+                },
+              )
+              .toList(),
     });
     print('Successfully seeded farm data.');
 
     print('Seeding notifications...');
-    final notifications = container.read(notificationsProvider);
+    final notifications = await container.read(notificationProvider.future);
     final notificationBatch = firestore.batch();
     for (var n in notifications) {
       final doc = firestore.collection('notifications').doc(n.id);
       notificationBatch.set(doc, {
         'id': n.id,
         'title': n.title,
-        'message': n.message,
+        'body': n.body,
         'timestamp': n.timestamp.toIso8601String(),
         'type': n.type.toString(),
         'isRead': n.isRead,
-        'actionUrl': n.actionUrl,
+        'actionRoute': n.actionRoute,
       });
     }
     await notificationBatch.commit();

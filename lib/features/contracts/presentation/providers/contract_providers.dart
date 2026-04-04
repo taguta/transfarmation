@@ -5,7 +5,7 @@ import '../../../../core/providers/data_providers.dart';
 
 final contractsProvider = FutureProvider<List<FarmingContract>>((ref) async {
   final repo = ref.watch(contractRepositoryImplProvider);
-  return repo.getContracts('farmer-001');
+  return repo.getContracts();
 });
 
 // --- Filter ---

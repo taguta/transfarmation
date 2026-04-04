@@ -12,91 +12,95 @@ class FarmRecordsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final farm = ref.watch(farmProvider);
+    final farmAsync = ref.watch(farmProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: () => context.go('/home'),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'My Farm',
-                          style: AppTextStyles.h1.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        Text(
-                          farm.name,
-                          style: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
+      body: farmAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (farm) => SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back_rounded),
+                      onPressed: () => context.go('/home'),
                     ),
-                  ),
-                  FilledButton.icon(
-                    onPressed: () => context.go('/farm/add-crop'),
-                    icon: const Icon(Icons.add, size: 18),
-                    label: const Text('Add Crop'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.xxl),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'My Farm',
+                            style: AppTextStyles.h1.copyWith(
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          Text(
+                            farm.name,
+                            style: AppTextStyles.bodyMd.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    FilledButton.icon(
+                      onPressed: () => context.go('/farm/add-crop'),
+                      icon: const Icon(Icons.add, size: 18),
+                      label: const Text('Add Crop'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
 
-              // Farm overview card
-              _buildFarmOverview(farm),
-              const SizedBox(height: AppSpacing.xxl),
+                // Farm overview card
+                _buildFarmOverview(farm),
+                const SizedBox(height: AppSpacing.xxl),
 
-              // Active crops
-              Text(
-                'Crops',
-                style:
-                    AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              ...farm.crops.map((crop) => Padding(
-                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                    child: _CropCard(crop: crop),
-                  )),
+                // Active crops
+                Text(
+                  'Crops',
+                  style:
+                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                ...farm.crops.map((crop) => Padding(
+                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                      child: _CropCard(crop: crop),
+                    )),
 
-              const SizedBox(height: AppSpacing.xl),
+                const SizedBox(height: AppSpacing.xl),
 
-              // Livestock
-              Text(
-                'Livestock',
-                style:
-                    AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _buildLivestockGrid(farm.livestock),
+                // Livestock
+                Text(
+                  'Livestock',
+                  style:
+                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _buildLivestockGrid(farm.livestock),
 
-              const SizedBox(height: AppSpacing.xxl),
+                const SizedBox(height: AppSpacing.xxl),
 
-              // Yield summary
-              Text(
-                'Yield Summary',
-                style:
-                    AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _buildYieldSummary(farm),
+                // Yield summary
+                Text(
+                  'Yield Summary',
+                  style:
+                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _buildYieldSummary(farm),
 
-              const SizedBox(height: AppSpacing.xxxl),
-            ],
+                const SizedBox(height: AppSpacing.xxxl),
+              ],
+            ),
           ),
         ),
       ),

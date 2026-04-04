@@ -631,20 +631,17 @@ class _StatCard extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
-  final bool expand;
 
   const _StatCard({
     required this.icon,
     required this.label,
     required this.value,
     required this.color,
-    this.expand = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final content = Container(
-      width: expand ? null : double.infinity,
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
@@ -669,7 +666,7 @@ class _StatCard extends StatelessWidget {
         ],
       ),
     );
-    return expand ? Expanded(child: content) : content;
+    return Expanded(child: content);
   }
 }
 

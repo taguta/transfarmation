@@ -1,85 +1,61 @@
+import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../domain/entities/farm.dart';
+import '../../../../core/providers/data_providers.dart';
 
-class FarmNotifier extends Notifier<Farm> {
+final farmProfileRepositoryProvider = Provider((ref) {
+  return ref.watch(databaseProvider);
+});
+
+class FarmNotifier extends AsyncNotifier<Farm> {
   @override
-  Farm build() => _mockFarm;
-
-  void addCrop(CropRecord crop) {
-    state = Farm(
-      id: state.id,
-      farmerId: state.farmerId,
-      name: state.name,
-      province: state.province,
-      sizeHectares: state.sizeHectares,
-      farmingMethod: state.farmingMethod,
-      crops: [...state.crops, crop],
-      livestock: state.livestock,
-    );
+  Future<Farm> build() async {
+    final db = ref.watch(farmProfileRepositoryProvider);
+    final data = await db.query('farm_profile', where: 'id = ?', whereArgs: ['farm-001']);
+    
+    if (data.isEmpty) {
+      // Create initial DB if it doesn't exist
+      final initialFarm = Farm(
+        id: 'farm-001',
+        farmerId: 'farmer-001',
+        name: 'My Farm',
+        province: 'Mashonaland East',
+        sizeHectares: 0,
+        farmingMethod: FarmingMethod.rainfed,
+        crops: [],
+        livestock: [],
+      );
+      await db.insert('farm_profile', {'id': 'farm-001', 'data': jsonEncode(initialFarm.toJson())});
+      return initialFarm;
+    }
+    
+    return Farm.fromJson(jsonDecode(data.first['data'] as String));
   }
 
-  static final _mockFarm = Farm(
-    id: 'farm-001',
-    farmerId: 'farmer-001',
-    name: 'Moyo Family Farm',
-    province: 'Mashonaland East',
-    sizeHectares: 12,
-    farmingMethod: FarmingMethod.rainfed,
-    crops: [
-      CropRecord(
-        id: 'crop-001',
-        cropName: 'Maize',
-        areHectares: 5,
-        status: CropStatus.growing,
-        plantedDate: DateTime(2025, 11, 15),
-        expectedHarvest: DateTime(2026, 4, 20),
-        expectedYield: 15,
-        actualYield: null,
-        notes: 'Top-dress fertilizer applied',
-      ),
-      CropRecord(
-        id: 'crop-002',
-        cropName: 'Soya Beans',
-        areHectares: 4,
-        status: CropStatus.growing,
-        plantedDate: DateTime(2025, 12, 1),
-        expectedHarvest: DateTime(2026, 5, 10),
-        expectedYield: 8,
-        actualYield: null,
-      ),
-      CropRecord(
-        id: 'crop-003',
-        cropName: 'Groundnuts',
-        areHectares: 3,
-        status: CropStatus.harvested,
-        plantedDate: DateTime(2025, 10, 1),
-        expectedHarvest: DateTime(2026, 2, 15),
-        expectedYield: 4.5,
-        actualYield: 4.2,
-      ),
-    ],
-    livestock: [
-      LivestockRecord(
-        id: 'lv-001',
-        type: 'Cattle',
-        count: 8,
-        healthStatus: 'Healthy',
-      ),
-      LivestockRecord(
-        id: 'lv-002',
-        type: 'Goats',
-        count: 15,
-        healthStatus: 'Healthy',
-      ),
-      LivestockRecord(
-        id: 'lv-003',
-        type: 'Poultry',
-        count: 45,
-        healthStatus: '3 under treatment',
-      ),
-    ],
-  );
+  Future<void> addCrop(CropRecord crop) async {
+    final db = ref.read(farmProfileRepositoryProvider);
+    final currentFarm = state.value!;
+    
+    final updatedFarm = Farm(
+      id: currentFarm.id,
+      farmerId: currentFarm.farmerId,
+      name: currentFarm.name,
+      province: currentFarm.province,
+      sizeHectares: currentFarm.sizeHectares,
+      farmingMethod: currentFarm.farmingMethod,
+      crops: [...currentFarm.crops, crop],
+      livestock: currentFarm.livestock,
+    );
+    
+    await db.update(
+      'farm_profile',
+      {'data': jsonEncode(updatedFarm.toJson())},
+      where: 'id = ?',
+      whereArgs: ['farm-001'],
+    );
+    
+    ref.invalidateSelf();
+  }
 }
 
-final farmProvider = NotifierProvider<FarmNotifier, Farm>(FarmNotifier.new);
+final farmProvider = AsyncNotifierProvider<FarmNotifier, Farm>(FarmNotifier.new);

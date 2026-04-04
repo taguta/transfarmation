@@ -53,6 +53,11 @@ import '../../features/weather/infrastructure/datasource/local/weather_sqlite.da
 import '../../features/weather/infrastructure/datasource/remote/weather_firestore.dart';
 import '../../features/weather/infrastructure/repositories/weather_repository_impl.dart';
 
+// Notifications
+import '../../features/notifications/infrastructure/datasource/local/notification_sqlite.dart';
+import '../../features/notifications/infrastructure/datasource/remote/notification_firestore.dart';
+import '../../features/notifications/infrastructure/repositories/notification_repository_impl.dart';
+
 // ── Core infrastructure providers ──────────────────────────
 
 /// The app-wide SQLite database instance.
@@ -282,5 +287,23 @@ final weatherRepositoryImplProvider = Provider<WeatherRepositoryImpl>((ref) {
   return WeatherRepositoryImpl(
     ref.watch(weatherLocalDataSourceProvider),
     ref.watch(weatherRemoteDataSourceProvider),
+  );
+});
+
+// ── Notifications ───────────────────────────────────────────
+
+final notificationLocalDataSourceProvider = Provider<NotificationLocalDataSource>((ref) {
+  return NotificationLocalDataSource(ref.watch(databaseProvider));
+});
+
+final notificationRemoteDataSourceProvider = Provider<NotificationRemoteDataSource>((ref) {
+  return NotificationRemoteDataSource(ref.watch(firestoreProvider));
+});
+
+final notificationRepositoryImplProvider = Provider<NotificationRepositoryImpl>((ref) {
+  return NotificationRepositoryImpl(
+    ref.watch(notificationLocalDataSourceProvider),
+    ref.watch(notificationRemoteDataSourceProvider),
+    ref.watch(databaseProvider),
   );
 });

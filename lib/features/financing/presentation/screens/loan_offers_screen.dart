@@ -22,62 +22,66 @@ class LoanOffersScreen extends ConsumerWidget {
           onPressed: () => context.pop(),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Compare Offers',
-                  style: AppTextStyles.h2.copyWith(
-                    color: AppColors.textPrimary,
+      body: offers.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (offersData) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Compare Offers',
+                    style: AppTextStyles.h2.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  '${offers.length} lenders are offering you financing',
-                  style: AppTextStyles.bodyMd.copyWith(
-                    color: AppColors.textSecondary,
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    '${offersData.length} lenders are offering you financing',
+                    style: AppTextStyles.bodyMd.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
 
-          // Sort bar
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: Row(
-              children: [
-                const Icon(Icons.sort_rounded,
-                    size: 18, color: AppColors.textTertiary),
-                const SizedBox(width: AppSpacing.sm),
-                Text(
-                  'Sorted by lowest rate',
-                  style: AppTextStyles.labelSm.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-
-          // Offers list
-          Expanded(
-            child: ListView.separated(
+            // Sort bar
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              itemCount: offers.length,
-              separatorBuilder: (_, __) =>
-                  const SizedBox(height: AppSpacing.md),
-              itemBuilder: (context, i) => _OfferCard(offer: offers[i]),
+              child: Row(
+                children: [
+                  const Icon(Icons.sort_rounded,
+                      size: 18, color: AppColors.textTertiary),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text(
+                    'Sorted by lowest rate',
+                    style: AppTextStyles.labelSm.copyWith(
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.md),
+
+            // Offers list
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                itemCount: offersData.length,
+                separatorBuilder: (_, __) =>
+                    const SizedBox(height: AppSpacing.md),
+                itemBuilder: (context, i) => _OfferCard(offer: offersData[i]),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

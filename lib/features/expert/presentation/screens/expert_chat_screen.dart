@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -68,7 +71,32 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
       _messageController.clear();
     });
 
-    // Scroll to bottom
+    _scrollToBottom();
+
+    // Simulate AI Dr. Chipo typing back
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (!mounted) return;
+      setState(() {
+        String replyText = 'Thanks for the details. Given the current weather patterns in your region, I suggest monitoring the soil moisture before the next top dressing.';
+        
+        if (text.toLowerCase().contains('rain') || text.toLowerCase().contains('water')) {
+          replyText = 'Since rain is expected, delay any chemical spraying by 24 hours so it isn\'t washed away.';
+        } else if (text.toLowerCase().contains('pest') || text.toLowerCase().contains('bug')) {
+          replyText = 'Please upload a clear photo of the pest or leaf damage so I can recommend the exact pesticide.';
+        }
+
+        _messages.add(_ChatMessage(
+          text: replyText,
+          isMe: false,
+          sender: 'Dr. Chipo Nyathi',
+          time: 'Now',
+        ));
+      });
+      _scrollToBottom();
+    });
+  }
+
+  void _scrollToBottom() {
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
@@ -84,6 +112,10 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => context.pop(),
+        ),
         title: Row(
           children: [
             Container(
@@ -211,6 +243,18 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (message.imagePath != null) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                child: Image.file(
+                  File(message.imagePath!),
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+            ],
             Text(
               message.text,
               style: AppTextStyles.bodyMd.copyWith(
@@ -250,9 +294,44 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
           IconButton(
             icon: const Icon(Icons.camera_alt_outlined),
             color: AppColors.textTertiary,
-            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Opening attachment picker...')),
-            ),
+            onPressed: () async {
+              try {
+                final picker = ImagePicker();
+                final image = await picker.pickImage(source: ImageSource.gallery);
+                if (image != null && mounted) {
+                  setState(() {
+                    _messages.add(_ChatMessage(
+                      text: '📷 Image attached',
+                      isMe: true,
+                      sender: 'You',
+                      time: 'Now',
+                      imagePath: image.path,
+                    ));
+                  });
+                  _scrollToBottom();
+                  
+                  // Simulate Dr. Chipo reply
+                  Future.delayed(const Duration(milliseconds: 2000), () {
+                    if (!mounted) return;
+                    setState(() {
+                      _messages.add(_ChatMessage(
+                        text: 'Looking at that photo, it definitely looks like Fall Armyworm damage. You should apply a contact insecticide immediately.',
+                        isMe: false,
+                        sender: 'Dr. Chipo Nyathi',
+                        time: 'Now',
+                      ));
+                    });
+                    _scrollToBottom();
+                  });
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error picking image: $e')),
+                  );
+                }
+              }
+            },
           ),
           Expanded(
             child: TextField(
@@ -297,11 +376,13 @@ class _ChatMessage {
   final bool isMe;
   final String sender;
   final String time;
+  final String? imagePath;
 
   _ChatMessage({
     required this.text,
     required this.isMe,
     required this.sender,
     required this.time,
+    this.imagePath,
   });
 }

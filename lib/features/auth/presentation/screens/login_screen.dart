@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
@@ -197,6 +198,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: AppSpacing.xxl),
 
                 OutlinedButton.icon(
+                  onPressed: _isLoading ? null : _signInWithGoogle,
+                  icon: const Icon(Icons.g_mobiledata_rounded, size: 28),
+                  label: const Text('Continue with Google'),
+                ),
+
+                const SizedBox(height: AppSpacing.xxl),
+
+                OutlinedButton.icon(
                   onPressed: _isLoading
                       ? null
                       : () => ScaffoldMessenger.of(context).showSnackBar(
@@ -258,6 +267,45 @@ class _LoginScreenState extends State<LoginScreen> {
           SnackBar(content: Text(_errorMessage(e.code))),
         );
       }
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final googleSignIn = GoogleSignIn();
+      final googleUser = await googleSignIn.signIn();
+      
+      if (googleUser != null) {
+        final googleAuth = await googleUser.authentication;
+        if (googleAuth.idToken != null) {
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        } else {
+          throw FirebaseAuthException(
+            code: 'ERROR_MISSING_GOOGLE_ID_TOKEN',
+            message: 'Missing Google ID Token',
+          );
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage(e.code))),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Google Sign-In failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 }

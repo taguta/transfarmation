@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -22,7 +25,16 @@ class DiagnosisScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('AI Diagnosis', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    onPressed: () => context.pop(),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text('AI Diagnosis', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                ],
+              ),
               const SizedBox(height: 2),
               Text('Photograph a sick crop or animal for instant diagnosis',
                   style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
@@ -62,21 +74,29 @@ class DiagnosisScreen extends ConsumerWidget {
               // History
               Text('Diagnosis History', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
               const SizedBox(height: AppSpacing.md),
-              if (history.isEmpty)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.xxl),
-                    child: Column(
-                      children: [
-                        Icon(Icons.history_rounded, size: 48, color: AppColors.textTertiary),
-                        const SizedBox(height: AppSpacing.md),
-                        Text('No diagnoses yet', style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
-                      ],
-                    ),
-                  ),
-                )
-              else
-                ...history.map((d) => _DiagnosisHistoryCard(diagnosis: d)),
+              history.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, stack) => Center(child: Text('Error: $err')),
+                data: (data) {
+                  if (data.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppSpacing.xxl),
+                        child: Column(
+                          children: [
+                            Icon(Icons.history_rounded, size: 48, color: AppColors.textTertiary),
+                            const SizedBox(height: AppSpacing.md),
+                            Text('No diagnoses yet', style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  return Column(
+                    children: data.map((d) => _DiagnosisHistoryCard(diagnosis: d)).toList(),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -87,7 +107,7 @@ class DiagnosisScreen extends ConsumerWidget {
   void _showCapture(BuildContext context, WidgetRef ref, String type) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
+      builder: (bottomSheetCtx) => Container(
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -109,9 +129,13 @@ class DiagnosisScreen extends ConsumerWidget {
                   child: _CaptureOption(
                     icon: Icons.camera_alt_rounded,
                     label: 'Camera',
-                    onTap: () {
-                      Navigator.pop(context);
-                      _simulateDiagnosis(ref, type);
+                    onTap: () async {
+                      Navigator.pop(bottomSheetCtx);
+                      final picker = ImagePicker();
+                      final image = await picker.pickImage(source: ImageSource.camera);
+                      if (image != null && context.mounted) {
+                        _simulateDiagnosis(ref, type, image.path);
+                      }
                     },
                   ),
                 ),
@@ -120,9 +144,13 @@ class DiagnosisScreen extends ConsumerWidget {
                   child: _CaptureOption(
                     icon: Icons.photo_library_rounded,
                     label: 'Gallery',
-                    onTap: () {
-                      Navigator.pop(context);
-                      _simulateDiagnosis(ref, type);
+                    onTap: () async {
+                      Navigator.pop(bottomSheetCtx);
+                      final picker = ImagePicker();
+                      final image = await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null && context.mounted) {
+                        _simulateDiagnosis(ref, type, image.path);
+                      }
                     },
                   ),
                 ),
@@ -135,7 +163,7 @@ class DiagnosisScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _simulateDiagnosis(WidgetRef ref, String type) async {
+  Future<void> _simulateDiagnosis(WidgetRef ref, String type, String imagePath) async {
     ref.read(diagnosisLoadingProvider.notifier).state = true;
 
     // Simulate AI processing delay
@@ -144,7 +172,7 @@ class DiagnosisScreen extends ConsumerWidget {
     final result = DiagnosisResult(
       id: 'diag-${DateTime.now().millisecondsSinceEpoch}',
       type: type,
-      imagePath: '',
+      imagePath: imagePath,
       subjectName: type == 'crop' ? 'Tomato' : 'Goat',
       timestamp: DateTime.now(),
       matches: type == 'crop'
@@ -352,6 +380,18 @@ class _DiagnosisHistoryCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (diagnosis.imagePath.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.md),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                child: Image.file(
+                  File(diagnosis.imagePath),
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
             const SizedBox(height: AppSpacing.sm),
             Text(topMatch.description,
                 style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary), maxLines: 2),

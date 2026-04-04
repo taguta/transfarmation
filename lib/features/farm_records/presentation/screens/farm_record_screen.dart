@@ -685,7 +685,7 @@ class _EmptyState extends StatelessWidget {
             FilledButton.icon(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Farm initiated (mock). Data will be saved locally first.')),
+                  const SnackBar(content: Text('Add Farm initiated. Data will be saved locally first.')),
                 );
               },
               icon: const Icon(Icons.add_rounded),

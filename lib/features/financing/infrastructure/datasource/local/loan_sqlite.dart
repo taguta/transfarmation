@@ -36,4 +36,22 @@ class LoanLocalDataSource {
         )
         .toList();
   }
+
+  Future<List<LoanOffer>> getLoanOffers() async {
+    final data = await db.query('loan_offers');
+    return data
+        .map(
+          (e) => LoanOffer(
+            id: e['id'] as String,
+            lenderName: e['lenderName'] as String,
+            interestRate: e['interestRate'] as double,
+            amount: e['amount'] as double,
+            repaymentPeriod: e['repaymentPeriod'] as String,
+            monthlyPayment: e['monthlyPayment'] as double,
+            conditions: e['conditions'] as String,
+            isRecommended: (e['isRecommended'] as int?) == 1,
+          ),
+        )
+        .toList();
+  }
 }

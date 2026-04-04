@@ -20,6 +20,7 @@ import '../../features/group_buying/presentation/screens/group_buying_screen.dar
 import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/inputs/presentation/screens/input_marketplace_screen.dart';
 import '../../features/inputs/presentation/screens/subsidy_tracking_screen.dart';
+import '../../features/labor_management/presentation/screens/labor_dashboard_screen.dart';
 import '../../features/knowledge/presentation/screens/knowledge_base_screen.dart';
 import '../../features/knowledge/presentation/screens/crop_detail_screen.dart';
 import '../../features/knowledge/presentation/screens/livestock_detail_screen.dart';
@@ -30,6 +31,7 @@ import '../../features/marketplace/presentation/screens/sell_produce_screen.dart
 import '../../features/notifications/presentation/screens/notifications_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/sync_ui/presentation/screens/sync_screen.dart';
 import '../../features/savings/presentation/screens/savings_group_screen.dart';
 import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/shell/presentation/screens/app_shell.dart';
@@ -141,6 +143,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/profile',
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              GoRoute(
+                path: 'sync',
+                builder: (context, state) => const SyncScreen(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/notifications',
@@ -201,6 +209,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/farm-records',
             builder: (context, state) => const FarmRecordScreen(),
+          ),
+          GoRoute(
+            path: '/labor-management',
+            builder: (context, state) => const LaborDashboardScreen(),
           ),
           GoRoute(
             path: '/group-buying',

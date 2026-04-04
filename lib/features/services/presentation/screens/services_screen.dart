@@ -83,6 +83,13 @@ class ServicesScreen extends StatelessWidget {
                 color: Colors.blue,
                 onTap: () => context.go('/weather'),
               ),
+              _ServiceTile(
+                icon: Icons.people_outline_rounded,
+                title: 'Labor & Tasks',
+                subtitle: 'Manage farm workers and daily assignments',
+                color: AppColors.error,
+                onTap: () => context.go('/labor-management'),
+              ),
 
               const SizedBox(height: AppSpacing.xxl),
 

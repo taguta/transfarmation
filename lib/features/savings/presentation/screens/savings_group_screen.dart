@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../theme/app_colors.dart';
@@ -22,7 +23,16 @@ class SavingsGroupScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Savings Groups', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    onPressed: () => context.pop(),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text('Savings Groups', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                ],
+              ),
               const SizedBox(height: 2),
               Text('Mukando — save together, grow together',
                   style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
