@@ -21,6 +21,9 @@ import '../../features/home/presentation/screens/home_screen.dart';
 import '../../features/inputs/presentation/screens/input_marketplace_screen.dart';
 import '../../features/inputs/presentation/screens/subsidy_tracking_screen.dart';
 import '../../features/labor_management/presentation/screens/labor_dashboard_screen.dart';
+import '../../features/traceability/presentation/screens/traceability_screen.dart';
+import '../../features/community/presentation/screens/community_board_screen.dart';
+import '../../features/iot_devices/presentation/screens/iot_dashboard_screen.dart';
 import '../../features/knowledge/presentation/screens/knowledge_base_screen.dart';
 import '../../features/knowledge/presentation/screens/crop_detail_screen.dart';
 import '../../features/knowledge/presentation/screens/livestock_detail_screen.dart';
@@ -217,6 +220,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/group-buying',
             builder: (context, state) => const GroupBuyingScreen(),
+          ),
+          GoRoute(
+            path: '/traceability',
+            builder: (context, state) => const TraceabilityScreen(),
+          ),
+          GoRoute(
+            path: '/community',
+            builder: (context, state) => const CommunityBoardScreen(),
+          ),
+          GoRoute(
+            path: '/iot-dashboard',
+            builder: (context, state) => const IotDashboardScreen(),
           ),
           GoRoute(
             path: '/market-prices',

@@ -58,6 +58,13 @@ class ServicesScreen extends StatelessWidget {
                 onTap: () => context.go('/expert'),
               ),
               _ServiceTile(
+                icon: Icons.forum_rounded,
+                title: 'Farmer Community',
+                subtitle: 'Discuss tips, alerts, and market news with locals',
+                color: AppColors.primary,
+                onTap: () => context.go('/community'),
+              ),
+              _ServiceTile(
                 icon: Icons.camera_alt_rounded,
                 title: 'AI Diagnosis',
                 subtitle: 'Snap a photo to identify crop & livestock diseases',
@@ -90,6 +97,13 @@ class ServicesScreen extends StatelessWidget {
                 color: AppColors.error,
                 onTap: () => context.go('/labor-management'),
               ),
+              _ServiceTile(
+                icon: Icons.sensors_rounded,
+                title: 'IoT & Sensors',
+                subtitle: 'Live telemetry from smart farm hardware',
+                color: AppColors.success,
+                onTap: () => context.go('/iot-dashboard'),
+              ),
 
               const SizedBox(height: AppSpacing.xxl),
 
@@ -101,6 +115,13 @@ class ServicesScreen extends StatelessWidget {
                 subtitle: 'Buy and sell agricultural produce',
                 color: AppColors.marketplace,
                 onTap: () => context.go('/marketplace'),
+              ),
+              _ServiceTile(
+                icon: Icons.qr_code_scanner_rounded,
+                title: 'Traceability & QR',
+                subtitle: 'Generate verifiable QR codes for farm produce',
+                color: AppColors.forestGreen,
+                onTap: () => context.go('/traceability'),
               ),
               _ServiceTile(
                 icon: Icons.store_rounded,
