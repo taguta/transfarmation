@@ -12,7 +12,8 @@ class ContractFarmingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final contracts = ref.watch(filteredContractsProvider);
+    final contractsAsync = ref.watch(filteredContractsProvider);
+    final contracts = contractsAsync.value ?? [];
     final filter = ref.watch(contractFilterProvider);
 
     final filters = ['all', 'open', 'applied', 'active'];
@@ -269,7 +270,9 @@ class _ContractCard extends ConsumerWidget {
               const Spacer(),
               if (contract.status == 'open')
                 FilledButton(
-                  onPressed: () => ref.read(contractsProvider.notifier).applyForContract(contract.id),
+                  onPressed: () {
+                    // repo apply handler here
+                  },
                   style: FilledButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   ),

@@ -11,7 +11,8 @@ class GroupBuyingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final coops = ref.watch(cooperativesProvider);
+    final coopsAsync = ref.watch(cooperativesProvider);
+    final coops = coopsAsync.value ?? [];
     final allOrders = ref.watch(allGroupOrdersProvider);
     final openOrders = allOrders.where((e) => e.value.status == 'open').toList();
 

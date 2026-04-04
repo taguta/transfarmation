@@ -12,7 +12,8 @@ class SavingsGroupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groups = ref.watch(savingsGroupsProvider);
+    final groupsAsync = ref.watch(savingsGroupsProvider);
+    final groups = groupsAsync.value ?? [];
 
     return Scaffold(
       body: SafeArea(
@@ -248,7 +249,8 @@ class _GroupCard extends StatelessWidget {
 class _TransactionsList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactions = ref.watch(savingsTransactionsProvider);
+    final transactionsAsync = ref.watch(savingsTransactionsProvider);
+    final transactions = transactionsAsync.value ?? [];
     return Column(
       children: transactions.map((t) => Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.sm),

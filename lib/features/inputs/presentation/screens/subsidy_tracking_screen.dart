@@ -12,8 +12,10 @@ class SubsidyTrackingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final programs = ref.watch(subsidyProgramsProvider);
-    final applications = ref.watch(subsidyApplicationsProvider);
+    final programsAsync = ref.watch(subsidyProgramsProvider);
+    final programs = programsAsync.value ?? [];
+    final applicationsAsync = ref.watch(subsidyApplicationsProvider);
+    final applications = applicationsAsync.value ?? [];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Subsidies & Programs')),

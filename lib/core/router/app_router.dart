@@ -11,8 +11,6 @@ import '../../features/contracts/presentation/screens/contract_farming_screen.da
 import '../../features/diagnosis/presentation/screens/diagnosis_screen.dart';
 import '../../features/expert/presentation/screens/expert_chat_screen.dart';
 import '../../features/expert/presentation/screens/expert_list_screen.dart';
-import '../../features/farm/presentation/screens/add_crop_screen.dart';
-import '../../features/farm/presentation/screens/farm_records_screen.dart';
 import '../../features/farm_records/presentation/screens/farm_record_screen.dart';
 import '../../features/financing/presentation/screens/apply_loan_screen.dart';
 import '../../features/financing/presentation/screens/loan_offers_screen.dart';
@@ -143,16 +141,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/profile',
             builder: (context, state) => const ProfileScreen(),
-          ),
-          GoRoute(
-            path: '/farm',
-            builder: (context, state) => const FarmRecordsScreen(),
-            routes: [
-              GoRoute(
-                path: 'add-crop',
-                builder: (context, state) => const AddCropScreen(),
-              ),
-            ],
           ),
           GoRoute(
             path: '/notifications',
