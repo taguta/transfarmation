@@ -6,10 +6,11 @@ class SqliteService {
   static Future<Database> init() async {
     return openDatabase(
       join(await getDatabasesPath(), 'agrolink.db'),
-      version: 4,
+      version: 5,
       onCreate: (db, version) async {
         await _createAllTables(db);
         await _migrateToV4(db);
+        await _migrateToV5(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -20,6 +21,9 @@ class SqliteService {
         }
         if (oldVersion < 4) {
           await _migrateToV4(db);
+        }
+        if (oldVersion < 5) {
+          await _migrateToV5(db);
         }
       },
     );
@@ -410,6 +414,33 @@ class SqliteService {
         tagsData TEXT,
         isAlert INTEGER DEFAULT 0,
         time TEXT NOT NULL,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+  }
+
+  static Future<void> _migrateToV5(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS service_partners(
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        subtitle TEXT,
+        iconCode TEXT,
+        colorHex TEXT,
+        route TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS marketplace_products(
+        id TEXT PRIMARY KEY,
+        sellerId TEXT,
+        title TEXT NOT NULL,
+        description TEXT,
+        price REAL NOT NULL,
+        category TEXT,
+        imageUrls TEXT,
+        postedAt TEXT NOT NULL,
         isSynced INTEGER DEFAULT 0
       )
     ''');
