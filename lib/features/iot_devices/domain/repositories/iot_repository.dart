@@ -1,6 +1,6 @@
 import '../entities/sensor_node.dart';
 
 abstract class IotRepository {
-  Stream<List<SensorNode>> watchSensors();
+  Future<List<SensorNode>> getSensors();
   Future<void> saveSensor(SensorNode sensor);
 }
