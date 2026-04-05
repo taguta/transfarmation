@@ -44,7 +44,27 @@ class SyncService {
         final type = item['type'] as String;
         final payload = jsonDecode(item['payload'] as String) as Map<String, dynamic>;
 
-        await _addToBatch(type, payload, batch);
+        // Conflict Resolution Check
+        bool isConflicted = false;
+        try {
+          if (payload.containsKey('id') && payload.containsKey('updatedAt')) {
+             final collection = _getCollectionForType(type);
+             if (collection != null) {
+               final remoteDoc = await firestore.collection(collection).doc(payload['id']).get();
+               if (remoteDoc.exists) {
+                 final remoteUpdatedAt = DateTime.parse(remoteDoc.data()?['updatedAt'] ?? '1970-01-01');
+                 final localUpdatedAt = DateTime.parse(payload['updatedAt']);
+                 if (remoteUpdatedAt.isAfter(localUpdatedAt)) {
+                    isConflicted = true; // Remote changes override this local write
+                 }
+               }
+             }
+          }
+        } catch (_) {}
+
+        if (!isConflicted) {
+           await _addToBatch(type, payload, batch);
+        }
         processedIds.add(item['id'] as String);
         await _markSynced(type, payload);
       } catch (_) {
@@ -209,6 +229,74 @@ class SyncService {
       }).toList(),
       'livestock': livestock.toList(),
     };
+  }
+
+  String? _getCollectionForType(String type) {
+    return switch (type) {
+      'marketplace_listing' => 'marketplace_listings',
+      'marketplace_product' => 'marketplace_products',
+      'user_profile' => 'user_profiles',
+      'forum_post' => 'forum_posts',
+      'iot_sensor' => 'iot_sensors',
+      'worker' => 'farm_workers',
+      'farm_task' => 'farm_tasks',
+      _ => null,
+    };
+  }
+
+  /// Initial Downward Hydration: Pulls state from Firebase locally on boot or reconnect
+  Future<void> hydrateInitialData() async {
+    final definitions = [
+      {
+        'collection': 'user_profiles', 
+        'table': 'farm_profile', 
+        'mapper': (Map<String, dynamic> doc, String id) => {'id': id, 'data': jsonEncode(doc)} 
+      },
+      {
+        'collection': 'marketplace_products', 
+        'table': 'marketplace_products', 
+        'mapper': (Map<String, dynamic> doc, String id) => {
+          'id': id,
+          'sellerId': doc['sellerId'] ?? '',
+          'title': doc['title'] ?? '',
+          'description': doc['description'] ?? '',
+          'price': (doc['price'] ?? 0.0).toDouble(),
+          'category': doc['category'] ?? '',
+          'imageUrls': jsonEncode(doc['imageUrls'] ?? []),
+          'postedAt': doc['postedAt'] ?? DateTime.now().toIso8601String(),
+          'isSynced': 1
+        }
+      },
+    ];
+
+    for (var def in definitions) {
+      final collection = def['collection'] as String;
+      final table = def['table'] as String;
+      final mapper = def['mapper'] as Map<String, dynamic> Function(Map<String, dynamic>, String);
+
+      final metadata = await db.query('sync_metadata', where: 'collection = ?', whereArgs: [collection]);
+      DateTime? lastSync;
+      if (metadata.isNotEmpty) {
+        lastSync = DateTime.tryParse(metadata.first['lastSyncAt'] as String);
+      }
+
+      Query query = firestore.collection(collection);
+      if (lastSync != null) {
+        query = query.where('updatedAt', isGreaterThan: lastSync.toIso8601String());
+      }
+      
+      try {
+        final snapshot = await query.get();
+        for (final docInfo in snapshot.docs) {
+           final mappedData = mapper(docInfo.data() as Map<String, dynamic>, docInfo.id);
+           await db.insert(table, mappedData, conflictAlgorithm: ConflictAlgorithm.replace);
+        }
+        await db.insert('sync_metadata', {
+          'collection': collection,
+          'lastSyncAt': DateTime.now().toIso8601String()
+        }, conflictAlgorithm: ConflictAlgorithm.replace);
+      } catch (_) {}
+    }
   }
 }
 

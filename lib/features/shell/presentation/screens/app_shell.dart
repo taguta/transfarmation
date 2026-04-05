@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../sync_ui/presentation/providers/sync_providers.dart';
 
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   final Widget child;
 
   const AppShell({super.key, required this.child});
@@ -125,10 +127,37 @@ class AppShell extends StatelessWidget {
     );
   }
 
+  Widget _buildSyncBanner(int pendingCount) {
+    if (pendingCount == 0) return const SizedBox.shrink();
+    return Container(
+      color: Colors.orange.shade100,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.cloud_off_rounded, size: 16, color: Colors.orange.shade900),
+          const SizedBox(width: 8),
+          Text(
+            'Offline Mode: $pendingCount items waiting to sync',
+            style: TextStyle(
+              color: Colors.orange.shade900,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final location = GoRouterState.of(context).uri.toString();
     final currentIndex = _indexFromLocation(location);
+
+    final syncQueue = ref.watch(syncItemsProvider);
+    final pendingCount = syncQueue.valueOrNull?.length ?? 0;
 
     final extended = context.isDesktop;
 
@@ -150,7 +179,12 @@ class AppShell extends StatelessWidget {
           iconTheme: const IconThemeData(color: AppColors.primary),
         ),
         drawer: _buildDrawer(context, currentIndex),
-        body: child,
+        body: Column(
+          children: [
+            _buildSyncBanner(pendingCount),
+            Expanded(child: child),
+          ],
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: [0, 1, 2].contains(currentIndex) 
               ? currentIndex 
@@ -264,7 +298,14 @@ class AppShell extends StatelessWidget {
             ],
           ),
           const VerticalDivider(width: 1, thickness: 1),
-          Expanded(child: child),
+          Expanded(
+            child: Column(
+              children: [
+                _buildSyncBanner(pendingCount),
+                Expanded(child: child),
+              ],
+            ),
+          ),
         ],
       ),
     );
