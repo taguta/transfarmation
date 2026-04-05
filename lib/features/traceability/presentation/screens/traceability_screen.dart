@@ -3,30 +3,38 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
-// Dummy Provider for Traceability Batches
-final traceabilityBatchesProvider = Provider((ref) {
-  return [
-    {
-      'id': 'BATCH-0984-TOM',
-      'crop': 'Roma Tomatoes',
-      'harvestDate': DateTime.now().subtract(const Duration(days: 2)),
-      'weight': '500 kg',
-      'quality': 'Grade A',
-      'farmName': 'Mutasa Heritage Farm',
-    },
-    {
-      'id': 'BATCH-1102-MZE',
-      'crop': 'White Maize',
-      'harvestDate': DateTime.now().subtract(const Duration(days: 15)),
-      'weight': '2.5 Tonnes',
-      'quality': 'Export',
-      'farmName': 'Banda Commercial',
-    },
-  ];
+import '../../../../core/providers/data_providers.dart';
+
+// Provides real Traceability Batches from SQLite
+final traceabilityBatchesProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  final db = ref.watch(databaseProvider);
+  
+  final result = await db.rawQuery('''
+    SELECT 
+      f.id as fieldId,
+      f.currentCrop as crop,
+      f.yieldTonnes as weight,
+      f.status,
+      farm.name as farmName,
+      farm.id as farmId
+    FROM farm_fields f
+    JOIN farms farm ON f.farmId = farm.id
+    WHERE f.status = 'harvested' OR f.status = 'harvesting' OR f.currentCrop IS NOT NULL
+  ''');
+
+  return result.map((row) => {
+    'id': 'BATCH-${row['fieldId'].toString().substring(0, min(4, row['fieldId'].toString().length)).toUpperCase()}-${row['crop'].toString().substring(0, min(3, row['crop'].toString().length)).toUpperCase()}',
+    'crop': row['crop'],
+    'harvestDate': DateTime.now().subtract(const Duration(days: 2)), // Temporary fallback since harvestedDate is missing in DB schema
+    'weight': '${row['weight'] ?? 0} Tonnes',
+    'quality': 'Grade A', // Mock quality info since it's not modeled yet
+    'farmName': row['farmName'],
+  }).toList();
 });
 
 class TraceabilityScreen extends ConsumerStatefulWidget {
@@ -41,7 +49,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final batches = ref.watch(traceabilityBatchesProvider);
+    final batchesAsync = ref.watch(traceabilityBatchesProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -69,10 +77,16 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
               if (selectedBatch == null) ...[
                 Text('Select a Recent Harvest Batch', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
                 const SizedBox(height: AppSpacing.md),
-                ...batches.map((batch) => _BatchTile(
-                      batch: batch,
-                      onTap: () => setState(() => selectedBatch = batch),
-                    )),
+                batchesAsync.when(
+                  data: (batches) => Column(
+                    children: batches.map((batch) => _BatchTile(
+                          batch: batch,
+                          onTap: () => setState(() => selectedBatch = batch),
+                        )).toList(),
+                  ),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (err, stack) => Text('Error: $err'),
+                ),
               ] else ...[
                 Center(
                   child: Container(

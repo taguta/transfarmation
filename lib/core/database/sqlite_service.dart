@@ -6,9 +6,10 @@ class SqliteService {
   static Future<Database> init() async {
     return openDatabase(
       join(await getDatabasesPath(), 'agrolink.db'),
-      version: 3,
+      version: 4,
       onCreate: (db, version) async {
         await _createAllTables(db);
+        await _migrateToV4(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -16,6 +17,9 @@ class SqliteService {
         }
         if (oldVersion < 3) {
           await _migrateToV3(db);
+        }
+        if (oldVersion < 4) {
+          await _migrateToV4(db);
         }
       },
     );
@@ -342,5 +346,72 @@ class SqliteService {
     await db.execute(
       'ALTER TABLE sync_queue ADD COLUMN lastAttemptedAt TEXT',
     );
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS sync_metadata(
+        collection TEXT PRIMARY KEY,
+        lastSyncAt TEXT NOT NULL
+      )
+    ''');
+  }
+
+  static Future<void> _migrateToV4(Database db) async {
+    // ─── Labor Management ──────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS farm_workers(
+        id TEXT PRIMARY KEY,
+        farmId TEXT NOT NULL,
+        name TEXT NOT NULL,
+        role TEXT,
+        dailyWage REAL,
+        phone TEXT,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+    
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS farm_tasks(
+        id TEXT PRIMARY KEY,
+        farmId TEXT NOT NULL,
+        name TEXT NOT NULL,
+        assignedWorkerId TEXT,
+        date TEXT,
+        status TEXT DEFAULT 'pending',
+        estimatedCost REAL,
+        isSynced INTEGER DEFAULT 0,
+        FOREIGN KEY (assignedWorkerId) REFERENCES farm_workers(id) ON DELETE SET NULL
+      )
+    ''');
+
+    // ─── IoT Devices ───────────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS iot_sensors(
+        id TEXT PRIMARY KEY,
+        farmId TEXT,
+        name TEXT NOT NULL,
+        type TEXT,
+        status TEXT,
+        battery INTEGER,
+        currentValue TEXT,
+        trend TEXT,
+        lastUpdated TEXT,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+
+    // ─── Community Forum ───────────────────────────────────
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS forum_posts(
+        id TEXT PRIMARY KEY,
+        author TEXT,
+        region TEXT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        replies INTEGER DEFAULT 0,
+        tagsData TEXT,
+        isAlert INTEGER DEFAULT 0,
+        time TEXT NOT NULL,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
   }
 }

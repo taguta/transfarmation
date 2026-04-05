@@ -7,15 +7,16 @@ import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/labor_models.dart';
 import '../providers/labor_providers.dart';
+import '../widgets/labor_dialogs.dart';
 
 class LaborDashboardScreen extends ConsumerWidget {
   const LaborDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workers = ref.watch(workersProvider);
-    final tasks = ref.watch(tasksProvider);
-    final totalSpent = ref.watch(totalLaborCostProvider);
+    final workersAsync = ref.watch(workersProvider);
+    final tasksAsync = ref.watch(tasksProvider);
+    final totalSpentAsync = ref.watch(totalLaborCostProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -35,8 +36,10 @@ class LaborDashboardScreen extends ConsumerWidget {
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.person_add_alt_1_rounded, color: AppColors.primary),
-                    onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Add Worker dialog coming soon')),
+                    onPressed: () => showModalBottomSheet(
+                      context: context, 
+                      isScrollControlled: true,
+                      builder: (_) => const AddWorkerDialog(),
                     ),
                   ),
                 ],
@@ -53,7 +56,7 @@ class LaborDashboardScreen extends ConsumerWidget {
                   Expanded(
                     child: _StatCard(
                       title: 'Active Workers',
-                      value: workers.length.toString(),
+                      value: workersAsync.maybeWhen(data: (w) => w.length.toString(), orElse: () => '-'),
                       icon: Icons.people_rounded,
                       color: AppColors.primary,
                     ),
@@ -62,7 +65,7 @@ class LaborDashboardScreen extends ConsumerWidget {
                   Expanded(
                     child: _StatCard(
                       title: 'Labor Spent',
-                      value: '\$${totalSpent.toStringAsFixed(2)}',
+                      value: totalSpentAsync.maybeWhen(data: (ts) => '\$${ts.toStringAsFixed(2)}', orElse: () => '-'),
                       icon: Icons.payments_rounded,
                       color: AppColors.error,
                     ),
@@ -84,10 +87,14 @@ class LaborDashboardScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.sm),
-              if (workers.isEmpty)
+              if (workersAsync.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (workersAsync.hasError)
+                const Center(child: Text('Error loading workers'))
+              else if (workersAsync.value?.isEmpty ?? true)
                 const Center(child: Text('No workers registered.'))
               else
-                ...workers.map((w) => _WorkerCard(worker: w)),
+                ...workersAsync.value!.map((w) => _WorkerCard(worker: w)),
 
               const SizedBox(height: AppSpacing.xxl),
 
@@ -98,14 +105,21 @@ class LaborDashboardScreen extends ConsumerWidget {
                   Text('Pending Tasks', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
                   IconButton(
                     icon: const Icon(Icons.add_task_rounded, color: AppColors.primary),
-                    onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Assign Task dialog coming soon')),
+                    onPressed: () => showModalBottomSheet(
+                      context: context, 
+                      isScrollControlled: true,
+                      builder: (_) => const AssignTaskDialog(),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: AppSpacing.sm),
-              ...tasks.where((t) => t.status != 'completed').map((t) => _TaskCard(task: t, workerName: workers.firstWhere((w) => w.id == t.assignedWorkerId, orElse: () => Worker(id: '', name: 'Unassigned', role: '', dailyWage: 0, phone: '')).name)),
+              if (tasksAsync.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (tasksAsync.hasError)
+                const Center(child: Text('Error loading tasks'))
+              else
+                ...tasksAsync.value!.where((t) => t.status != 'completed').map((t) => _TaskCard(task: t, workerName: workersAsync.value?.firstWhere((w) => w.id == t.assignedWorkerId, orElse: () => Worker(id: '', name: 'Unassigned', role: '', dailyWage: 0, phone: '')).name ?? 'Unknown')),
 
               const SizedBox(height: AppSpacing.xxxl),
             ],

@@ -14,50 +14,40 @@ class SavingsRepositoryImpl implements SavingsRepository {
 
   @override
   Future<List<SavingsGroup>> getGroups(String farmerId) async {
-    // Try to fetch from remote first, cache locally
-    try {
-      final groups = await remote.fetchGroups();
-      for (final g in groups) {
-        await local.saveGroup(g);
-      }
-      return groups;
-    } catch (_) {
-      return local.getGroups();
-    }
+    return local.getGroups();
   }
 
   @override
   Future<void> joinGroup(String groupId, String farmerId) async {
-    // Server-only action, no local state change
-    try {
-      // Would call remote.joinGroup() if we had that method
-    } catch (_) {
-      // Queue for later
-    }
+    // Write queue for server to process join
+    await db.insert('sync_queue', {
+      'id': '${groupId}_$farmerId',
+      'type': 'savings_group_join',
+      'payload': jsonEncode({
+        'groupId': groupId,
+        'farmerId': farmerId,
+      }),
+      'retryCount': 0,
+    });
   }
 
   @override
   Future<void> recordTransaction(SavingsTransaction transaction) async {
     await local.saveTransaction(transaction);
-    try {
-      await remote.sendTransaction(transaction);
-      await db.update('savings_transactions', {'isSynced': 1}, where: 'id = ?', whereArgs: [transaction.id]);
-    } catch (_) {
-      await db.insert('sync_queue', {
+    await db.insert('sync_queue', {
+      'id': transaction.id,
+      'type': 'savings_transaction',
+      'payload': jsonEncode({
         'id': transaction.id,
-        'type': 'savings_transaction',
-        'payload': jsonEncode({
-          'id': transaction.id,
-          'groupId': transaction.groupId,
-          'memberId': transaction.memberId,
-          'memberName': transaction.memberName,
-          'type': transaction.type,
-          'amount': transaction.amount,
-          'date': transaction.date.toIso8601String(),
-        }),
-        'retryCount': 0,
-      });
-    }
+        'groupId': transaction.groupId,
+        'memberId': transaction.memberId,
+        'memberName': transaction.memberName,
+        'type': transaction.type,
+        'amount': transaction.amount,
+        'date': transaction.date.toIso8601String(),
+      }),
+      'retryCount': 0,
+    });
   }
 
   @override
@@ -65,3 +55,4 @@ class SavingsRepositoryImpl implements SavingsRepository {
     return local.getTransactions(groupId);
   }
 }
+

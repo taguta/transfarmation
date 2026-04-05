@@ -11,13 +11,7 @@ class MarketPriceRepositoryImpl implements MarketPriceRepository {
 
   @override
   Future<List<Commodity>> getCommodities() async {
-    try {
-      final commodities = await remote.fetchCommodities();
-      await local.cacheCommodities(commodities);
-      return commodities;
-    } catch (_) {
-      return local.getCommodities();
-    }
+    return local.getCommodities();
   }
 
   @override

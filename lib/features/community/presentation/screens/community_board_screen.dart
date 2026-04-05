@@ -5,42 +5,25 @@ import 'package:intl/intl.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
-// Dummy Forum Posts
-final _dummyPosts = [
-  {
-    'author': 'Tendai M.',
-    'region': 'Mashonaland West',
-    'time': DateTime.now().subtract(const Duration(minutes: 45)),
-    'title': 'Armyworm Outbreak near Banket',
-    'content': 'Has anyone successfully used Coragen on their late maize crop? Seeing early signs of fall armyworm and want to know if it is worth the cost.',
-    'replies': 12,
-    'tags': ['Pests', 'Maize'],
-    'isAlert': true,
-  },
-  {
-    'author': 'Sarah B.',
-    'region': 'Manicaland',
-    'time': DateTime.now().subtract(const Duration(hours: 3)),
-    'title': 'Best Macadamia Nurseries?',
-    'content': 'Looking to expand my orchard next season. Anyone got reliable contacts for grafted Beaumont seedlings in the Vumba area?',
-    'replies': 4,
-    'tags': ['Macadamia', 'Sourcing'],
-    'isAlert': false,
-  },
-];
+import '../providers/community_providers.dart';
+import '../widgets/community_dialogs.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CommunityBoardScreen extends StatelessWidget {
+class CommunityBoardScreen extends ConsumerWidget {
   const CommunityBoardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final postsAsync = ref.watch(forumPostsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Create Post dialog coming soon')),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) => const CreatePostDialog(),
         ),
-        icon: const Icon(Icons.edit_rounded),
-        label: const Text('New Topic'),
+        icon: const Icon(Icons.add_comment_rounded),
+        label: const Text('Start Topic'),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
@@ -84,7 +67,15 @@ class CommunityBoardScreen extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.xxl),
 
-              ..._dummyPosts.map((post) => _ForumPostCard(post: post)),
+              postsAsync.when(
+                data: (posts) => Column(
+                  children: posts.isEmpty
+                      ? [const Center(child: Text('No topics yet. Start one!'))]
+                      : posts.map((post) => _ForumPostCard(post: post)).toList(),
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, st) => Center(child: Text('Error loading posts: $e')),
+              ),
               
               const SizedBox(height: AppSpacing.xxxl),
             ],
@@ -123,14 +114,14 @@ class _FilterChip extends StatelessWidget {
 }
 
 class _ForumPostCard extends StatelessWidget {
-  final Map<String, dynamic> post;
+  final ForumPost post;
 
   const _ForumPostCard({required this.post});
 
   @override
   Widget build(BuildContext context) {
-    final isAlert = post['isAlert'] as bool;
-    final List<String> tags = (post['tags'] as List).cast<String>();
+    final isAlert = post.isAlert;
+    final tags = post.tags;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
@@ -150,22 +141,22 @@ class _ForumPostCard extends StatelessWidget {
                   radius: 16,
                   backgroundColor: AppColors.primary.withValues(alpha: 0.2),
                   child: Text(
-                    (post['author'] as String)[0],
+                    post.author[0],
                     style: AppTextStyles.labelMd.copyWith(color: AppColors.primary),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Text(post['author'] as String, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                Text(post.author, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
                 const Spacer(),
                 const Icon(Icons.location_on_rounded, size: 14, color: AppColors.textTertiary),
                 const SizedBox(width: 4),
-                Text(post['region'] as String, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                Text(post.region, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            Text(post['title'] as String, style: AppTextStyles.h3.copyWith(color: isAlert ? AppColors.error : AppColors.textPrimary)),
+            Text(post.title, style: AppTextStyles.h3.copyWith(color: isAlert ? AppColors.error : AppColors.textPrimary)),
             const SizedBox(height: AppSpacing.xs),
-            Text(post['content'] as String, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+            Text(post.content, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
             const SizedBox(height: AppSpacing.md),
             Wrap(
               spacing: AppSpacing.sm,
@@ -183,13 +174,13 @@ class _ForumPostCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                Text(DateFormat.jm().format(post['time'] as DateTime), style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                Text(DateFormat.jm().format(post.time), style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
                 const Spacer(),
                 Row(
                   children: [
                     const Icon(Icons.forum_outlined, size: 16, color: AppColors.primary),
                     const SizedBox(width: 4),
-                    Text('${post['replies']} Replies', style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+                    Text('${post.replies} Replies', style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
                   ],
                 ),
               ],

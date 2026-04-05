@@ -14,34 +14,20 @@ class ContractRepositoryImpl implements ContractRepository {
 
   @override
   Future<List<FarmingContract>> getContracts({String? region, String? commodity}) async {
-    try {
-      final contracts = await remote.fetchContracts(region: region, commodity: commodity);
-      for (final c in contracts) {
-        await local.saveContract(c);
-      }
-      return contracts;
-    } catch (_) {
-      return local.getContracts();
-    }
+    return local.getContracts();
   }
 
   @override
   Future<void> applyToContract(String contractId, String farmerId) async {
-    // Usually we save a local copy of 'Application' here before sending remote.
-    // For now we persist it correctly before network request.
-    try {
-      await remote.applyToContract(contractId, farmerId);
-    } catch (_) {
-      await db.insert('sync_queue', {
-        'id': '\${contractId}_\$farmerId',
-        'type': 'contract_application',
-        'payload': jsonEncode({
-          'contractId': contractId,
-          'farmerId': farmerId,
-        }),
-        'retryCount': 0,
-      });
-    }
+    await db.insert('sync_queue', {
+      'id': '${contractId}_$farmerId',
+      'type': 'contract_application',
+      'payload': jsonEncode({
+        'contractId': contractId,
+        'farmerId': farmerId,
+      }),
+      'retryCount': 0,
+    });
   }
 
   @override

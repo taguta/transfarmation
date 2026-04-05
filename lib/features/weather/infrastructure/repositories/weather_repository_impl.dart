@@ -11,18 +11,16 @@ class WeatherRepositoryImpl implements WeatherRepository {
 
   @override
   Future<List<WeatherAlert>> getAlerts(String region) async {
-    try {
-      final alerts = await remote.fetchAlerts(region);
-      await local.cacheAlerts(alerts);
-      return alerts;
-    } catch (_) {
-      return local.getAlerts(region);
-    }
+    return local.getAlerts(region);
   }
 
   @override
-  Future<List<WeatherForecast>> getForecast(String region) {
-    return remote.fetchForecast(region);
+  Future<List<WeatherForecast>> getForecast(String region) async {
+    try {
+      return await remote.fetchForecast(region);
+    } catch (_) {
+      return [];
+    }
   }
 
   @override

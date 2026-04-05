@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import '../../domain/entities/loan.dart';
@@ -16,23 +15,17 @@ class LoanRepositoryImpl implements LoanRepository {
   @override
   Future<void> applyLoan(Loan loan) async {
     await local.saveLoan(loan);
-
-    try {
-      await remote.sendLoan(loan);
-      await db.update('loans', {'isSynced': 1}, where: 'id = ?', whereArgs: [loan.id]);
-    } catch (_) {
-      await db.insert('sync_queue', {
+    await db.insert('sync_queue', {
+      'id': loan.id,
+      'type': 'loan',
+      'payload': jsonEncode({
         'id': loan.id,
-        'type': 'loan',
-        'payload': jsonEncode({
-          'id': loan.id,
-          'farmerId': loan.farmerId,
-          'amount': loan.amount,
-          'createdAt': loan.createdAt.toIso8601String(),
-        }),
-        'retryCount': 0
-      });
-    }
+        'farmerId': loan.farmerId,
+        'amount': loan.amount,
+        'createdAt': loan.createdAt.toIso8601String(),
+      }),
+      'retryCount': 0
+    });
   }
 
   @override
@@ -45,3 +38,4 @@ class LoanRepositoryImpl implements LoanRepository {
     return local.getLoanOffers();
   }
 }
+

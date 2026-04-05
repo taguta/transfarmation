@@ -6,49 +6,22 @@ import 'package:intl/intl.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
-// Dummy IoT Data
-final _dummySensors = [
-  {
-    'id': 'SN-089A',
-    'name': 'Field Alpha - Soil Node',
-    'type': 'Soil Moisture',
-    'status': 'online',
-    'battery': 82,
-    'currentValue': '42%',
-    'trend': 'decreasing', // 'increasing', 'stable'
-    'lastUpdated': DateTime.now().subtract(const Duration(minutes: 5)),
-  },
-  {
-    'id': 'SN-042B',
-    'name': 'Greenhouse 1 - Ambient',
-    'type': 'Temperature',
-    'status': 'online',
-    'battery': 45,
-    'currentValue': '28.4°C',
-    'trend': 'stable',
-    'lastUpdated': DateTime.now().subtract(const Duration(minutes: 2)),
-  },
-  {
-    'id': 'SN-099C',
-    'name': 'Pump Station - Flow',
-    'type': 'Water Flow',
-    'status': 'offline',
-    'battery': 0,
-    'currentValue': '0 L/min',
-    'trend': 'stable',
-    'lastUpdated': DateTime.now().subtract(const Duration(hours: 14)),
-  },
-];
+import '../providers/iot_providers.dart';
+import '../widgets/iot_dialogs.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IotDashboardScreen extends StatelessWidget {
+class IotDashboardScreen extends ConsumerWidget {
   const IotDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sensorsAsync = ref.watch(sensorsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Scanning for Bluetooth sensors...')),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) => const ScanSensorDialog(),
         ),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
@@ -82,7 +55,10 @@ class IotDashboardScreen extends StatelessWidget {
                   Expanded(
                     child: _StatCard(
                       title: 'Active Nodes',
-                      value: '2/3',
+                      value: sensorsAsync.maybeWhen(
+                        data: (s) => '${s.where((node) => node.status == 'online').length}/${s.length}', 
+                        orElse: () => '-'
+                      ),
                       icon: Icons.router_rounded,
                       color: AppColors.success,
                     ),
@@ -186,7 +162,15 @@ class IotDashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               
-              ..._dummySensors.map((sensor) => _SensorTile(sensor: sensor)),
+              sensorsAsync.when(
+                data: (sensors) => Column(
+                  children: sensors.isEmpty
+                      ? [const Center(child: Text('No sensors paired.'))]
+                      : sensors.map((sensor) => _SensorTile(sensor: sensor)).toList(),
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, st) => Center(child: Text('Error: $e')),
+              ),
 
               const SizedBox(height: AppSpacing.xxxl),
             ],
@@ -228,19 +212,19 @@ class _StatCard extends StatelessWidget {
 }
 
 class _SensorTile extends StatelessWidget {
-  final Map<String, dynamic> sensor;
+  final SensorNode sensor;
 
   const _SensorTile({required this.sensor});
 
   @override
   Widget build(BuildContext context) {
-    final isOnline = sensor['status'] == 'online';
-    final battery = sensor['battery'] as int;
+    final isOnline = sensor.status == 'online';
+    final battery = sensor.battery;
     
     IconData typeIcon;
     Color typeColor;
     
-    switch (sensor['type']) {
+    switch (sensor.type) {
       case 'Soil Moisture':
         typeIcon = Icons.water_drop_rounded;
         typeColor = Colors.blue;
@@ -288,7 +272,7 @@ class _SensorTile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text(sensor['name'] as String, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                      Text(sensor.name, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
                     ],
                   ),
                   const SizedBox(height: 2),
@@ -297,7 +281,7 @@ class _SensorTile extends StatelessWidget {
                       Icon(battery > 20 ? Icons.battery_full_rounded : Icons.battery_alert_rounded, 
                            size: 14, color: battery > 20 ? AppColors.textSecondary : AppColors.error),
                       const SizedBox(width: 4),
-                      Text('$battery% • Sync: ${DateFormat.jm().format(sensor['lastUpdated'] as DateTime)}', 
+                      Text('$battery% • Sync: ${DateFormat.jm().format(sensor.lastUpdated)}', 
                            style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
                     ],
                   ),
@@ -307,11 +291,11 @@ class _SensorTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(sensor['currentValue'] as String, style: AppTextStyles.h3.copyWith(color: isOnline ? AppColors.textPrimary : AppColors.textTertiary)),
+                Text(sensor.currentValue, style: AppTextStyles.h3.copyWith(color: isOnline ? AppColors.textPrimary : AppColors.textTertiary)),
                 if (isOnline)
                   Icon(
-                    sensor['trend'] == 'increasing' ? Icons.trending_up_rounded 
-                    : (sensor['trend'] == 'decreasing' ? Icons.trending_down_rounded : Icons.trending_flat_rounded),
+                    sensor.trend == 'increasing' ? Icons.trending_up_rounded 
+                    : (sensor.trend == 'decreasing' ? Icons.trending_down_rounded : Icons.trending_flat_rounded),
                     size: 16,
                     color: AppColors.textTertiary,
                   ),

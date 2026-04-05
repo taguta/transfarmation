@@ -14,37 +14,24 @@ class InputRepositoryImpl implements InputRepository {
 
   @override
   Future<List<FarmInput>> getInputs({String? category}) async {
-    try {
-      final inputs = await remote.fetchInputs(category: category);
-      for (final i in inputs) {
-        await local.saveInput(i);
-      }
-      return inputs;
-    } catch (_) {
-      return local.getInputs(category: category);
-    }
+    return local.getInputs(category: category);
   }
 
   @override
   Future<void> applyForSubsidy(SubsidyApplication application) async {
     await local.saveSubsidyApplication(application);
-    try {
-      await remote.sendSubsidyApplication(application);
-      await db.update('subsidy_applications', {'isSynced': 1}, where: 'id = ?', whereArgs: [application.id]);
-    } catch (_) {
-      await db.insert('sync_queue', {
+    await db.insert('sync_queue', {
+      'id': application.id,
+      'type': 'subsidy_application',
+      'payload': jsonEncode({
         'id': application.id,
-        'type': 'subsidy_application',
-        'payload': jsonEncode({
-          'id': application.id,
-          'programId': application.programId,
-          'programName': application.programName,
-          'status': application.status,
-          'appliedDate': application.appliedDate.toIso8601String(),
-        }),
-        'retryCount': 0,
-      });
-    }
+        'programId': application.programId,
+        'programName': application.programName,
+        'status': application.status,
+        'appliedDate': application.appliedDate.toIso8601String(),
+      }),
+      'retryCount': 0,
+    });
   }
 
   @override

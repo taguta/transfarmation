@@ -15,22 +15,17 @@ class DiagnosisRepositoryImpl implements DiagnosisRepository {
   @override
   Future<void> saveDiagnosis(DiagnosisResult result) async {
     await local.saveDiagnosis(result);
-    try {
-      await remote.sendDiagnosis(result);
-      await db.update('diagnosis_results', {'isSynced': 1}, where: 'id = ?', whereArgs: [result.id]);
-    } catch (_) {
-      await db.insert('sync_queue', {
+    await db.insert('sync_queue', {
+      'id': result.id,
+      'type': 'diagnosis',
+      'payload': jsonEncode({
         'id': result.id,
-        'type': 'diagnosis',
-        'payload': jsonEncode({
-          'id': result.id,
-          'type': result.type,
-          'subjectName': result.subjectName,
-          'timestamp': result.timestamp.toIso8601String(),
-        }),
-        'retryCount': 0,
-      });
-    }
+        'type': result.type,
+        'subjectName': result.subjectName,
+        'timestamp': result.timestamp.toIso8601String(),
+      }),
+      'retryCount': 0,
+    });
   }
 
   @override
@@ -38,3 +33,4 @@ class DiagnosisRepositoryImpl implements DiagnosisRepository {
     return local.getDiagnosisHistory();
   }
 }
+
