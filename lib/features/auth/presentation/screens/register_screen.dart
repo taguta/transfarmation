@@ -1,20 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../providers/auth_providers.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -37,32 +38,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => _isLoading = true);
     try {
-      final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
+      await ref.read(authRepositoryProvider).register(
+        _emailController.text.trim(),
+        _passwordController.text,
+        _nameController.text.trim(),
       );
-
-      // Set display name so it's accessible via User.displayName.
-      await cred.user?.updateDisplayName(_nameController.text.trim());
-
-      // Write the farmer profile to Firestore under users/{uid}.
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(cred.user!.uid)
-          .set({
-        'name': _nameController.text.trim(),
-        'phone': _phoneController.text.trim(),
-        'email': _emailController.text.trim(),
-        'role': _selectedRole.toLowerCase(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      // GoRouter's refreshListenable detects the auth state change
-      // and redirects to /home automatically.
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       if (mounted) {
+        String msg = 'Registration failed. Please try again.';
+        if (e is FirebaseAuthException) { // Will need FirebaseAuth import if compiling checks exception type explicitly
+          msg = _errorMessage(e.code);
+        } else {
+          msg = e.toString().contains('Exception') ? e.toString().replaceAll('Exception: ', '') : msg;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(_errorMessage(e.code))),
+          SnackBar(content: Text(msg)),
         );
       }
     } finally {

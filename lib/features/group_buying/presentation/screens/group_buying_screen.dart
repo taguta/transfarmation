@@ -182,26 +182,59 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
 
           const SizedBox(height: AppSpacing.md),
 
-          // Progress bar
+          // Gamified Price Drop Thermometer
           Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Price Drop Target', style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                        Text('Only ${order.minimumQuantity - order.currentQuantity} ${order.unit} left to unlock -15%', style: AppTextStyles.caption.copyWith(color: AppColors.forestGreen, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: LinearProgressIndicator(
-                        value: order.progress.clamp(0.0, 1.0),
-                        backgroundColor: AppColors.borderLight,
-                        color: order.progress >= 1.0 ? AppColors.forestGreen : AppColors.harvestGold,
-                        minHeight: 8,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Stack(
+                        children: [
+                          LinearProgressIndicator(
+                            value: order.progress.clamp(0.0, 1.0),
+                            backgroundColor: AppColors.borderLight,
+                            color: order.progress >= 1.0 ? AppColors.forestGreen : AppColors.harvestGold,
+                            minHeight: 14,
+                          ),
+                          // Simulated thresholds
+                          Positioned(
+                            left: 0, right: 0, top: 0, bottom: 0,
+                            child: Row(
+                              children: [
+                                Spacer(flex: 30),
+                                Container(width: 2, color: Colors.white),
+                                Spacer(flex: 70),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${order.currentQuantity}/${order.minimumQuantity} ${order.unit}',
-                      style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.infoSurface,
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.shield_rounded, size: 12, color: AppColors.info),
+                          const SizedBox(width: 4),
+                          Expanded(child: Text('Funds locked in Smart Escrow until target hit', style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary))),
+                        ],
+                      ),
                     ),
                   ],
                 ),

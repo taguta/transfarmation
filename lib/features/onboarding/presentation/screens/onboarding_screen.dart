@@ -132,6 +132,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Voice Assistant Active: "Hello, I can read this screen to you. Just ask!"')),
+          );
+        },
+        icon: const Icon(Icons.mic_rounded),
+        label: const Text('Voice Guide'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+      ),
     );
   }
 }

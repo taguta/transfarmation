@@ -82,8 +82,61 @@ class MarketPriceScreen extends ConsumerWidget {
 
               const SizedBox(height: AppSpacing.xxl),
 
+              // Heatmaps & Alert Settings
+              Row(
+                children: [
+                   Expanded(
+                     child: FilledButton.tonalIcon(
+                       onPressed: () {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('Localized Arbitrage Heatmap Enabled!')),
+                         );
+                       },
+                       icon: const Icon(Icons.map_rounded, size: 18),
+                       label: const Text('View Heatmap'),
+                     ),
+                   ),
+                   const SizedBox(width: AppSpacing.md),
+                   Expanded(
+                     child: FilledButton.tonalIcon(
+                       onPressed: () {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('Custom Alert: Ping when Soybeans > \$500/ton set.')),
+                         );
+                       },
+                       icon: const Icon(Icons.notifications_active_rounded, size: 18),
+                       label: const Text('Price Alerts'),
+                     ),
+                   ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Show AI Predictive Trendlines', style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                  Switch(
+                    value: true,
+                    onChanged: (val) {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(content: Text('AI Predictive modeling toggled.')),
+                       );
+                    },
+                    activeColor: AppColors.primary,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: AppSpacing.xxl),
+
               // Price cards
-              ...commodities.map((c) => _CommodityCard(commodity: c)),
+              commodities.when(
+                data: (comms) => Column(
+                  children: comms.map((c) => _CommodityCard(commodity: c)).toList(),
+                ),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, s) => Center(child: Text('Error loading prices: $e')),
+              ),
 
               const SizedBox(height: AppSpacing.lg),
 

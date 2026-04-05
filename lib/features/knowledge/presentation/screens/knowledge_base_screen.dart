@@ -46,16 +46,37 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Knowledge Base',
-                    style: AppTextStyles.h1
-                        .copyWith(color: AppColors.textPrimary),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_rounded),
+                        onPressed: () {
+                          if (context.canPop()) {
+                            context.pop();
+                          } else {
+                            context.go('/services');
+                          }
+                        },
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          'Knowledge Base',
+                          style: AppTextStyles.h1
+                              .copyWith(color: AppColors.textPrimary),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    'Offline farming encyclopedia',
-                    style: AppTextStyles.bodyMd
-                        .copyWith(color: AppColors.textSecondary),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 48.0),
+                    child: Text(
+                      'Offline farming encyclopedia',
+                      style: AppTextStyles.bodyMd
+                          .copyWith(color: AppColors.textSecondary),
+                    ),
                   ),
                 ],
               ),

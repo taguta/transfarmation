@@ -3,39 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
+
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
-import '../../../../core/providers/data_providers.dart';
-
-// Provides real Traceability Batches from SQLite
-final traceabilityBatchesProvider = FutureProvider<List<Map<String, dynamic>>>((ref) async {
-  final db = ref.watch(databaseProvider);
-  
-  final result = await db.rawQuery('''
-    SELECT 
-      f.id as fieldId,
-      f.currentCrop as crop,
-      f.yieldTonnes as weight,
-      f.status,
-      farm.name as farmName,
-      farm.id as farmId
-    FROM farm_fields f
-    JOIN farms farm ON f.farmId = farm.id
-    WHERE f.status = 'harvested' OR f.status = 'harvesting' OR f.currentCrop IS NOT NULL
-  ''');
-
-  return result.map((row) => {
-    'id': 'BATCH-${row['fieldId'].toString().substring(0, min(4, row['fieldId'].toString().length)).toUpperCase()}-${row['crop'].toString().substring(0, min(3, row['crop'].toString().length)).toUpperCase()}',
-    'crop': row['crop'],
-    'harvestDate': DateTime.now().subtract(const Duration(days: 2)), // Temporary fallback since harvestedDate is missing in DB schema
-    'weight': '${row['weight'] ?? 0} Tonnes',
-    'quality': 'Grade A', // Mock quality info since it's not modeled yet
-    'farmName': row['farmName'],
-  }).toList();
-});
+import '../providers/traceability_providers.dart';
+import '../../domain/entities/traceability_batch.dart';
 
 class TraceabilityScreen extends ConsumerStatefulWidget {
   const TraceabilityScreen({super.key});
@@ -45,7 +19,7 @@ class TraceabilityScreen extends ConsumerStatefulWidget {
 }
 
 class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
-  Map<String, dynamic>? selectedBatch;
+  TraceabilityBatch? selectedBatch;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +81,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                         Text('Scan to verify origin', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
                         const SizedBox(height: AppSpacing.lg),
                         QrImageView(
-                          data: 'https://transfarmation.app/verify/${selectedBatch!['id']}',
+                          data: 'https://transfarmation.app/verify/${selectedBatch!.id}',
                           version: QrVersions.auto,
                           size: 240.0,
                           backgroundColor: Colors.white,
@@ -121,7 +95,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                           ),
                         ),
                         const SizedBox(height: AppSpacing.lg),
-                        Text(selectedBatch!['id'] as String, style: AppTextStyles.h3.copyWith(letterSpacing: 2.0)),
+                        Text(selectedBatch!.id, style: AppTextStyles.h3.copyWith(letterSpacing: 2.0)),
                       ],
                     ),
                   ),
@@ -131,11 +105,11 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                 
                 Text('Verified Data', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
                 const SizedBox(height: AppSpacing.md),
-                _DataRow(label: 'Farm', value: selectedBatch!['farmName'] as String),
-                _DataRow(label: 'Produce', value: selectedBatch!['crop'] as String),
-                _DataRow(label: 'Harvest Date', value: DateFormat.yMMMd().format(selectedBatch!['harvestDate'] as DateTime)),
-                _DataRow(label: 'Total Weight', value: selectedBatch!['weight'] as String),
-                _DataRow(label: 'Quality Grade', value: selectedBatch!['quality'] as String),
+                _DataRow(label: 'Farm', value: selectedBatch!.farmName),
+                _DataRow(label: 'Produce', value: selectedBatch!.crop),
+                _DataRow(label: 'Harvest Date', value: DateFormat.yMMMd().format(selectedBatch!.harvestDate)),
+                _DataRow(label: 'Total Weight', value: selectedBatch!.weight),
+                _DataRow(label: 'Quality Grade', value: selectedBatch!.quality),
 
                 const SizedBox(height: AppSpacing.xxl),
                 
@@ -176,7 +150,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
 }
 
 class _BatchTile extends StatelessWidget {
-  final Map<String, dynamic> batch;
+  final TraceabilityBatch batch;
   final VoidCallback onTap;
 
   const _BatchTile({required this.batch, required this.onTap});
@@ -210,8 +184,8 @@ class _BatchTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(batch['crop'] as String, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
-                    Text('${batch['weight']} • ${DateFormat.yMMMd().format(batch['harvestDate'] as DateTime)}', style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+                    Text(batch.crop, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                    Text('${batch.weight} • ${DateFormat.yMMMd().format(batch.harvestDate)}', style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
                   ],
                 ),
               ),

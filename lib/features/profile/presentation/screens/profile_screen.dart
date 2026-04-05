@@ -9,6 +9,8 @@ import '../../../../theme/app_theme.dart';
 import '../../../../theme/theme_provider.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../farm/presentation/providers/farm_providers.dart';
+import '../providers/profile_providers.dart';
+import '../../domain/entities/profile_settings.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -294,27 +296,42 @@ class ProfileScreen extends ConsumerWidget {
                     context: context,
                     builder: (ctx) => Padding(
                       padding: const EdgeInsets.all(AppSpacing.xl),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Notification Preferences', style: AppTextStyles.h2),
-                          const SizedBox(height: AppSpacing.lg),
-                          SwitchListTile(
-                            value: true,
-                            onChanged: (v) {},
-                            title: const Text('Push Notifications'),
-                          ),
-                          SwitchListTile(
-                            value: true,
-                            onChanged: (v) {},
-                            title: const Text('SMS Alerts (Weather)'),
-                          ),
-                          SwitchListTile(
-                            value: false,
-                            onChanged: (v) {},
-                            title: const Text('Email Updates'),
-                          ),
-                        ],
+                      child: Consumer(
+                        builder: (ctx, ref, _) {
+                          final settingsAsync = ref.watch(profileSettingsProvider);
+                          final settings = settingsAsync.valueOrNull ?? const ProfileSettings();
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('Notification Preferences', style: AppTextStyles.h2),
+                              const SizedBox(height: AppSpacing.lg),
+                              SwitchListTile(
+                                value: settings.pushNotifications,
+                                onChanged: (v) {
+                                  ref.read(profileRepositoryProvider).updateSettings(settings.copyWith(pushNotifications: v));
+                                  ref.invalidate(profileSettingsProvider);
+                                },
+                                title: const Text('Push Notifications'),
+                              ),
+                              SwitchListTile(
+                                value: settings.smsAlerts,
+                                onChanged: (v) {
+                                  ref.read(profileRepositoryProvider).updateSettings(settings.copyWith(smsAlerts: v));
+                                  ref.invalidate(profileSettingsProvider);
+                                },
+                                title: const Text('SMS Alerts (Weather)'),
+                                ),
+                              SwitchListTile(
+                                value: settings.emailUpdates,
+                                onChanged: (v) {
+                                  ref.read(profileRepositoryProvider).updateSettings(settings.copyWith(emailUpdates: v));
+                                  ref.invalidate(profileSettingsProvider);
+                                },
+                                title: const Text('Email Updates'),
+                              ),
+                            ],
+                          );
+                        }
                       ),
                     ),
                   );

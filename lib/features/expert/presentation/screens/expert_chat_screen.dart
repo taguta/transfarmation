@@ -19,9 +19,9 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
 
   final List<_ChatMessage> _messages = [
     _ChatMessage(
-      text: 'Hello Tendai! I\'m Dr. Chipo, your agronomist. How can I help you today?',
+      text: 'Hello! I\'m your Transfarmation AI Agronomist. How can I assist you with your farm today?',
       isMe: false,
-      sender: 'Dr. Chipo Nyathi',
+      sender: 'Transfarmation AI',
       time: '9:00 AM',
     ),
     _ChatMessage(
@@ -33,7 +33,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
     _ChatMessage(
       text: 'That could indicate nitrogen deficiency. A few questions:\n\n1. When did you last apply fertilizer?\n2. How much rain have you received recently?\n3. Is the yellowing starting from the lower leaves?',
       isMe: false,
-      sender: 'Dr. Chipo Nyathi',
+      sender: 'Transfarmation AI',
       time: '9:03 AM',
     ),
     _ChatMessage(
@@ -45,7 +45,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
     _ChatMessage(
       text: 'That confirms nitrogen deficiency. Here\'s my recommendation:\n\n🌿 Apply Ammonium Nitrate (AN) top dressing at 200kg/ha\n⏰ Do it within the next 3 days\n🌧️ Best if done before rain\n\nYour maize is at the right stage for top dressing. This should resolve the yellowing within 7-10 days.',
       isMe: false,
-      sender: 'Dr. Chipo Nyathi',
+      sender: 'Transfarmation AI',
       time: '9:07 AM',
     ),
   ];
@@ -88,7 +88,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
         _messages.add(_ChatMessage(
           text: replyText,
           isMe: false,
-          sender: 'Dr. Chipo Nyathi',
+          sender: 'Transfarmation AI',
           time: 'Now',
         ));
       });
@@ -132,14 +132,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
                 shape: BoxShape.circle,
               ),
               child: const Center(
-                child: Text(
-                  'CN',
-                  style: TextStyle(
-                    color: AppColors.advisory,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
-                  ),
-                ),
+                child: Icon(Icons.auto_awesome_rounded, color: Colors.blueAccent, size: 20),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -147,15 +140,15 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Dr. Chipo Nyathi',
+                  'Transfarmation AI',
                   style: AppTextStyles.labelLg.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 Text(
-                  'Agronomist · Online',
+                  'Virtual Agronomist',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.success,
+                    color: Colors.blueAccent,
                   ),
                 ),
               ],
@@ -323,7 +316,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
                       _messages.add(_ChatMessage(
                         text: 'Looking at that photo, it definitely looks like Fall Armyworm damage. You should apply a contact insecticide immediately.',
                         isMe: false,
-                        sender: 'Dr. Chipo Nyathi',
+                        sender: 'Transfarmation AI',
                         time: 'Now',
                       ));
                     });

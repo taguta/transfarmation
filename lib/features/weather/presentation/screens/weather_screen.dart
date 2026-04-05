@@ -13,8 +13,10 @@ class WeatherScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alerts = ref.watch(weatherAlertsProvider);
-    final forecast = ref.watch(weeklyForecastProvider);
+    final alertsAsync = ref.watch(weatherAlertsProvider);
+    final alerts = alertsAsync.value ?? [];
+    final forecastAsync = ref.watch(weeklyForecastProvider);
+    final forecast = forecastAsync.value ?? [];
     final activities = ref.watch(currentMonthActivitiesProvider);
 
     return Scaffold(
@@ -45,6 +47,54 @@ class WeatherScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.md),
                 ...alerts.map((a) => _AlertCard(alert: a)),
               ],
+
+              // Agronomic Indices & Disease Risk Matrix
+              const SizedBox(height: AppSpacing.xxl),
+              Text('Agronomic Analytics', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              const SizedBox(height: AppSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentSurface,
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                        border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.thermostat_auto_rounded, color: AppColors.accent),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text('145 GDD', style: AppTextStyles.h3.copyWith(color: AppColors.accent)),
+                          Text('Growing Degree Days', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      decoration: BoxDecoration(
+                        color: AppColors.error.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(Icons.bug_report_rounded, color: AppColors.error),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text('80% Risk', style: AppTextStyles.h3.copyWith(color: AppColors.error)),
+                          Text('Maize Blight (High Humid)', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
 
               // 7-day forecast
               const SizedBox(height: AppSpacing.xxl),

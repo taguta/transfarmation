@@ -73,3 +73,58 @@ export const onFarmModified = functions.firestore
 
     return null;
   });
+
+// 4. Send Push Notifications for Community Alerts
+// Triggers when a new post is categorized as isAlert (e.g. disease outbreak in a region)
+export const notifyOnCommunityAlert = functions.firestore
+  .document('community_posts/{postId}')
+  .onCreate(async (snapshot: functions.firestore.QueryDocumentSnapshot, context: functions.EventContext) => {
+    const data = snapshot.data();
+    
+    if (data.isAlert === true) {
+      const payload = {
+        notification: {
+          title: `⚠️ FARMER ALERT: ${data.region}`,
+          body: data.title || 'A new urgent agricultural alert was posted in your region.',
+        },
+        topic: `region_${data.region.replace(/\s+/g, '_').toLowerCase()}`,
+      };
+      
+      try {
+        await admin.messaging().send(payload);
+        console.log(`Alert sent to topic region_${data.region}`);
+      } catch (error) {
+        console.error("Error sending alert notification:", error);
+      }
+    }
+  });
+
+// 5. Smart IoT Telemetry Monitor
+// Sends a push notification if an IoT device reports dangerously low soil moisture
+export const monitorIotTelemetry = functions.firestore
+  .document('iot_telemetry/{readingId}')
+  .onCreate(async (snapshot: functions.firestore.QueryDocumentSnapshot, context: functions.EventContext) => {
+    const data = snapshot.data();
+    
+    if (data.sensorType === 'soil_moisture' && data.value < 15.0) {
+      // Find the user who owns this sensor
+      const sensorDoc = await db.collection('iot_devices').doc(data.deviceId).get();
+      if (!sensorDoc.exists) return;
+      
+      const userId = sensorDoc.data()?.ownerId;
+      if (!userId) return;
+
+      const userDoc = await db.collection('user_profiles').doc(userId).get();
+      const fcmToken = userDoc.data()?.fcmToken;
+
+      if (fcmToken) {
+        await admin.messaging().send({
+          token: fcmToken,
+          notification: {
+            title: '💧 Irrigation Warning!',
+            body: `Moisture levels for ${sensorDoc.data()?.name || 'your field'} dropped below critical threshold.`,
+          }
+        });
+      }
+    }
+  });

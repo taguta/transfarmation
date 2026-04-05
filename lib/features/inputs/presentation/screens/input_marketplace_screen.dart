@@ -103,6 +103,68 @@ class _InputMarketplaceScreenState
             ),
             const SizedBox(height: AppSpacing.md),
 
+            // AI Suggestion Banner
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.accentSurface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.auto_awesome_rounded, color: AppColors.accent),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('AI Suggestion', style: AppTextStyles.labelMd.copyWith(color: AppColors.accent)),
+                          Text('Based on recent rains & your soil PH, we recommend Top Dressing Urea next week.', style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+
+            // AR and Anti-counterfeit actions
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('Camera opened: AR Plot Measurement / Seed Calculator initiated.')),
+                         );
+                      },
+                      icon: const Icon(Icons.view_in_ar_rounded, size: 18),
+                      label: const Text('AR Measure'),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('High-speed camera scanner: Checking anti-counterfeit QR code...')),
+                         );
+                      },
+                      icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
+                      label: const Text('Verify Auth'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+
             // Product list
             Expanded(
               child: ListView.builder(

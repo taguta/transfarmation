@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../providers/marketplace_providers.dart';
 
-class MarketplaceScreen extends StatelessWidget {
+class MarketplaceScreen extends ConsumerStatefulWidget {
   const MarketplaceScreen({super.key});
+
+  @override
+  ConsumerState<MarketplaceScreen> createState() => _MarketplaceScreenState();
+}
+
+class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
+  String? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
     final padding = context.pagePadding;
     final gridColumns = context.gridColumns(mobile: 2, tablet: 3, desktop: 4);
+    final productsAsync = ref.watch(marketplaceProductsProvider(_selectedCategory));
 
     return Scaffold(
       body: SafeArea(
@@ -64,40 +74,75 @@ class MarketplaceScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.lg),
 
+              // Aggregation & Transport (Uber for Tractors)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _FeatureCard(
+                        title: 'Group Sell',
+                        subtitle: 'Pool harvests',
+                        icon: Icons.groups_rounded,
+                        color: AppColors.harvestGold,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Produce Aggregation: Pool harvests to meet commercial buyer limits.')),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: _FeatureCard(
+                        title: 'Hire Transport',
+                        subtitle: 'Uber for Tractors',
+                        icon: Icons.local_shipping_rounded,
+                        color: AppColors.secondary,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Logistics Matching: Found 3 trucks within 10km.')),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+
               // Category chips
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: padding),
                 child: Row(
-                  children: const [
+                  children: [
                     _CategoryChip(
                       label: 'All',
                       icon: Icons.grid_view_rounded,
-                      selected: true,
+                      selected: _selectedCategory == null,
+                      onTap: () => setState(() => _selectedCategory = null),
                     ),
-                    SizedBox(width: AppSpacing.sm),
-                    _CategoryChip(
-                      label: 'Grains',
-                      icon: Icons.grain_rounded,
-                      selected: false,
-                    ),
-                    SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: AppSpacing.sm),
                     _CategoryChip(
                       label: 'Vegetables',
                       icon: Icons.eco_rounded,
-                      selected: false,
+                      selected: _selectedCategory == 'Vegetables',
+                      onTap: () => setState(() => _selectedCategory = 'Vegetables'),
                     ),
-                    SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: AppSpacing.sm),
                     _CategoryChip(
-                      label: 'Livestock',
-                      icon: Icons.pets_rounded,
-                      selected: false,
+                      label: 'Seeds',
+                      icon: Icons.grain_rounded,
+                      selected: _selectedCategory == 'Seeds',
+                      onTap: () => setState(() => _selectedCategory = 'Seeds'),
                     ),
-                    SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: AppSpacing.sm),
                     _CategoryChip(
-                      label: 'Equipment',
-                      icon: Icons.handyman_rounded,
-                      selected: false,
+                      label: 'Agro-Chemicals',
+                      icon: Icons.science_rounded,
+                      selected: _selectedCategory == 'Agro-Chemicals',
+                      onTap: () => setState(() => _selectedCategory = 'Agro-Chemicals'),
                     ),
                   ],
                 ),
@@ -106,62 +151,35 @@ class MarketplaceScreen extends StatelessWidget {
 
               // Listings grid — columns adapt per screen size
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: gridColumns,
-                  padding: EdgeInsets.symmetric(horizontal: padding),
-                  mainAxisSpacing: AppSpacing.md,
-                  crossAxisSpacing: AppSpacing.md,
-                  childAspectRatio: 0.72,
-                  children: const [
-                    _ProduceCard(
-                      name: 'Maize (Grade A)',
-                      seller: 'Moyo Farm',
-                      price: '\$280/ton',
-                      location: 'Marondera',
-                      icon: Icons.grass_rounded,
-                      color: AppColors.primary,
-                    ),
-                    _ProduceCard(
-                      name: 'Soya Beans',
-                      seller: 'Chirinda Agri',
-                      price: '\$520/ton',
-                      location: 'Rusape',
-                      icon: Icons.grain_rounded,
-                      color: AppColors.marketplace,
-                    ),
-                    _ProduceCard(
-                      name: 'Tobacco (Flue)',
-                      seller: 'Nyanga Estates',
-                      price: '\$3.20/kg',
-                      location: 'Nyanga',
-                      icon: Icons.eco_rounded,
-                      color: AppColors.secondary,
-                    ),
-                    _ProduceCard(
-                      name: 'Groundnuts',
-                      seller: 'Mutare Farms',
-                      price: '\$1,100/ton',
-                      location: 'Mutare',
-                      icon: Icons.spa_rounded,
-                      color: AppColors.veterinary,
-                    ),
-                    _ProduceCard(
-                      name: 'Tomatoes (Fresh)',
-                      seller: 'Green Valley',
-                      price: '\$0.80/kg',
-                      location: 'Harare',
-                      icon: Icons.local_florist_rounded,
-                      color: AppColors.error,
-                    ),
-                    _ProduceCard(
-                      name: 'Cotton Lint',
-                      seller: 'Lowveld Co-op',
-                      price: '\$1.50/kg',
-                      location: 'Chiredzi',
-                      icon: Icons.cloud_rounded,
-                      color: AppColors.info,
-                    ),
-                  ],
+                child: productsAsync.when(
+                  data: (products) {
+                    if (products.isEmpty) {
+                      return const Center(child: Text("No products found in this category."));
+                    }
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: gridColumns,
+                        mainAxisSpacing: AppSpacing.md,
+                        crossAxisSpacing: AppSpacing.md,
+                        childAspectRatio: 0.72,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: padding),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return _ProduceCard(
+                          name: product.title,
+                          seller: 'Unknown Sender',
+                          price: '\$${product.price.toStringAsFixed(2)}',
+                          location: 'Harare',
+                          icon: Icons.grass_rounded,
+                          color: AppColors.primary,
+                        );
+                      },
+                    );
+                  },
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (e, st) => Center(child: Text('Error: $e')),
                 ),
               ),
             ],
@@ -183,11 +201,13 @@ class _CategoryChip extends StatelessWidget {
   final String label;
   final IconData icon;
   final bool selected;
+  final VoidCallback? onTap;
 
   const _CategoryChip({
     required this.label,
     required this.icon,
     required this.selected,
+    this.onTap,
   });
 
   @override
@@ -200,7 +220,7 @@ class _CategoryChip extends StatelessWidget {
       ),
       label: Text(label),
       selected: selected,
-      onSelected: (_) {},
+      onSelected: (_) { if (onTap != null) onTap!(); },
       selectedColor: AppColors.primarySurface,
       checkmarkColor: AppColors.primary,
       labelStyle: AppTextStyles.labelMd.copyWith(
@@ -240,16 +260,18 @@ class _ProduceCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image placeholder
-          Container(
-            height: 100,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.08),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppRadius.lg),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.08),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.lg),
+                ),
               ),
-            ),
-            child: Center(
-              child: Icon(icon, size: 40, color: color.withValues(alpha: 0.6)),
+              child: Center(
+                child: Icon(icon, size: 40, color: color.withValues(alpha: 0.6)),
+              ),
             ),
           ),
 
@@ -257,6 +279,7 @@ class _ProduceCard extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   name,
@@ -272,6 +295,8 @@ class _ProduceCard extends StatelessWidget {
                   style: AppTextStyles.caption.copyWith(
                     color: AppColors.textTertiary,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Row(
@@ -283,6 +308,8 @@ class _ProduceCard extends StatelessWidget {
                         style: AppTextStyles.labelLg.copyWith(
                           color: AppColors.primary,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(width: 4),
@@ -315,6 +342,60 @@ class _ProduceCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _FeatureCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _FeatureCard({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 20),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                  Text(subtitle, style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -8,13 +8,14 @@ import '../../../../theme/app_theme.dart';
 import '../providers/community_providers.dart';
 import '../widgets/community_dialogs.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../domain/entities/post.dart';
 
 class CommunityBoardScreen extends ConsumerWidget {
   const CommunityBoardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final postsAsync = ref.watch(forumPostsProvider);
+    final postsAsync = ref.watch(communityPostsProvider);
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showModalBottomSheet(
@@ -114,7 +115,7 @@ class _FilterChip extends StatelessWidget {
 }
 
 class _ForumPostCard extends StatelessWidget {
-  final ForumPost post;
+  final Post post;
 
   const _ForumPostCard({required this.post});
 

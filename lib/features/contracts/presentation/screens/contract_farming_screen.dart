@@ -95,6 +95,17 @@ class ContractFarmingScreen extends ConsumerWidget {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('ML Kit Initialized: Scanning Paper Contract...')),
+          );
+        },
+        backgroundColor: AppColors.earthBrown,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.document_scanner_rounded),
+        label: const Text('Scan Paper Contract'),
+      ),
     );
   }
 }

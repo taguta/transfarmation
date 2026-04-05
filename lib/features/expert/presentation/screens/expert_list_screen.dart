@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../providers/expert_providers.dart';
 
-class ExpertListScreen extends StatelessWidget {
+class ExpertListScreen extends ConsumerWidget {
   const ExpertListScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final expertsAsync = ref.watch(expertsProvider(null));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ask an Expert'),
@@ -43,11 +46,20 @@ class ExpertListScreen extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
 
+          // AI Agronomist
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            child: _AiAgronomistBanner(
+              onTap: () => context.go('/expert/chat'),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+
           // Categories
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Text(
-              'Specialists',
+              'Human Specialists',
               style: AppTextStyles.labelMd.copyWith(
                 color: AppColors.textTertiary,
               ),
@@ -56,41 +68,29 @@ class ExpertListScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
 
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              children: [
-                _ExpertCard(
-                  name: 'Dr. Chipo Nyathi',
-                  specialty: 'Agronomist · Crop Science',
-                  rating: 4.8,
-                  isOnline: true,
-                  onTap: () => context.go('/expert/chat'),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                _ExpertCard(
-                  name: 'Eng. Tapiwa Moyo',
-                  specialty: 'Irrigation & Water Management',
-                  rating: 4.6,
-                  isOnline: true,
-                  onTap: () => context.go('/expert/chat'),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                _ExpertCard(
-                  name: 'Dr. Rumbidzai Mhandu',
-                  specialty: 'Veterinary · Livestock Health',
-                  rating: 4.9,
-                  isOnline: false,
-                  onTap: () => context.go('/expert/chat'),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                _ExpertCard(
-                  name: 'Mr. Blessing Chirwa',
-                  specialty: 'Soil Science & Fertilizers',
-                  rating: 4.5,
-                  isOnline: false,
-                  onTap: () => context.go('/expert/chat'),
-                ),
-              ],
+            child: expertsAsync.when(
+              data: (experts) {
+                if (experts.isEmpty) {
+                  return const Center(child: Text("No experts available"));
+                }
+                return ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                  itemCount: experts.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
+                  itemBuilder: (context, index) {
+                    final expert = experts[index];
+                    return _ExpertCard(
+                      name: expert.name,
+                      specialty: expert.specialization,
+                      rating: expert.rating,
+                      isOnline: expert.isAvailable,
+                      onTap: () => context.go('/expert/chat'),
+                    );
+                  },
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, st) => Center(child: Text("Error loading experts: $e")),
             ),
           ),
         ],
@@ -203,6 +203,66 @@ class _ExpertCard extends StatelessWidget {
               Icons.chevron_right_rounded,
               color: AppColors.textTertiary,
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AiAgronomistBanner extends StatelessWidget {
+  final VoidCallback onTap;
+  const _AiAgronomistBanner({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blueAccent.withValues(alpha: 0.2),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.auto_awesome_rounded, color: Colors.blueAccent, size: 32),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Ask AI Virtual Agronomist',
+                    style: AppTextStyles.h3.copyWith(color: Colors.white),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Instant diagnosis, treatment & weather advice for free.',
+                    style: AppTextStyles.bodySm.copyWith(color: Colors.white70),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white54, size: 16),
           ],
         ),
       ),

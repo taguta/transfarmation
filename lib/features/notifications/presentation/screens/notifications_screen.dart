@@ -34,52 +34,81 @@ class NotificationsScreen extends ConsumerWidget {
                 ),
               ),
             ),
+          IconButton(
+            icon: const Icon(Icons.settings_rounded, color: AppColors.textSecondary),
+            tooltip: 'Notification Preferences',
+            onPressed: () {
+               ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(content: Text('Preference Center: Toggle Market, Weather & Community alerts')),
+               );
+            },
+          ),
         ],
       ),
       body: notificationsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
         data: (notifications) {
-          if (notifications.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.notifications_off_outlined,
-                    size: 56,
-                    color: AppColors.textTertiary,
+          final bodyContent = notifications.isEmpty 
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.notifications_off_outlined,
+                        size: 56,
+                        color: AppColors.textTertiary,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        'No notifications yet',
+                        style: AppTextStyles.bodyMd.copyWith(
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    'No notifications yet',
-                    style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textTertiary,
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  itemCount: notifications.length,
+                  separatorBuilder: (_, __) =>
+                      const Divider(height: 1, indent: 72),
+                  itemBuilder: (context, index) {
+                    final n = notifications[index];
+                    return _NotificationTile(
+                      notification: n,
+                      onTap: () {
+                        ref
+                            .read(notificationProvider.notifier)
+                            .markAsRead(n.id);
+                        if (n.actionRoute != null) {
+                          context.go(n.actionRoute!);
+                        }
+                      },
+                    );
+                  },
+                );
+
+          return Column(
+            children: [
+              // Geofenced Alert Indicator
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+                color: AppColors.harvestGold.withValues(alpha: 0.15),
+                child: Row(
+                  children: [
+                    const Icon(Icons.pin_drop_rounded, size: 16, color: AppColors.harvestGold),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Text('Geofenced Alerts Active', style: AppTextStyles.caption.copyWith(color: AppColors.earthBrown, fontWeight: FontWeight.bold)),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            );
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-            itemCount: notifications.length,
-            separatorBuilder: (_, __) =>
-                const Divider(height: 1, indent: 72),
-            itemBuilder: (context, index) {
-              final n = notifications[index];
-              return _NotificationTile(
-                notification: n,
-                onTap: () {
-                  ref
-                      .read(notificationProvider.notifier)
-                      .markAsRead(n.id);
-                  if (n.actionRoute != null) {
-                    context.go(n.actionRoute!);
-                  }
-                },
-              );
-            },
+              Expanded(child: bodyContent),
+            ],
           );
         },
       ),

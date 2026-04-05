@@ -1,7 +1,4 @@
-import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,47 +37,37 @@ import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/shell/presentation/screens/app_shell.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/weather/presentation/screens/weather_screen.dart';
+import '../../features/auth/presentation/providers/auth_providers.dart';
 
-/// A [ChangeNotifier] that calls [notifyListeners] whenever the given stream
-/// emits a value. Used to make [GoRouter] react to Firebase Auth state changes.
-class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _sub = stream.listen((_) => notifyListeners());
-  }
 
-  late final StreamSubscription<dynamic> _sub;
-
-  @override
-  void dispose() {
-    _sub.cancel();
-    super.dispose();
-  }
-}
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final refreshListenable = _GoRouterRefreshStream(
-    FirebaseAuth.instance.authStateChanges(),
-  );
-  ref.onDispose(refreshListenable.dispose);
+  // We strictly use the architecture's provider stream, never direct SDK calls
+  final authState = ref.watch(authStateProvider);
 
   return GoRouter(
     initialLocation: '/',
-    refreshListenable: refreshListenable,
     redirect: (context, state) {
-      final user = FirebaseAuth.instance.currentUser;
+      // Wait for auth to initialize
+      if (authState.isLoading) return null;
+
+      final user = authState.valueOrNull;
       final loc = state.matchedLocation;
 
-      // Splash and onboarding are always accessible.
+      // Unprotected routes
       if (loc == '/' || loc == '/onboarding') return null;
 
       final isAuthRoute = loc == '/login' || loc == '/register';
 
-      // Not signed in → send to login (except on auth routes).
-      if (user == null && !isAuthRoute) return '/login';
+      // Security Guard: Prevent unauthenticated deep-linking
+      if (user == null && !isAuthRoute) {
+        return '/login';
+      }
 
-      // Already signed in → bounce away from auth routes.
-      if (user != null && isAuthRoute) return '/home';
+      // If securely authed, don't let them hit login again
+      if (user != null && isAuthRoute) {
+        return '/home';
+      }
 
       return null;
     },

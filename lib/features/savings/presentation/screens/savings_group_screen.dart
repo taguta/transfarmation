@@ -41,6 +41,70 @@ class SavingsGroupScreen extends ConsumerWidget {
 
               // Summary card
               _SummaryCard(groups: groups),
+              const SizedBox(height: AppSpacing.lg),
+
+              // Gamification Badges
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.harvestGold.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(AppRadius.full),
+                      border: Border.all(color: AppColors.harvestGold.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.workspace_premium_rounded, color: AppColors.harvestGold, size: 16),
+                        const SizedBox(width: 4),
+                        Text('Consistent Saver Badge', style: AppTextStyles.caption.copyWith(color: AppColors.harvestGold, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+
+              Text('My Farm Goals', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              const SizedBox(height: AppSpacing.md),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          width: 60, height: 60,
+                          child: CircularProgressIndicator(
+                            value: 0.65,
+                            backgroundColor: AppColors.borderLight,
+                            color: AppColors.primary,
+                            strokeWidth: 6,
+                          ),
+                        ),
+                        const Icon(Icons.agriculture_rounded, color: AppColors.primary, size: 28),
+                      ],
+                    ),
+                    const SizedBox(width: AppSpacing.lg),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('New Tractor Deposit', style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                          const SizedBox(height: 4),
+                          Text('\$650 / \$1,000 saved', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.xxl),
 
               // Groups list

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ui' as ui;
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -93,14 +96,25 @@ class _FarmRecordScreenState extends ConsumerState<FarmRecordScreen> with Single
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add functionality via Sync Queue working.')),
+            const SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.mic, color: Colors.white),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('Listening... "Applied 50 kg basal fertilizer..."\nAI mapping to Form Data...')),
+                ],
+              ),
+              backgroundColor: AppColors.forestGreen,
+              duration: Duration(seconds: 4),
+            ),
           );
         },
         backgroundColor: AppColors.forestGreen,
-        child: const Icon(Icons.add, color: Colors.white),
+        icon: const Icon(Icons.mic_rounded, color: Colors.white),
+        label: const Text('Log with Voice', style: TextStyle(color: Colors.white)),
       ),
     );
   }
@@ -244,22 +258,117 @@ class _StatCard extends StatelessWidget {
 }
 
 // --- Fields tab ---
-class _FieldsTab extends StatelessWidget {
+class _FieldsTab extends StatefulWidget {
   final List<FarmField> fields;
   const _FieldsTab({required this.fields});
 
   @override
+  State<_FieldsTab> createState() => _FieldsTabState();
+}
+
+class _FieldsTabState extends State<_FieldsTab> {
+  bool _showMap = true;
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      itemCount: fields.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
-      itemBuilder: (context, index) {
-        final field = fields[index];
-        return _FieldCard(field: field);
-      },
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Field Layout', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              SegmentedButton<bool>(
+                segments: const [
+                  ButtonSegment(value: true, icon: Icon(Icons.map_rounded), label: Text('GIS Map')),
+                  ButtonSegment(value: false, icon: Icon(Icons.list_rounded), label: Text('List')),
+                ],
+                selected: {_showMap},
+                onSelectionChanged: (val) => setState(() => _showMap = val.first),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: _showMap
+              ? InteractiveViewer(
+                  boundaryMargin: const EdgeInsets.all(100),
+                  minScale: 0.5,
+                  maxScale: 3.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xl),
+                    child: CustomPaint(
+                      size: const Size(double.infinity, double.infinity),
+                      painter: _GisFarmPainter(fields: widget.fields),
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  itemCount: widget.fields.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
+                  itemBuilder: (context, index) => _FieldCard(field: widget.fields[index]),
+                ),
+        ),
+      ],
     );
   }
+}
+
+class _GisFarmPainter extends CustomPainter {
+  final List<FarmField> fields;
+  _GisFarmPainter({required this.fields});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final bgPaint = Paint()..color = const Color(0xFFF1F8E9)..style = PaintingStyle.fill;
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bgPaint);
+
+    final gridPaint = Paint()..color = Colors.green.withValues(alpha: 0.1)..strokeWidth = 1;
+    for (double i = 0; i < size.width; i += 40) canvas.drawLine(Offset(i, 0), Offset(i, size.height), gridPaint);
+    for (double i = 0; i < size.height; i += 40) canvas.drawLine(Offset(0, i), Offset(size.width, i), gridPaint);
+
+    final textPainter = TextPainter(textDirection: ui.TextDirection.ltr);
+
+    for (int i = 0; i < fields.length; i++) {
+      final field = fields[i];
+      final path = Path();
+      
+      // Generate deterministic polygons based on index for the mockup
+      final w = size.width / 2.5;
+      final h = size.height / 2.5;
+      final offsetX = (i % 2) * (w + 20) + 20;
+      final offsetY = (i ~/ 2) * (h + 20) + 20;
+
+      path.moveTo(offsetX, offsetY);
+      path.lineTo(offsetX + w, offsetY + (i % 2 == 0 ? 10 : -10));
+      path.lineTo(offsetX + w - 20, offsetY + h);
+      path.lineTo(offsetX + 10, offsetY + h + 10);
+      path.close();
+
+      Color fillColor;
+      switch (field.status) {
+        case 'growing': fillColor = AppColors.forestGreen; break;
+        case 'planted': fillColor = AppColors.harvestGold; break;
+        case 'harvested': fillColor = Colors.blue; break;
+        default: fillColor = AppColors.textSecondary;
+      }
+
+      canvas.drawPath(path, Paint()..color = fillColor.withValues(alpha: 0.6)..style = PaintingStyle.fill);
+      canvas.drawPath(path, Paint()..color = fillColor..style = PaintingStyle.stroke..strokeWidth = 3);
+
+      textPainter.text = TextSpan(
+        text: '${field.name}\n${field.currentCrop}\n${field.hectares} ha',
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(offsetX + w / 4, offsetY + h / 3));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
 class _FieldCard extends StatelessWidget {
@@ -320,11 +429,36 @@ class _FieldCard extends StatelessWidget {
               _FieldDetail(icon: Icons.square_foot_rounded, label: '${field.hectares} ha'),
               const SizedBox(width: AppSpacing.lg),
               _FieldDetail(icon: Icons.calendar_today_rounded, label: field.season),
+              _FieldDetail(icon: Icons.calendar_today_rounded, label: field.season),
               if (field.yieldTonnes != null) ...[
                 const SizedBox(width: AppSpacing.lg),
                 _FieldDetail(icon: Icons.inventory_2_rounded, label: '${field.yieldTonnes} t'),
               ],
             ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                final payloadRaw = '${field.id}|${field.currentCrop}|${DateTime.now().toIso8601String()}|${field.yieldTonnes}';
+                final hash = sha256.convert(utf8.encode(payloadRaw)).toString();
+                
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Traceability Payload Generated:\n${hash.substring(0, 16)}...'),
+                    backgroundColor: AppColors.forestGreen,
+                    duration: const Duration(seconds: 4),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
+              label: const Text('Export Traceability Payload'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.forestGreen,
+                side: const BorderSide(color: AppColors.forestGreen),
+              ),
+            ),
           ),
           if (field.expenses.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.md),

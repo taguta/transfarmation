@@ -128,6 +128,96 @@ Future<void> seedMockDataToFirestore() async {
     await notificationBatch.commit();
     print('Successfully seeded ${notifications.length} notifications.');
 
+    print('Seeding experts...');
+    final expertBatch = firestore.batch();
+    final experts = [
+      {
+        'id': 'exp-1',
+        'name': 'Dr. Chipo Nyathi',
+        'specialization': 'Agronomist · Crop Science',
+        'rating': 4.8,
+        'reviewsCount': 124,
+        'consultationFee': 15.0,
+        'isAvailable': true,
+      },
+      {
+        'id': 'exp-2',
+        'name': 'Eng. Tapiwa Moyo',
+        'specialization': 'Irrigation & Water Management',
+        'rating': 4.6,
+        'reviewsCount': 89,
+        'consultationFee': 25.0,
+        'isAvailable': true,
+      },
+      {
+        'id': 'exp-3',
+        'name': 'Dr. Rumbidzai Mhandu',
+        'specialization': 'Veterinary · Livestock Health',
+        'rating': 4.9,
+        'reviewsCount': 210,
+        'consultationFee': 20.0,
+        'isAvailable': false,
+      },
+      {
+        'id': 'exp-4',
+        'name': 'Mr. Blessing Chirwa',
+        'specialization': 'Soil Science & Fertilizers',
+        'rating': 4.5,
+        'reviewsCount': 45,
+        'consultationFee': 10.0,
+        'isAvailable': false,
+      },
+    ];
+
+    for (var exp in experts) {
+      final doc = firestore.collection('experts').doc(exp['id'] as String);
+      expertBatch.set(doc, exp);
+    }
+    await expertBatch.commit();
+    print('Successfully seeded ${experts.length} experts.');
+
+    print('Seeding marketplace products...');
+    final productBatch = firestore.batch();
+    final products = [
+      {
+        'id': 'prod-1',
+        'sellerId': 'user-123',
+        'title': 'Organic Tomatoes',
+        'description': 'Freshly harvested organic tomatoes from Field Alpha. High quality, zero pesticides.',
+        'price': 12.50,
+        'category': 'Vegetables',
+        'imageUrls': <String>[],
+        'postedAt': DateTime.now().subtract(const Duration(days: 1)).toIso8601String(),
+      },
+      {
+        'id': 'prod-2',
+        'sellerId': 'user-456',
+        'title': 'Premium Maize Seeds',
+        'description': 'Drought-resistant maize seeds suitable for arid regions. 10kg bag.',
+        'price': 45.00,
+        'category': 'Seeds',
+        'imageUrls': <String>[],
+        'postedAt': DateTime.now().toIso8601String(),
+      },
+      {
+        'id': 'prod-3',
+        'sellerId': 'user-789',
+        'title': 'NPK Fertilizer 50kg',
+        'description': 'Standard NPK fertilizer to boost your yields. Delivery available within 50km.',
+        'price': 30.00,
+        'category': 'Agro-Chemicals',
+        'imageUrls': <String>[],
+        'postedAt': DateTime.now().subtract(const Duration(hours: 5)).toIso8601String(),
+      },
+    ];
+
+    for (var prod in products) {
+      final doc = firestore.collection('products').doc(prod['id'] as String);
+      productBatch.set(doc, prod);
+    }
+    await productBatch.commit();
+    print('Successfully seeded ${products.length} marketplace products.');
+
     print('Mock data seeding complete!');
   } catch (e) {
     print('Failed to seed: $e');

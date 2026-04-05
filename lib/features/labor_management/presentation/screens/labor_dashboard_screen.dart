@@ -48,6 +48,41 @@ class LaborDashboardScreen extends ConsumerWidget {
               Text('Manage farm workers and daily assignments',
                   style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
               
+              const SizedBox(height: AppSpacing.lg),
+
+              // GPS Geofence Banner
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.successSurface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.gps_fixed_rounded, color: AppColors.success, size: 20),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('GPS Auto-Checkin Active', style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                          Text('Workers crossing the farm perimeter geofence are logged automatically.', 
+                            style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
               const SizedBox(height: AppSpacing.xxl),
 
               // KPI Cards

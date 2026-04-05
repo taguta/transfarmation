@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/community_providers.dart';
 import '../../../../theme/app_theme.dart';
+import '../../domain/entities/post.dart';
 
 class CreatePostDialog extends ConsumerStatefulWidget {
   const CreatePostDialog({super.key});
@@ -44,7 +45,7 @@ class _CreatePostDialogState extends ConsumerState<CreatePostDialog> {
             onPressed: () async {
               if (_titleCtrl.text.isEmpty || _contentCtrl.text.isEmpty) return;
               setState(() => _isLoading = true);
-              final post = ForumPost(
+              final post = Post(
                 id: 'POST-${DateTime.now().millisecondsSinceEpoch}',
                 author: 'Current User', // To be pulled from Auth
                 region: _regionCtrl.text.isEmpty ? 'General' : _regionCtrl.text,
@@ -56,7 +57,7 @@ class _CreatePostDialogState extends ConsumerState<CreatePostDialog> {
                 time: DateTime.now(),
               );
               await ref.read(communityRepositoryProvider).createPost(post);
-              ref.invalidate(forumPostsProvider);
+              ref.invalidate(communityPostsProvider);
               if (mounted) Navigator.pop(context);
             },
             child: _isLoading ? const CircularProgressIndicator() : const Text('Post'),

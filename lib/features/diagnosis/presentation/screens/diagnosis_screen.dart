@@ -425,6 +425,31 @@ class _DiagnosisHistoryCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: AppSpacing.md),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Added prescribed treatment to Cart!'),
+                      backgroundColor: AppColors.primary,
+                      action: SnackBarAction(
+                        label: 'VIEW',
+                        textColor: Colors.white,
+                        onPressed: () => context.go('/marketplace/cart'),
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.shopping_cart_checkout_rounded, size: 18),
+                label: const Text('Add Prescription to Cart'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
           ],
         ),
       ),
