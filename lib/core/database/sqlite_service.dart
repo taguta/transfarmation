@@ -6,11 +6,13 @@ class SqliteService {
   static Future<Database> init() async {
     return openDatabase(
       join(await getDatabasesPath(), 'agrolink.db'),
-      version: 5,
+      version: 7,
       onCreate: (db, version) async {
         await _createAllTables(db);
         await _migrateToV4(db);
         await _migrateToV5(db);
+        await _migrateToV6(db);
+        await _migrateToV7(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -24,6 +26,12 @@ class SqliteService {
         }
         if (oldVersion < 5) {
           await _migrateToV5(db);
+        }
+        if (oldVersion < 6) {
+          await _migrateToV6(db);
+        }
+        if (oldVersion < 7) {
+          await _migrateToV7(db);
         }
       },
     );
@@ -442,6 +450,42 @@ class SqliteService {
         imageUrls TEXT,
         postedAt TEXT NOT NULL,
         isSynced INTEGER DEFAULT 0
+      )
+    ''');
+  }
+
+  static Future<void> _migrateToV6(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS experts(
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        specialization TEXT NOT NULL,
+        rating REAL,
+        reviewsCount INTEGER,
+        consultationFee REAL,
+        isAvailable INTEGER DEFAULT 1
+      )
+    ''');
+    
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS bookings(
+        id TEXT PRIMARY KEY,
+        expertId TEXT NOT NULL,
+        slot TEXT NOT NULL,
+        status TEXT,
+        updatedAt TEXT,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+  }
+
+  static Future<void> _migrateToV7(Database db) async {
+    // Ensures sync_metadata is created for new installs that missed it
+    // because _migrateToV3 was removed from onCreate
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS sync_metadata(
+        collection TEXT PRIMARY KEY,
+        lastSyncAt TEXT NOT NULL
       )
     ''');
   }

@@ -32,6 +32,31 @@ class MarketplaceLocalDataSource {
     } else {
       rows = await db.query('marketplace_products');
     }
+
+    if (rows.isEmpty) {
+      return [
+        Product(
+          id: 'mp1',
+          sellerId: 'farmer_1',
+          title: 'Premium Maize Seed (SC 719)',
+          description: 'High yielding, drought tolerant variety. 10kg bag.',
+          price: 25.0,
+          category: 'inputs',
+          imageUrls: [],
+          postedAt: DateTime.now().subtract(const Duration(days: 1)),
+        ),
+        Product(
+          id: 'mp2',
+          sellerId: 'farmer_2',
+          title: 'Fresh Grade A Tomatoes',
+          description: 'Boxes of fresh tomatoes from the farm.',
+          price: 15.0,
+          category: 'produce',
+          imageUrls: [],
+          postedAt: DateTime.now().subtract(const Duration(hours: 4)),
+        ),
+      ].where((p) => category == null || p.category == category).toList();
+    }
     
     return rows.map((r) => Product(
       id: r['id'] as String,

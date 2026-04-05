@@ -210,6 +210,10 @@ class SyncService {
       case 'farm_task':
         final ref = firestore.collection('farm_tasks').doc(payload['id']);
         batch.set(ref, payload);
+
+      case 'booking':
+        final ref = firestore.collection('bookings').doc(payload['id']);
+        batch.set(ref, payload);
     }
   }
 

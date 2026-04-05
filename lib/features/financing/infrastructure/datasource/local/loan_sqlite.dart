@@ -39,6 +39,32 @@ class LoanLocalDataSource {
 
   Future<List<LoanOffer>> getLoanOffers() async {
     final data = await db.query('loan_offers');
+    
+    if (data.isEmpty) {
+      return [
+        LoanOffer(
+          id: 'lo1',
+          lenderName: 'AgriBank ZW',
+          interestRate: 8.5,
+          amount: 5000.0,
+          repaymentPeriod: '12 Months',
+          monthlyPayment: 452.0,
+          conditions: 'Requires 2 years farming history. Equipment collateral.',
+          isRecommended: true,
+        ),
+        LoanOffer(
+          id: 'lo2',
+          lenderName: 'MicroFinance Coop',
+          interestRate: 12.0,
+          amount: 1500.0,
+          repaymentPeriod: '6 Months',
+          monthlyPayment: 268.0,
+          conditions: 'No collateral. Fast approval.',
+          isRecommended: false,
+        ),
+      ];
+    }
+
     return data
         .map(
           (e) => LoanOffer(

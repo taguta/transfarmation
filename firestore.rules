@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default rule: allow access to authenticated users
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // You can optionally make these catalogue collections public to everyone
+    match /commodity_prices/{document=**} {
+      allow read: if true;
+    }
+    match /farm_inputs/{document=**} {
+      allow read: if true;
+    }
+    match /weather_alerts/{document=**} {
+      allow read: if true;
+    }
+    match /experts/{document=**} {
+      allow read: if true;
+    }
+    match /forum_posts/{document=**} {
+      allow read: if true;
+    }
+  }
+}
