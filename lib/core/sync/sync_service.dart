@@ -94,6 +94,12 @@ class SyncService {
       'diagnosis' => 'diagnosis_results',
       'subsidy_application' => 'subsidy_applications',
       'marketplace_listing' => 'marketplace_listings',
+      'marketplace_product' => 'marketplace_products',
+      'user_profile' => 'farm_profile',
+      'forum_post' => 'forum_posts',
+      'iot_sensor' => 'iot_sensors',
+      'worker' => 'farm_workers',
+      'farm_task' => 'farm_tasks',
       _ => null,
     };
 
@@ -155,6 +161,34 @@ class SyncService {
 
       case 'marketplace_listing':
         final ref = firestore.collection('marketplace_listings').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'marketplace_product':
+        final ref = firestore.collection('marketplace_products').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'marketplace_delete':
+        final ref = firestore.collection('marketplace_products').doc(payload['id']);
+        batch.delete(ref);
+
+      case 'user_profile':
+        final ref = firestore.collection('user_profiles').doc(payload['userId']);
+        batch.set(ref, payload, SetOptions(merge: true));
+
+      case 'forum_post':
+        final ref = firestore.collection('forum_posts').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'iot_sensor':
+        final ref = firestore.collection('iot_sensors').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'worker':
+        final ref = firestore.collection('farm_workers').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'farm_task':
+        final ref = firestore.collection('farm_tasks').doc(payload['id']);
         batch.set(ref, payload);
     }
   }
