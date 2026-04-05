@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final padding = context.pagePadding;
+    final userState = ref.watch(authStateProvider);
+    final displayName = userState.valueOrNull?.displayName ?? 'New Farmer';
 
     return Scaffold(
       body: SafeArea(
         child: ResponsiveCenter(
           child: context.isDesktop
-              ? _DesktopLayout(padding: padding)
-              : _MobileTabletLayout(padding: padding),
+              ? _DesktopLayout(padding: padding, displayName: displayName)
+              : _MobileTabletLayout(padding: padding, displayName: displayName),
         ),
       ),
     );
@@ -28,7 +32,8 @@ class HomeScreen extends StatelessWidget {
 
 class _DesktopLayout extends StatelessWidget {
   final double padding;
-  const _DesktopLayout({required this.padding});
+  final String displayName;
+  const _DesktopLayout({required this.padding, required this.displayName});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class _DesktopLayout extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(context),
+                _buildHeader(context, displayName),
                 const SizedBox(height: AppSpacing.xxl),
                 _buildSyncBanner(),
                 const SizedBox(height: AppSpacing.xxl),
@@ -96,7 +101,8 @@ class _DesktopLayout extends StatelessWidget {
 
 class _MobileTabletLayout extends StatelessWidget {
   final double padding;
-  const _MobileTabletLayout({required this.padding});
+  final String displayName;
+  const _MobileTabletLayout({required this.padding, required this.displayName});
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +113,7 @@ class _MobileTabletLayout extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(context),
+          _buildHeader(context, displayName),
           const SizedBox(height: AppSpacing.xxl),
           _buildSyncBanner(),
           const SizedBox(height: AppSpacing.xxl),
@@ -146,7 +152,7 @@ class _MobileTabletLayout extends StatelessWidget {
 
 // ── Shared widget builders ────────────────────────────────────────────────────
 
-Widget _buildHeader(BuildContext context) {
+Widget _buildHeader(BuildContext context, String displayName) {
   return Row(
     children: [
       Expanded(
@@ -161,7 +167,7 @@ Widget _buildHeader(BuildContext context) {
             ),
             const SizedBox(height: 2),
             Text(
-              'Tendai Moyo',
+              displayName,
               style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
             ),
           ],

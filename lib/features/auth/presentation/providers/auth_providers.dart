@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Emits the current [User] whenever Firebase Auth state changes
 /// (sign-in, sign-out, token refresh).
 final authStateProvider = StreamProvider<User?>((ref) {
-  return FirebaseAuth.instance.authStateChanges();
+  return FirebaseAuth.instance.userChanges();
 });
 
 /// The signed-in user's uid, used as farmerId throughout the app.

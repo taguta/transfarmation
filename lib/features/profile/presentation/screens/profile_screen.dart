@@ -7,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../theme/theme_provider.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../farm/presentation/providers/farm_providers.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -14,10 +16,13 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    final user = FirebaseAuth.instance.currentUser;
+    final userState = ref.watch(authStateProvider);
+    final user = userState.valueOrNull ?? FirebaseAuth.instance.currentUser;
     final displayName = user?.displayName ?? 'New Farmer';
     final initials = displayName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').take(2).join().toUpperCase();
     final email = user?.email ?? 'Farmer · Mashonaland East';
+    final farmState = ref.watch(farmProvider);
+    final farmSize = farmState.valueOrNull?.sizeHectares.toString() ?? '12';
 
     return Scaffold(
       body: SafeArea(
@@ -93,7 +98,7 @@ class ProfileScreen extends ConsumerWidget {
               // Stats row
               Row(
                 children: [
-                  _ProfileStat(label: 'Farm Size', value: '12 ha'),
+                  _ProfileStat(label: 'Farm Size', value: '$farmSize ha'),
                   const SizedBox(width: AppSpacing.md),
                   _ProfileStat(label: 'Loans', value: '3'),
                   const SizedBox(width: AppSpacing.md),
@@ -109,6 +114,8 @@ class ProfileScreen extends ConsumerWidget {
                 icon: Icons.person_outline_rounded,
                 title: 'Edit Profile',
                 onTap: () {
+                  final nameController = TextEditingController(text: displayName);
+                  final emailController = TextEditingController(text: email);
                   showDialog(
                     context: context,
                     builder: (ctx) => AlertDialog(
@@ -117,18 +124,19 @@ class ProfileScreen extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextField(
-                            decoration: InputDecoration(
+                            controller: nameController,
+                            decoration: const InputDecoration(
                               labelText: 'Full Name',
-                              hintText: displayName,
-                              border: const OutlineInputBorder(),
+                              border: OutlineInputBorder(),
                             ),
                           ),
                           const SizedBox(height: 16),
                           TextField(
-                            decoration: InputDecoration(
+                            controller: emailController,
+                            enabled: false,
+                            decoration: const InputDecoration(
                               labelText: 'Phone/Email',
-                              hintText: email,
-                              border: const OutlineInputBorder(),
+                              border: OutlineInputBorder(),
                             ),
                           ),
                         ],
@@ -139,7 +147,23 @@ class ProfileScreen extends ConsumerWidget {
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
-                          onPressed: () => Navigator.pop(ctx),
+                          onPressed: () async {
+                            try {
+                              await user?.updateDisplayName(nameController.text.trim());
+                              if (ctx.mounted) {
+                                Navigator.pop(ctx);
+                                ScaffoldMessenger.of(ctx).showSnackBar(
+                                  const SnackBar(content: Text('Profile updated successfully.')),
+                                );
+                              }
+                            } catch (e) {
+                              if (ctx.mounted) {
+                                ScaffoldMessenger.of(ctx).showSnackBar(
+                                  SnackBar(content: Text('Error updating profile: $e')),
+                                );
+                              }
+                            }
+                          },
                           child: const Text('Save Changes'),
                         ),
                       ],
@@ -151,6 +175,8 @@ class ProfileScreen extends ConsumerWidget {
                 icon: Icons.agriculture_rounded,
                 title: 'Farm Details',
                 onTap: () {
+                  final sizeController = TextEditingController(text: farmSize);
+                  final farmNameController = TextEditingController(text: farmState.valueOrNull?.name ?? 'My Farm');
                   showModalBottomSheet(
                     context: context,
                     builder: (ctx) => Container(
@@ -161,13 +187,25 @@ class ProfileScreen extends ConsumerWidget {
                         children: [
                           Text('Update Farm Profile', style: AppTextStyles.h2),
                           const SizedBox(height: AppSpacing.lg),
-                          const TextField(decoration: InputDecoration(labelText: 'Farm Size (Hectares)', border: OutlineInputBorder())),
+                          TextField(controller: farmNameController, decoration: const InputDecoration(labelText: 'Farm Name', border: OutlineInputBorder())),
                           const SizedBox(height: AppSpacing.md),
-                          const TextField(decoration: InputDecoration(labelText: 'Primary Crops', border: OutlineInputBorder())),
+                          TextField(controller: sizeController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Farm Size (Hectares)', border: OutlineInputBorder())),
                           const SizedBox(height: AppSpacing.xl),
                           SizedBox(
                             width: double.infinity,
-                            child: FilledButton(onPressed: () => Navigator.pop(ctx), child: const Text('Update')),
+                            child: FilledButton(
+                              onPressed: () async {
+                                final size = double.tryParse(sizeController.text.trim()) ?? 0.0;
+                                await ref.read(farmProvider.notifier).updateFarmProfile(size, farmNameController.text.trim());
+                                if (ctx.mounted) {
+                                  Navigator.pop(ctx);
+                                  ScaffoldMessenger.of(ctx).showSnackBar(
+                                    const SnackBar(content: Text('Farm details updated successfully.')),
+                                  );
+                                }
+                              },
+                              child: const Text('Update'),
+                            ),
                           ),
                         ],
                       ),

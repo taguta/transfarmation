@@ -14,7 +14,13 @@ class ExpertListScreen extends StatelessWidget {
         title: const Text('Ask an Expert'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/home');
+            }
+          },
         ),
       ),
       body: Column(

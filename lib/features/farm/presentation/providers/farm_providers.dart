@@ -56,6 +56,31 @@ class FarmNotifier extends AsyncNotifier<Farm> {
     
     ref.invalidateSelf();
   }
+
+  Future<void> updateFarmProfile(double sizeHectares, String farmName) async {
+    final db = ref.read(farmProfileRepositoryProvider);
+    final currentFarm = state.value!;
+    
+    final updatedFarm = Farm(
+      id: currentFarm.id,
+      farmerId: currentFarm.farmerId,
+      name: farmName,
+      province: currentFarm.province,
+      sizeHectares: sizeHectares,
+      farmingMethod: currentFarm.farmingMethod,
+      crops: currentFarm.crops,
+      livestock: currentFarm.livestock,
+    );
+    
+    await db.update(
+      'farm_profile',
+      {'data': jsonEncode(updatedFarm.toJson())},
+      where: 'id = ?',
+      whereArgs: ['farm-001'],
+    );
+    
+    ref.invalidateSelf();
+  }
 }
 
 final farmProvider = AsyncNotifierProvider<FarmNotifier, Farm>(FarmNotifier.new);

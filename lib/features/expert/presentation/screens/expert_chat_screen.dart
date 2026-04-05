@@ -114,7 +114,13 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/expert');
+            }
+          },
         ),
         title: Row(
           children: [
