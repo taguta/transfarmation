@@ -45,16 +45,31 @@ class AppShell extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const _AppLogo(size: 36),
-                  const SizedBox(width: 12),
-                  const Text(
-                    'Transfarmation',
+                  Row(
+                    children: [
+                      const _AppLogo(size: 36),
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Transfarmation',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'People busy transforming their farming activities',
                     style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
+                      color: AppColors.textTertiary,
+                      fontSize: 11,
+                      fontStyle: FontStyle.italic,
                       fontFamily: 'Poppins',
                     ),
                   ),
@@ -136,7 +151,11 @@ class AppShell extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.cloud_off_rounded, size: 16, color: Colors.orange.shade900),
+          Icon(
+            Icons.cloud_off_rounded,
+            size: 16,
+            color: Colors.orange.shade900,
+          ),
           const SizedBox(width: 8),
           Text(
             'Offline Mode: $pendingCount items waiting to sync',
@@ -180,20 +199,22 @@ class AppShell extends ConsumerWidget {
         ),
         drawer: _buildDrawer(context, currentIndex),
         body: Column(
-          children: [
-            _buildSyncBanner(pendingCount),
-            Expanded(child: child),
-          ],
+          children: [_buildSyncBanner(pendingCount), Expanded(child: child)],
         ),
         bottomNavigationBar: NavigationBar(
-          selectedIndex: [0, 1, 2].contains(currentIndex) 
-              ? currentIndex 
-              : (currentIndex == 5 ? 3 : 0),
+          selectedIndex:
+              [0, 1, 2].contains(currentIndex)
+                  ? currentIndex
+                  : (currentIndex == 5 ? 3 : 0),
           onDestinationSelected: (idx) {
-            if (idx == 0) _navigate(context, 0);
-            else if (idx == 1) _navigate(context, 1);
-            else if (idx == 2) _navigate(context, 2);
-            else if (idx == 3) _navigate(context, 5);
+            if (idx == 0)
+              _navigate(context, 0);
+            else if (idx == 1)
+              _navigate(context, 1);
+            else if (idx == 2)
+              _navigate(context, 2);
+            else if (idx == 3)
+              _navigate(context, 5);
           },
           backgroundColor: AppColors.surface,
           indicatorColor: AppColors.primarySurface,
@@ -245,19 +266,35 @@ class AppShell extends ConsumerWidget {
               fontSize: 13,
               fontFamily: 'Poppins',
             ),
-            leading: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Row(
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _AppLogo(size: 36),
-                  SizedBox(width: 10),
-                  Text(
-                    'Transfarmation',
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _AppLogo(size: 36),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'Transfarmation',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'People busy transforming their farming activities',
                     style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                      color: AppColors.textTertiary,
+                      fontSize: 10,
+                      fontStyle: FontStyle.italic,
                       fontFamily: 'Poppins',
                     ),
                   ),
