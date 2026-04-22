@@ -1,4 +1,3 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,14 +38,15 @@ import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/weather/presentation/screens/weather_screen.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 
-
-
 final appRouterProvider = Provider<GoRouter>((ref) {
   // We strictly use the architecture's provider stream, never direct SDK calls
-  final authState = ref.watch(authStateProvider);
+  // final authState = ref.watch(authStateProvider); // Unused while auth is disabled for testing
 
   return GoRouter(
     initialLocation: '/',
+    // Authentication redirect logic is commented out for testing purposes.
+    // This allows navigation to all pages and test data visibility.
+    /*
     redirect: (context, state) {
       // Wait for auth to initialize
       if (authState.isLoading) return null;
@@ -71,11 +71,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
+    */
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const SplashScreen(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
