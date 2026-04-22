@@ -6,6 +6,27 @@ import '../../../../theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/services_providers.dart';
 
+// Map icon name string to constant IconData
+IconData getIconByName(String name) {
+  switch (name) {
+    case 'home':
+      return Icons.home_rounded;
+    case 'storefront':
+      return Icons.storefront_rounded;
+    case 'wallet':
+      return Icons.account_balance_wallet_rounded;
+    case 'apps':
+      return Icons.apps_rounded;
+    case 'support':
+      return Icons.support_agent_rounded;
+    case 'person':
+      return Icons.person_rounded;
+    // Add more mappings as needed
+    default:
+      return Icons.help_outline_rounded;
+  }
+}
+
 class ServicesScreen extends ConsumerWidget {
   const ServicesScreen({super.key});
 
@@ -54,18 +75,29 @@ class ServicesScreen extends ConsumerWidget {
 
               const SizedBox(height: AppSpacing.xxl),
               asyncServices.when(
-                data: (services) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: services.map((srv) => _ServiceTile(
-                    icon: IconData(int.parse(srv.iconCode), fontFamily: 'MaterialIcons'),
-                    title: srv.title,
-                    subtitle: srv.subtitle,
-                    color: Color(int.parse(srv.colorHex)),
-                    onTap: () => context.push(srv.route),
-                  )).toList(),
-                ),
+                data:
+                    (services) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                          services
+                              .map(
+                                (srv) => _ServiceTile(
+                                  icon: getIconByName(srv.iconCode),
+                                  title: srv.title,
+                                  subtitle: srv.subtitle,
+                                  color: Color(int.parse(srv.colorHex)),
+                                  onTap: () => context.push(srv.route),
+                                ),
+                              )
+                              .toList(),
+                    ),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, st) => const Center(child: Text('Please connect to the internet to load services')),
+                error:
+                    (e, st) => const Center(
+                      child: Text(
+                        'Please connect to the internet to load services',
+                      ),
+                    ),
               ),
 
               const SizedBox(height: AppSpacing.xxxl),
@@ -76,7 +108,6 @@ class ServicesScreen extends ConsumerWidget {
     );
   }
 }
-
 
 class _ServiceTile extends StatelessWidget {
   final IconData icon;
