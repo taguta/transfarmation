@@ -1,0 +1,2999 @@
+[
+ {
+  "id": "FR1.1",
+  "full": "Farmer can drop a GPS pin on their land via smartphone to register the plot",
+  "text": "Farmer can drop a GPS pin on their land via smartphone to register the plot",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.2",
+  "full": "System auto-detects soil type, historical rainfall patterns, and acreage from the GPS location, integrating with TIMB's biometric mapping standards",
+  "text": "System auto-detects soil type, historical rainfall patterns",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.3",
+  "full": "System auto-generates a 24-month projected cash-flow statement, input requirement schedule, and projected yield model without requiring an extension officer or bank clerk",
+  "text": "System auto-generates a 24-month projected cash-flow statement",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.4",
+  "full": "Farmer is presented with pre-vetted, standardized offtake contract templates from licensed contractors",
+  "text": "Farmer is presented with pre-vetted, standardized offtake contract templates from licensed contractors",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.5",
+  "full": "Every contract clause (minimum input packages, grading standards) is translated into plain Shona and Ndebele on screen",
+  "text": "Every contract clause (minimum input packages, grading standards) is translated into plain Shona and Ndebele on screen",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.6",
+  "full": "System generates a cryptographically secured digital contract upon farmer sign-off",
+  "text": "System generates a cryptographically secured digital contract upon farmer sign-off",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.7",
+  "full": "System maintains a live credit-scoring ledger from real-time input-utilization tracking, viewable by financiers to reduce physical verification costs",
+  "text": "System maintains a live credit-scoring ledger from real-time input-utilization tracking",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.8",
+  "full": "What-if tools let the farmer change acreage, input package, expected price, and yield and see the effect on cash flow and break-even before committing",
+  "text": "What-if tools let the farmer change acreage",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.9",
+  "full": "The feasibility report explains its assumptions in plain language in English, Shona, and Ndebele, shows a range rather than a single figure, and states the main risks and the break-even price",
+  "text": "The feasibility report explains its assumptions in plain language in English",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.10",
+  "full": "Soil, rainfall, price, and cost benchmarks carry a source and date; the farmer can override any figure, and each override is logged",
+  "text": "Soil, rainfall, price, and cost benchmarks carry a source and date",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.11",
+  "full": "The report can be printed, exported as PDF, or shared with a lender through a consent link, and is stamped with its date and assumption version",
+  "text": "The report can be printed, exported as PDF",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.12",
+  "full": "Contract comparison shows offers from several contractors side by side on input cost, deductions, grading basis, interest, and repayment terms, and flags unusual clauses",
+  "text": "Contract comparison shows offers from several contractors side by side on input cost",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.13",
+  "full": "Any clause can be explained on request, and the farmer can ask a human advisor to review a contract before signing",
+  "text": "Any clause can be explained on request, and the farmer can ask a human advisor to review a contract before signing",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.14",
+  "full": "Contract lifecycle tracking covers signature, amendments, renewal, termination, and disputes, with reminders of each party's obligations",
+  "text": "Contract lifecycle tracking covers signature",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.15",
+  "full": "An input package and repayment schedule calculator tied to the contract feeds the debt view (FR8.7)",
+  "text": "An input package and repayment schedule calculator tied to the contract feeds the debt view (FR8.7)",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR1.16",
+  "full": "A bankable-readiness checklist shows the farmer what records and plan they still need before applying for credit",
+  "text": "A bankable-readiness checklist shows the farmer what records and plan they still need before applying for credit",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR1.17",
+  "full": "Yield and cost models are versioned and validated against pilot outcomes, with results fed back to improve them",
+  "text": "Yield and cost models are versioned and validated against pilot outcomes, with results fed back to improve them",
+  "module": "Module 1: Feasibility & Offtake",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR2.1",
+  "full": "Platform integrates directly with TIMB's Biometric Grower Registration System",
+  "text": "Platform integrates directly with TIMB's Biometric Grower Registration System",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.2",
+  "full": "Farmer's digital ID, biometric thumbprint hash, and farm GPS coordinates are bound to their platform profile",
+  "text": "Farmer's digital ID, biometric thumbprint hash, and farm GPS coordinates are bound to their platform profile",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.3",
+  "full": "When a tobacco bale is logged for transport or delivery, smart contracts cross-reference the grower number and GPS origin",
+  "text": "When a tobacco bale is logged for transport or delivery, smart contracts cross-reference the grower number and GPS origin",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.4",
+  "full": "System automatically flags unauthorized sales or third-party usage before the crop reaches the auction or contract floor",
+  "text": "System automatically flags unauthorized sales or third-party usage before the crop reaches the auction or contract floor",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.5",
+  "full": "System automates reforestation levy deductions and statutory marketing fee collection at point of sale",
+  "text": "System automates reforestation levy deductions and statutory marketing fee collection at point of sale",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.6",
+  "full": "System logs, in real time, whether a farmer uses sustainable coal, approved eucalyptus woodlots (e.g., via the Sustainable Afforestation Association), or illegal indigenous timber",
+  "text": "System logs, in real time, whether a farmer uses sustainable coal",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.7",
+  "full": "System issues immediate compliance clearances required for export permits based on that logged data",
+  "text": "System issues immediate compliance clearances required for export permits based on that logged data",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.8",
+  "full": "Grower registration status view shows the grower number, validity, renewal dates, and reminders",
+  "text": "Grower registration status view shows the grower number, validity, renewal dates, and reminders",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.9",
+  "full": "Registration and renewal workflow with document upload, an offline queue, submission to TIMB, and booking of appointment slots where the biometric capture needs a visit",
+  "text": "Registration and renewal workflow with document upload",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.10",
+  "full": "Grower and contractor contracts are registered digitally with TIMB where the law requires it",
+  "text": "Grower and contractor contracts are registered digitally with TIMB where the law requires it",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.11",
+  "full": "Configurable side-marketing rules (for example bales delivered versus contracted area and expected yield, grower-number mismatches, unusual GPS origins, repeat deliveries) raise alerts to TIMB and the contractor",
+  "text": "Configurable side-marketing rules\u2026",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.12",
+  "full": "Case management for flagged cases: evidence, investigation steps, farmer response, and outcome, with human review before any penalty",
+  "text": "Case management for flagged cases: evidence",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.13",
+  "full": "Regulator dashboard shows registered growers, area planted, expected versus delivered volumes, flagged cases, and levies collected, by district with drill-down",
+  "text": "Regulator dashboard shows registered growers",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.14",
+  "full": "Statutory returns are generated automatically in the prescribed format, with submission history",
+  "text": "Statutory returns are generated automatically in the prescribed format, with submission history",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.15",
+  "full": "Levy ledger calculates, deducts, and remits levies to the correct bodies, reconciles them, and gives the farmer a receipt",
+  "text": "Levy ledger calculates, deducts, and remits levies to the correct bodies, reconciles them, and gives the farmer a receipt",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.16",
+  "full": "Environmental compliance record covers curing fuel source, woodlot registration and area, and verification photos, and issues certificates linked to export permits",
+  "text": "Environmental compliance record covers curing fuel source",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.17",
+  "full": "Inspector mobile tools let TIMB and AGRITEX officers verify farms, woodlots, and barns with offline checklists and geo-tagged evidence",
+  "text": "Inspector mobile tools let TIMB and AGRITEX officers verify farms",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR2.18",
+  "full": "Statutory rates, levy rules, and compliance rules are configurable with effective dates and version history, so a change in law needs no code release",
+  "text": "Statutory rates, levy rules, and compliance rules are configurable with effective dates and version history",
+  "module": "TIMB Gateway & Compliance",
+  "obj": "BO4",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR3.1",
+  "full": "Storage and logistics module swaps tobacco bale tracking for cold-room telemetry and perishable shelf-life timers",
+  "text": "Storage and logistics module swaps tobacco bale tracking for cold-room telemetry and perishable shelf-life timers",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR3.2",
+  "full": "Bidding and floor management engine adapts into an automated spot-market aggregator for fresh produce markets (e.g., Mbare Musika or regional hubs)",
+  "text": "Bidding and floor management engine adapts into an automated spot-market aggregator for fresh produce markets\u2026",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR3.3",
+  "full": "System matches daily tomato harvests with urban supermarket chains and informal traders before spoilage occurs",
+  "text": "System matches daily tomato harvests with urban supermarket chains and informal traders before spoilage occurs",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.4",
+  "full": "Underlying architecture (farm profiling, offtake matching, compliance engine) requires zero structural rewiring, only parameter changes, to move from tobacco to horticulture",
+  "text": "Underlying architecture (farm profiling, offtake matching, compliance engine) requires zero structural rewiring",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.5",
+  "full": "Horticulture crop templates (tomatoes first) hold varieties, cycle lengths, spacing, input schedules, pest and disease lists, and grading classes, so new vegetables are added by configuration",
+  "text": "Horticulture crop templates (tomatoes first) hold varieties",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.6",
+  "full": "A staggered planting planner spreads harvest dates to avoid gluts, using market demand signals",
+  "text": "A staggered planting planner spreads harvest dates to avoid gluts, using market demand signals",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR3.7",
+  "full": "Harvest and post-harvest guidance covers maturity stage, handling, packing, and pre-cooling, with shelf-life estimates by variety and storage condition, labelled as estimates",
+  "text": "Harvest and post-harvest guidance covers maturity stage",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.8",
+  "full": "Daily price and demand signals from key markets such as Mbare Musika (see FR10.7 and FR11.17), with alerts when prices pass a threshold the farmer sets",
+  "text": "Daily price and demand signals from key markets such as Mbare Musika (see FR10.7 and FR11.17)",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.9",
+  "full": "One-tap harvest-ready listing posts expected or actual quantity, grade, and pickup location to buyers and transporters",
+  "text": "One-tap harvest-ready listing posts expected or actual quantity, grade, and pickup location to buyers and transporters",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.10",
+  "full": "Grading and packing standards for crates, size classes, and ripeness tiers, with photo evidence at packing",
+  "text": "Grading and packing standards for crates, size classes, and ripeness tiers, with photo evidence at packing",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.11",
+  "full": "Post-harvest loss tracking records losses by cause (delay, cold chain, rejection) and reports how to reduce them",
+  "text": "Post-harvest loss tracking records losses by cause (delay, cold chain, rejection) and reports how to reduce them",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR3.12",
+  "full": "Food safety records log pesticide applications and pre-harvest intervals from the agronomy log, for supermarket and export residue requirements",
+  "text": "Food safety records log pesticide applications and pre-harvest intervals from the agronomy log",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR3.13",
+  "full": "Cluster harvest coordination lets neighbouring farmers combine loads to fill a truck (see FR10.18)",
+  "text": "Cluster harvest coordination lets neighbouring farmers combine loads to fill a truck (see FR10.18)",
+  "module": "Horticulture Expansion",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR3.14",
+  "full": "Forward contract options with processors and supermarkets (see FR10.4) for growers who want price certainty",
+  "text": "Forward contract options with processors and supermarkets (see FR10.4) for growers who want price certainty",
+  "module": "Horticulture Expansion",
+  "obj": "BO2",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.1",
+  "full": "Provide crop- and soil-specific guidance, input schedules, and pest/disease alerts tied to the farmer's registered plot",
+  "text": "Provide crop- and soil-specific guidance, input schedules, and pest/disease alerts tied to the farmer's registered plot",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR4.2",
+  "full": "Allow advisors/agronomists/economists to review farmer data and issue structured recommendations (see the Agronomy Module section for the full specification, FR7.1 to FR7.14)",
+  "text": "Allow advisors/agronomists/economists to review farmer data and issue structured recommendations\u2026",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR4.3",
+  "full": "Track farmer income, expenses, and loan/input-credit balances against the feasibility plan",
+  "text": "Track farmer income, expenses, and loan/input-credit balances against the feasibility plan",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR4.4",
+  "full": "Generate statements usable as supporting evidence for future credit applications (see the Accounting, Financial Management & Input Escrow Module section, FR8.1 to FR8.20)",
+  "text": "Generate statements usable as supporting evidence for future credit applications\u2026",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR4.5",
+  "full": "Let farmers and intermediaries manage buyer/contact relationships and communication history",
+  "text": "Let farmers and intermediaries manage buyer/contact relationships and communication history",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.6",
+  "full": "Support outbound marketing of surplus produce (notably for horticulture spot-market matching); see the Marketing & CRM Module, FR17.1 to FR17.10",
+  "text": "Support outbound marketing of surplus produce (notably for horticulture spot-market matching)",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.7",
+  "full": "Support freight-matching between farmers/traders and transporters",
+  "text": "Support freight-matching between farmers/traders and transporters",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR4.8",
+  "full": "Track a load from farm gate to delivery, with status visible to all relevant parties",
+  "text": "Track a load from farm gate to delivery, with status visible to all relevant parties",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR4.9",
+  "full": "Track cold-room/storage capacity, occupancy, and perishable shelf-life timers",
+  "text": "Track cold-room/storage capacity, occupancy, and perishable shelf-life timers",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.10",
+  "full": "Alert relevant parties as shelf-life windows close, to trigger urgent sale/dispatch; see the Refrigeration & Storage Module, FR18.1 to FR18.12",
+  "text": "Alert relevant parties as shelf-life windows close, to trigger urgent sale/dispatch",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.11",
+  "full": "Provide a transactional marketplace where produce/product listings can be discovered and purchased by manufacturers, retailers, and consumers",
+  "text": "Provide a transactional marketplace where produce/product listings can be discovered and purchased by manufacturers",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR4.12",
+  "full": "Support order, payment, and delivery-confirmation workflows end to end within the platform; see the Ecommerce Marketplace section, FR19.1 to FR19.14",
+  "text": "Support order, payment, and delivery-confirmation workflows end to end within the platform",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR7.1",
+  "full": "Farmer maps field boundaries with smartphone GPS during profile setup, reusing the plot registered in Module 1",
+  "text": "Farmer maps field boundaries with smartphone GPS during profile setup, reusing the plot registered in Module 1",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.2",
+  "full": "Module connects to localized meteorological and satellite data feeds to issue hyper-local warnings, such as frost alerts for tobacco seedlings, heavy storm warnings, and prolonged dry spells that need irrigation scheduling",
+  "text": "Module connects to localized meteorological and satellite data feeds to issue hyper-local warnings",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.3",
+  "full": "Farmer photographs an affected leaf (for example Barn Spot or Frog-eye on tobacco, or blight-related leaf curl on tomatoes) and an offline-capable image recognition model runs on the phone",
+  "text": "Farmer photographs an affected leaf (for example Barn Spot or Frog-eye on tobacco, or blight-related leaf curl on tomatoes) and\u2026",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.4",
+  "full": "Model identifies the pest or pathogen and rates severity",
+  "text": "Model identifies the pest or pathogen and rates severity",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.5",
+  "full": "Module outputs an exact localized remedy, such as a specific chemical dosage or an organic intervention, plus where to source the input locally",
+  "text": "Module outputs an exact localized remedy",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.6",
+  "full": "Each diagnosis shows a confidence level; low-confidence or high-severity cases are escalated to a human agronomist",
+  "text": "Each diagnosis shows a confidence level; low-confidence or high-severity cases are escalated to a human agronomist",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.7",
+  "full": "With the farmer's consent, labelled images and outcomes improve the model over time",
+  "text": "With the farmer's consent, labelled images and outcomes improve the model over time",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR7.8",
+  "full": "Tobacco calendar covers seedbed management, topping, priming, curing, and grading; tomato calendar covers transplanting, vegetative growth, flowering, and harvesting windows",
+  "text": "Tobacco calendar covers seedbed management, topping, priming, curing, and grading",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.9",
+  "full": "Timed prompts by push notification or SMS tell the farmer exactly when to apply basal fertilizer, top-dress, or prepare curing facilities, based on the registered planting date",
+  "text": "Timed prompts by push notification or SMS tell the farmer exactly when to apply basal fertilizer",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.10",
+  "full": "SMS and USSD fallback so prompts reach farmers without smartphones or data",
+  "text": "SMS and USSD fallback so prompts reach farmers without smartphones or data",
+  "module": "Agronomy",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR7.11",
+  "full": "When the module recommends a chemical or fertilizer application, it creates a draft expense entry in the Financial Management Module",
+  "text": "When the module recommends a chemical or fertilizer application",
+  "module": "Agronomy",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR7.12",
+  "full": "If the inputs are tied to a credit facility, it signals the Input Escrow",
+  "text": "If the inputs are tied to a credit facility, it signals the Input Escrow",
+  "module": "Agronomy",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR7.13",
+  "full": "The digital crop log is a tamper-evident audit trail that shows good agricultural practices (GAP) were followed all season, for TIMB and export markets",
+  "text": "The digital crop log is a tamper-evident audit trail that shows good agricultural practices (GAP) were followed all season",
+  "module": "Agronomy",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR7.14",
+  "full": "Contractor and agronomist dashboard shows crop stress and milestones across many smallholders, with bulk advisories to groups of farmers",
+  "text": "Contractor and agronomist dashboard shows crop stress and milestones across many smallholders",
+  "module": "Agronomy",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.1",
+  "full": "Transporter onboarding with verification of driver's licence, vehicle registration, operator licence, and identity",
+  "text": "Transporter onboarding with verification of driver's licence, vehicle registration, operator licence, and identity",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.2",
+  "full": "Load posting works offline and syncs when a connection returns; USSD/SMS fallback for booking",
+  "text": "Load posting works offline and syncs when a connection returns; USSD/SMS fallback for booking",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.3",
+  "full": "Matching by route, capacity, vehicle type, refrigeration, rating, and price, with fixed-rate or bid options",
+  "text": "Matching by route, capacity, vehicle type, refrigeration, rating, and price, with fixed-rate or bid options",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.4",
+  "full": "Escrow held with a licensed payment service provider; release only on delivery confirmation or dispute resolution",
+  "text": "Escrow held with a licensed payment service provider; release only on delivery confirmation or dispute resolution",
+  "module": "Logistics & Transport",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.5",
+  "full": "Instant settlement to transporter and farmer mobile-money wallets or bank accounts",
+  "text": "Instant settlement to transporter and farmer mobile-money wallets or bank accounts",
+  "module": "Logistics & Transport",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.6",
+  "full": "Pre-dispatch compliance gate that blocks tobacco loads lacking a valid grower number, GPS origin match, or levy clearance",
+  "text": "Pre-dispatch compliance gate that blocks tobacco loads lacking a valid grower number, GPS origin match, or levy clearance",
+  "module": "Logistics & Transport",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.7",
+  "full": "Live tracking visible to shipper, receiver, and, where permitted, regulator; alerts for delay, deviation, and temperature breach",
+  "text": "Live tracking visible to shipper, receiver, and, where permitted, regulator; alerts for delay, deviation, and temperature breach",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.8",
+  "full": "Two-factor delivery confirmation (QR plus one-time code) to reduce collusion, with photo and quantity evidence",
+  "text": "Two-factor delivery confirmation (QR plus one-time code) to reduce collusion, with photo and quantity evidence",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.9",
+  "full": "Dispute workflow with evidence upload, timeline, partial release, and audit trail",
+  "text": "Dispute workflow with evidence upload, timeline, partial release, and audit trail",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.10",
+  "full": "Transporter and shipper reputation scores feeding a payment history usable for future credit (with consent)",
+  "text": "Transporter and shipper reputation scores feeding a payment history usable for future credit (with consent)",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR6.11",
+  "full": "Return-load (backhaul) suggestions to reduce empty trips",
+  "text": "Return-load (backhaul) suggestions to reduce empty trips",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.12",
+  "full": "Optional cargo insurance and fuel-advance integrations (nice to have)",
+  "text": "Optional cargo insurance and fuel-advance integrations (nice to have)",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR6.13",
+  "full": "Transporters can use the module standalone with only a phone number, mobile wallet, and vehicle details, with no other module required",
+  "text": "Transporters can use the module standalone with only a phone number",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.14",
+  "full": "Tiered vehicle pairing matches the payload to first-mile (carts, tractors) or middle/long-mile (trucks, kombis, heavy carriers) transport, and can chain several legs into one journey with handover between tiers",
+  "text": "Tiered vehicle pairing matches the payload to first-mile (carts, tractors) or middle/long-mile (trucks, kombis, heavy carriers)\u2026",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.15",
+  "full": "A unique QR code is generated on the farmer's app, scanned by the driver at loading and by the receiver at drop-off (auction floor, processing plant, or municipal market) to confirm quantity and condition",
+  "text": "A unique QR code is generated on the farmer's app",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.16",
+  "full": "Backhaul notifications alert a transporter dropping inputs in a rural area to scheduled crop pickups nearby, so the return leg carries paying cargo",
+  "text": "Backhaul notifications alert a transporter dropping inputs in a rural area to scheduled crop pickups nearby",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.17",
+  "full": "Fuel liquidity support: optional fuel advance or voucher against an escrowed job, repaid from the settlement",
+  "text": "Fuel liquidity support: optional fuel advance or voucher against an escrowed job, repaid from the settlement",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR6.18",
+  "full": "Perishable priority: tomato loads carry a shelf-life timer, get priority matching, and peak-harvest demand alerts go to transporters in the area",
+  "text": "Perishable priority: tomato loads carry a shelf-life timer",
+  "module": "Logistics & Transport",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR6.19",
+  "full": "Condition photos at loading and drop-off establish who is accountable for damage or loss in transit",
+  "text": "Condition photos at loading and drop-off establish who is accountable for damage or loss in transit",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.20",
+  "full": "For TIMB, transport tracking records verify that bales leaving a farm gate match that grower's registered quota and flag unregistered transit routes used in side-marketing",
+  "text": "For TIMB, transport tracking records verify that bales leaving a farm gate match that grower's registered quota and flag\u2026",
+  "module": "Logistics & Transport",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR6.21",
+  "full": "Transport costs are logged automatically in the farmer's Financial Management Module against projected profits",
+  "text": "Transport costs are logged automatically in the farmer's Financial Management Module against projected profits",
+  "module": "Logistics & Transport",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.1",
+  "full": "Visual dashboard usable by a farmer with no bookkeeping experience, phone only",
+  "text": "Visual dashboard usable by a farmer with no bookkeeping experience, phone only",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR8.2",
+  "full": "Receipt photo capture with OCR extracts amount, date, and vendor for casual labour, fuel, and spare parts, and files each into a category such as operating costs, labour, or crop maintenance, for the farmer to confirm",
+  "text": "Receipt photo capture with OCR extracts amount",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR8.3",
+  "full": "Voice-note logging in English, Shona, and Ndebele; a note such as \"Ndapedza 50 dollars pakutenga petrol yama pump ya tomato\" or \"Ngithenge petrol ye 50 dollars\" is transcribed into a ledger entry for the farmer to confirm; audio is stored offline and transcribed on sync if needed",
+  "text": "Voice-note logging in English, Shona, and Ndebele",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR8.4",
+  "full": "Separate household and farm categories or wallets, so household spending does not mix with farm capital",
+  "text": "Separate household and farm categories or wallets, so household spending does not mix with farm capital",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "2"
+ },
+ {
+  "id": "FR8.5",
+  "full": "Draft entries are created automatically from agronomy recommendations (FR7.11) and transport costs (FR6.21)",
+  "text": "Draft entries are created automatically from agronomy recommendations (FR7.11) and transport costs (FR6.21)",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.6",
+  "full": "Season budget versus actual, compared with the feasibility plan from Module 1",
+  "text": "Season budget versus actual, compared with the feasibility plan from Module 1",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR8.7",
+  "full": "Debt view showing every loan, balance, due date, and forecast repayment, with alerts so there are no surprise debts at season end",
+  "text": "Debt view showing every loan, balance, due date, and forecast repayment, with alerts so there are no surprise debts at season end",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR8.8",
+  "full": "Input loans from a bank or contract sponsor are held in a ring-fenced Input Escrow account, or issued as physical inputs or voucher codes, and never paid to the farmer as a lump sum of cash",
+  "text": "Input loans from a bank or contract sponsor are held in a ring-fenced Input Escrow account",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.9",
+  "full": "Milestone-based disbursement: funds or voucher codes for specific inputs unlock only when the Agronomy Module confirms the crop stage (for example land preparation complete, ready for basal fertilizer); the lender can configure the milestones",
+  "text": "Milestone-based disbursement: funds or voucher codes for specific inputs unlock only when the Agronomy Module confirms the crop\u2026",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.10",
+  "full": "Vouchers are redeemed at approved input suppliers, who confirm redemption and are paid promptly from escrow",
+  "text": "Vouchers are redeemed at approved input suppliers, who confirm redemption and are paid promptly from escrow",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.11",
+  "full": "Diversion detection flags anomalies, such as inputs bought but not applied or resold, and alerts the lender",
+  "text": "Diversion detection flags anomalies, such as inputs bought but not applied or resold, and alerts the lender",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.12",
+  "full": "Escrow is held with a licensed payment service provider, consistent with FR6.4",
+  "text": "Escrow is held with a licensed payment service provider, consistent with FR6.4",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.13",
+  "full": "Live cost-versus-revenue tracking as sales occur, whether through the tobacco auction or contract floor or wholesale tomato buyers, with revenue flowing through the platform",
+  "text": "Live cost-versus-revenue tracking as sales occur",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR8.14",
+  "full": "Automatic waterfall distribution before the farmer receives cash: statutory levies and taxes (such as TIMB fees) are cleared, input loan repayment is routed to the bank or contractor, agreed deductions such as freight are settled, and net profit goes to the farmer's mobile-money or bank wallet; the order of priority follows law and contract and is configurable",
+  "text": "Automatic waterfall distribution before the farmer receives cash: statutory levies and taxes (such as TIMB fees) are cleared",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR8.15",
+  "full": "Itemised settlement statement showing every deduction, with a dispute option for the farmer",
+  "text": "Itemised settlement statement showing every deduction, with a dispute option for the farmer",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR8.16",
+  "full": "Rules for shortfalls, partial repayment, and rollover when a sale does not cover the loan",
+  "text": "Rules for shortfalls, partial repayment, and rollover when a sale does not cover the loan",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR8.17",
+  "full": "Read-only, consent-based lender view of a tamper-evident ledger, with exportable statements, which sharply reduces the cost of physical audit visits",
+  "text": "Read-only, consent-based lender view of a tamper-evident ledger",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR8.18",
+  "full": "Credit score built from multiple seasons of platform-verified data; farmers with clean history can qualify for larger follow-on loans without title deeds, where the lender's policy allows",
+  "text": "Credit score built from multiple seasons of platform-verified data",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR8.19",
+  "full": "Repayment at the point of sale through escrow, before the farmer's payout, to lower non-performing loans",
+  "text": "Repayment at the point of sale through escrow, before the farmer's payout, to lower non-performing loans",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR8.20",
+  "full": "Supplier view of payment status for implements and chemicals, so collections are timely and credit risk is visible",
+  "text": "Supplier view of payment status for implements and chemicals, so collections are timely and credit risk is visible",
+  "module": "Accounting & Input Escrow",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR10.1",
+  "full": "Buyer onboarding with business verification for manufacturers, retailers, and traders",
+  "text": "Buyer onboarding with business verification for manufacturers, retailers, and traders",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.2",
+  "full": "Buyers post demand by crop, grade, volume, delivery window, and price range",
+  "text": "Buyers post demand by crop, grade, volume, delivery window, and price range",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.3",
+  "full": "Supply forecast by crop, region, and harvest window, built from crop calendars and planting dates, aggregated and shown only with farmer consent, with an accuracy indicator",
+  "text": "Supply forecast by crop, region",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.4",
+  "full": "Standardised forward contract templates covering volume, grade, price mechanism (fixed, floor, or indexed), delivery window, and penalties, in plain language and linked to the digital contract sign-off in FR1.4 to FR1.6",
+  "text": "Standardised forward contract templates covering volume",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.5",
+  "full": "Fulfilment tracking of contracted versus delivered volume and quality, with early warnings of shortfalls",
+  "text": "Fulfilment tracking of contracted versus delivered volume and quality, with early warnings of shortfalls",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.6",
+  "full": "Daily listings, bids, and matching for tomatoes and other perishables before spoilage, extending FR3.2 and FR3.3",
+  "text": "Daily listings, bids, and matching for tomatoes and other perishables before spoilage, extending FR3.2 and FR3.3",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.7",
+  "full": "Published reference prices and price trends by market (for example Mbare Musika and regional hubs)",
+  "text": "Published reference prices and price trends by market (for example Mbare Musika and regional hubs)",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.8",
+  "full": "Standard grading and quality specifications per crop (tobacco grades, tomato classes), with photo evidence at collection and receiving",
+  "text": "Standard grading and quality specifications per crop (tobacco grades, tomato classes)",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.9",
+  "full": "Batch or lot IDs and QR traceability from farm to shelf, showing origin, GAP compliance (FR7.13), and transport and cold-chain history",
+  "text": "Batch or lot IDs and QR traceability from farm to shelf",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.10",
+  "full": "Consumer scan of a QR code shows the farming cluster, harvest date, sustainable production credentials, and compliance status, supporting local and international export compliance standards; farmer personal details appear only with the farmer's consent",
+  "text": "Consumer scan of a QR code shows the farming cluster",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.11",
+  "full": "Quality dispute workflow with evidence, partial acceptance, and price adjustment",
+  "text": "Quality dispute workflow with evidence, partial acceptance, and price adjustment",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.12",
+  "full": "Escrow-backed payment on acceptance, feeding the waterfall in FR8.14 so farmers are paid quickly",
+  "text": "Escrow-backed payment on acceptance, feeding the waterfall in FR8.14 so farmers are paid quickly",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.13",
+  "full": "Supplier scorecards (reliability, quality, on-time delivery) for buyers, and buyer scorecards (payment timeliness) for farmers",
+  "text": "Supplier scorecards (reliability, quality, on-time delivery) for buyers, and buyer scorecards (payment timeliness) for farmers",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.14",
+  "full": "APIs to integrate with buyers' procurement, ERP, and point-of-sale systems and with auction floor systems",
+  "text": "APIs to integrate with buyers' procurement, ERP, and point-of-sale systems and with auction floor systems",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.15",
+  "full": "Compliance and sustainability reporting for buyers, such as GAP, levy, and curing-fuel compliance records",
+  "text": "Compliance and sustainability reporting for buyers, such as GAP, levy, and curing-fuel compliance records",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.16",
+  "full": "Direct consumer orders, such as bulk produce boxes delivered through the Logistics Module (nice to have)",
+  "text": "Direct consumer orders, such as bulk produce boxes delivered through the Logistics Module (nice to have)",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.17",
+  "full": "Virtual commodity exchange: manufacturers and retail buyers post projected seasonal demand (volume, target delivery dates, and grade specifications for tobacco or horticulture) months before harvest",
+  "text": "Virtual commodity exchange: manufacturers and retail buyers post projected seasonal demand\u2026",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.18",
+  "full": "Algorithmic aggregation: the platform groups regional farming clusters and matches corporate demand with verified collective production capacity, so buyers deal with clusters instead of thousands of individual smallholders; contracts state how volume and payment are shared among cluster members",
+  "text": "Algorithmic aggregation: the platform groups regional farming clusters and matches corporate demand with verified collective\u2026",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.19",
+  "full": "Standardised digital grading logs recorded at harvest and packing by farmers or certified local extension officers (for tobacco, leaf style and maturity; for tomatoes, size and ripeness tier)",
+  "text": "Standardised digital grading logs recorded at harvest and packing by farmers or certified local extension officers\u2026",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.20",
+  "full": "Smart quality lock: the buyer reviews the digital grade profile before dispatch, and the accepted grade record becomes tamper-evident, so both parties work from one ledger of product specifications and gate disputes fall away; residual disputes follow FR10.11 and FR11.9",
+  "text": "Smart quality lock: the buyer reviews the digital grade profile before dispatch",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR10.21",
+  "full": "Cold-chain telemetry: storage units and transport links feed temperature and humidity data into the platform, with alerts on breach, to keep the cold chain intact from farm gate to supermarket shelf (see FR3.1 and FR6.7)",
+  "text": "Cold-chain telemetry: storage units and transport links feed temperature and humidity data into the platform",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR10.22",
+  "full": "Buyer dashboards for procurement teams showing contracted versus forecast supply by cluster, grade mix, and delivery status",
+  "text": "Buyer dashboards for procurement teams showing contracted versus forecast supply by cluster, grade mix, and delivery status",
+  "module": "Consumer, Retailer & Offtaker",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.1",
+  "full": "Digital bale tagging: before loading, each bale is scanned and given a unique tamper-evident QR or RFID tag linked to the grower's TIMB biometric profile",
+  "text": "Digital bale tagging: before loading",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR11.2",
+  "full": "Slot allocation: the platform assigns a digital arrival and drop-off slot (for example Floor 3, Bay B, Tuesday 08:00) instead of trucks arriving at once and jamming the gates",
+  "text": "Slot allocation: the platform assigns a digital arrival and drop-off slot (for example Floor 3, Bay B, Tuesday 08:00) instead\u2026",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.3",
+  "full": "Slot management with capacity limits per floor and bay, rescheduling, congestion alerts, and queue status by SMS and USSD",
+  "text": "Slot management with capacity limits per floor and bay, rescheduling, congestion alerts, and queue status by SMS and USSD",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.4",
+  "full": "Slots are linked to the freight booking and the pre-dispatch compliance gate (FR6.6), so a load cannot be dispatched without a valid slot",
+  "text": "Slots are linked to the freight booking and the pre-dispatch compliance gate (FR6.6)",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO3",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.5",
+  "full": "Fast-track intake: a floor clerk scans the bale tag, and weight, moisture, and preliminary grade sync instantly to the auction management dashboard, with an offline mode",
+  "text": "Fast-track intake: a floor clerk scans the bale tag",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.6",
+  "full": "Reconciliation of arrived bales against tagged and expected bales, flagging missing, extra, or mismatched bales",
+  "text": "Reconciliation of arrived bales against tagged and expected bales, flagging missing, extra, or mismatched bales",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.7",
+  "full": "Hybrid bidding engine: licensed buyers see live floor inventory on workspace tablets and submit electronic bids alongside traditional floor bids, all in one audit trail, subject to approval by TIMB and the floor operators",
+  "text": "Hybrid bidding engine: licensed buyers see live floor inventory on workspace tablets and submit electronic bids alongside\u2026",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO2",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR11.8",
+  "full": "Bid integrity: authenticated licensed buyers only, time-stamped tamper-evident bid log, and a manual fallback if connectivity fails",
+  "text": "Bid integrity: authenticated licensed buyers only",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO2",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR11.9",
+  "full": "Real-time grade arbitration: if a farmer disputes a grade, an independent AGRITEX or TIMB inspector records a digital verdict with photo evidence within a fixed time window, so disputes do not stall the floor",
+  "text": "Real-time grade arbitration: if a farmer disputes a grade",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.10",
+  "full": "Ownership and side-marketing checks: each bale's grower registration and contract status are verified, and contracted tobacco dumped on the floor is flagged (see FR2.4)",
+  "text": "Ownership and side-marketing checks: each bale's grower registration and contract status are verified",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.11",
+  "full": "Multi-party ownership tracking, so TIMB can see who owns each bale at each stage",
+  "text": "Multi-party ownership tracking, so TIMB can see who owns each bale at each stage",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO3",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.12",
+  "full": "When the hammer drops and the sale is finalised, the system runs the settlement waterfall (FR8.14): loan repayment is routed to the financier, statutory levies and reforestation and environmental fees (TIMB and EMA dues) are cleared, transport escrow is released to the trucker, and net proceeds go to the farmer's mobile wallet or bank account; the order of priority follows law and contract",
+  "text": "When the hammer drops and the sale is finalised",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.13",
+  "full": "Target payout within the hour, subject to bank and payment-rail capability, with real-time status shown to the farmer",
+  "text": "Target payout within the hour, subject to bank and payment-rail capability, with real-time status shown to the farmer",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.14",
+  "full": "Automated reconciliation between buyers' banks, floors, TIMB, and the platform ledger, with exception handling",
+  "text": "Automated reconciliation between buyers' banks, floors, TIMB, and the platform ledger, with exception handling",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.15",
+  "full": "Itemised settlement statement to the farmer, with a dispute option",
+  "text": "Itemised settlement statement to the farmer, with a dispute option",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "4"
+ },
+ {
+  "id": "FR11.16",
+  "full": "The same engine runs as a Digital Spot Market and Fresh Produce Exchange, modelled on high-volume markets such as Mbare Musika or regional grain depots, with configurable grading and rules per commodity",
+  "text": "The same engine runs as a Digital Spot Market and Fresh Produce Exchange",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR11.17",
+  "full": "Dynamic pricing boards show real-time supply and demand for perishable tomatoes or maize based on daily arrivals",
+  "text": "Dynamic pricing boards show real-time supply and demand for perishable tomatoes or maize based on daily arrivals",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR11.18",
+  "full": "Instant lot clearing: bulk buyers such as supermarkets and food processors bid on incoming truckloads before they enter the market yard, using in-transit data from the Logistics Module, to reduce post-harvest spoilage",
+  "text": "Instant lot clearing: bulk buyers such as supermarkets and food processors bid on incoming truckloads before they enter the\u2026",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR11.19",
+  "full": "Aggregated price and volume data feeds the reference prices in FR10.7",
+  "text": "Aggregated price and volume data feeds the reference prices in FR10.7",
+  "module": "Auction Floors & Exchange",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.1",
+  "full": "Contact and relationship book for buyers, suppliers, neighbours, and agents, with notes, history, and follow-up reminders, working offline",
+  "text": "Contact and relationship book for buyers",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR17.2",
+  "full": "Simple deal pipeline (enquiry, quote, agreed, delivered, paid) per buyer or client",
+  "text": "Simple deal pipeline (enquiry, quote, agreed, delivered, paid) per buyer or client",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.3",
+  "full": "Shareable profile page for a farmer or business showing produce or services, volume, grade, location, and ratings, with a link and QR code that work in WhatsApp",
+  "text": "Shareable profile page for a farmer or business showing produce or services",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR17.4",
+  "full": "Broadcast messaging by SMS, WhatsApp, or push to contacts or groups (for example an agent to farmers in a cluster), using templates in English, Shona, and Ndebele",
+  "text": "Broadcast messaging by SMS, WhatsApp",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR17.5",
+  "full": "Offers and campaigns, such as seasonal input offers, targeted by crop, area, and role using only consented data",
+  "text": "Offers and campaigns, such as seasonal input offers, targeted by crop, area, and role using only consented data",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.6",
+  "full": "Ratings and reviews after completed transactions, with controls against fake reviews and a route to dispute a rating",
+  "text": "Ratings and reviews after completed transactions, with controls against fake reviews and a route to dispute a rating",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.7",
+  "full": "Automated follow-ups for delivery confirmation, payment due, and re-order reminders",
+  "text": "Automated follow-ups for delivery confirmation, payment due, and re-order reminders",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.8",
+  "full": "Simple analytics on enquiries, conversions, and response times",
+  "text": "Simple analytics on enquiries, conversions, and response times",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR17.9",
+  "full": "Opt-in consent, frequency limits, and honoured opt-outs for all marketing messages, in line with the privacy sections",
+  "text": "Opt-in consent, frequency limits, and honoured opt-outs for all marketing messages, in line with the privacy sections",
+  "module": "Marketing & CRM",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR17.10",
+  "full": "Deals convert directly into contracts or orders (FR10), freight bookings (FR6), and ledger entries (FR8)",
+  "text": "Deals convert directly into contracts or orders (FR10), freight bookings (FR6), and ledger entries (FR8)",
+  "module": "Marketing & CRM",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.1",
+  "full": "Storage asset register for cold rooms, curing barns, warehouses, and silos, with capacity, location, owner, power backup, and rates",
+  "text": "Storage asset register for cold rooms",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR18.2",
+  "full": "Storage booking: owners list capacity and prices, and farmers or traders book space by crate, pallet, or bale per day, with payment through escrow",
+  "text": "Storage booking: owners list capacity and prices",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.3",
+  "full": "Inventory tracking of lots in and out with lot IDs and QR codes (see FR10.9), recording quantity, grade, date in, and expected shelf life",
+  "text": "Inventory tracking of lots in and out with lot IDs and QR codes (see FR10.9)",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR18.4",
+  "full": "Shelf-life timers and alerts per crop and storage condition, with prompts for urgent sale or dispatch (see FR4.10)",
+  "text": "Shelf-life timers and alerts per crop and storage condition, with prompts for urgent sale or dispatch (see FR4.10)",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR18.5",
+  "full": "Low-cost sensor telemetry for temperature and humidity, with offline buffering, thresholds, and SMS alerts",
+  "text": "Low-cost sensor telemetry for temperature and humidity, with offline buffering, thresholds, and SMS alerts",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.6",
+  "full": "Manual reading entry for stores without sensors, so the module works from day one",
+  "text": "Manual reading entry for stores without sensors, so the module works from day one",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR18.7",
+  "full": "Excursion handling records temperature or humidity breaches against the affected lots and notifies the owner, buyer, and insurer",
+  "text": "Excursion handling records temperature or humidity breaches against the affected lots and notifies the owner, buyer, and insurer",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.8",
+  "full": "Curing barn monitoring for tobacco records curing stages and fuel used, linked to the environmental compliance record (FR2.16)",
+  "text": "Curing barn monitoring for tobacco records curing stages and fuel used, linked to the environmental compliance record (FR2.16)",
+  "module": "Refrigeration & Storage",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR18.9",
+  "full": "Power and fuel resilience alerts for outages, generator or solar status, and fuel level",
+  "text": "Power and fuel resilience alerts for outages, generator or solar status, and fuel level",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.10",
+  "full": "Digital storage receipts record deposited quantity and grade, and can later support loans against stored produce where the law allows (nice to have)",
+  "text": "Digital storage receipts record deposited quantity and grade",
+  "module": "Refrigeration & Storage",
+  "obj": "BO5",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.11",
+  "full": "Hygiene and safety checklists for stores",
+  "text": "Hygiene and safety checklists for stores",
+  "module": "Refrigeration & Storage",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR18.12",
+  "full": "Storage and energy costs flow into the farmer's ledger (see FR8.5)",
+  "text": "Storage and energy costs flow into the farmer's ledger (see FR8.5)",
+  "module": "Refrigeration & Storage",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.1",
+  "full": "Product catalogue for inputs (seed, fertilizer, chemicals), equipment, and produce, with units, specifications, images, and a registered-product flag",
+  "text": "Product catalogue for inputs (seed, fertilizer, chemicals)",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.2",
+  "full": "Seller onboarding with verification of business registration and licences, including agrochemical and seed licences (level 3 in the identity model)",
+  "text": "Seller onboarding with verification of business registration and licences",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.3",
+  "full": "Search and price comparison by location, with delivery options and a catalogue cached for offline browsing",
+  "text": "Search and price comparison by location, with delivery options and a catalogue cached for offline browsing",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.4",
+  "full": "Orders and quotes, including bulk orders and group buying by farmer clusters",
+  "text": "Orders and quotes, including bulk orders and group buying by farmer clusters",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.5",
+  "full": "Checkout by mobile money, bank, escrow, or cash on delivery with confirmation, and receipts that flow into the ledger",
+  "text": "Checkout by mobile money, bank, escrow, or cash on delivery with confirmation, and receipts that flow into the ledger",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.6",
+  "full": "Input vouchers from escrow (FR8.8 to FR8.10) are redeemable in the catalogue only for approved items",
+  "text": "Input vouchers from escrow (FR8.8 to FR8.10) are redeemable in the catalogue only for approved items",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.7",
+  "full": "Anti-counterfeit checks: scan a batch code on seed or chemicals, sell only registered agrochemicals, and report fakes",
+  "text": "Anti-counterfeit checks: scan a batch code on seed or chemicals, sell only registered agrochemicals, and report fakes",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.8",
+  "full": "Delivery through the Logistics Module or collection at pickup points",
+  "text": "Delivery through the Logistics Module or collection at pickup points",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.9",
+  "full": "Ratings, returns, refunds, and disputes, with escrow held during a dispute",
+  "text": "Ratings, returns, refunds, and disputes, with escrow held during a dispute",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.10",
+  "full": "Seller tools for inventory, pricing, order management, and settlement (see the Service Provider Portal)",
+  "text": "Seller tools for inventory, pricing, order management, and settlement (see the Service Provider Portal)",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.11",
+  "full": "Equipment-as-a-Service rental of tractors, planters, and sprayers by hour, day, or acre, with an availability calendar, deposit, and usage tracking",
+  "text": "Equipment-as-a-Service rental of tractors",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.12",
+  "full": "Transparent fees and commissions shown before checkout",
+  "text": "Transparent fees and commissions shown before checkout",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR19.13",
+  "full": "Consumer produce orders with traceable QR codes (see FR10.16)",
+  "text": "Consumer produce orders with traceable QR codes (see FR10.16)",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR19.14",
+  "full": "Tax invoices and receipts as required by law, and rules for restricted goods",
+  "text": "Tax invoices and receipts as required by law, and rules for restricted goods",
+  "module": "Ecommerce Marketplace",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR20.1",
+  "full": "Caseload dashboard of the farmers an advisor follows, showing crop stage, alerts, and last contact, with the farmer's consent",
+  "text": "Caseload dashboard of the farmers an advisor follows, showing crop stage, alerts, and last contact, with the farmer's consent",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR20.2",
+  "full": "Crop stress and risk map built from diagnostics, weather, and satellite signals, to prioritise visits",
+  "text": "Crop stress and risk map built from diagnostics, weather, and satellite signals, to prioritise visits",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR20.3",
+  "full": "Remote advice by chat, voice note, or photo in local languages, with templates and bulk advisories to groups (see FR7.14)",
+  "text": "Remote advice by chat, voice note, or photo in local languages, with templates and bulk advisories to groups (see FR7.14)",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR20.4",
+  "full": "Escalation queue for low-confidence or high-severity Snap & Solve cases, routed to a human advisor with a response-time target (see FR7.6)",
+  "text": "Escalation queue for low-confidence or high-severity Snap & Solve cases",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR20.5",
+  "full": "Farm visit tools with offline checklists, geo-tagged photos, notes, recommendations, and follow-up tasks",
+  "text": "Farm visit tools with offline checklists, geo-tagged photos, notes, recommendations, and follow-up tasks",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR20.6",
+  "full": "Feasibility review: advisors can review, annotate, and endorse feasibility plans, and an endorsement badge is visible to lenders",
+  "text": "Feasibility review: advisors can review, annotate, and endorse feasibility plans, and an endorsement badge is visible to lenders",
+  "module": "Advisor Desk",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR20.7",
+  "full": "Knowledge library of crop guides, pest and disease pages, best practice, and short videos in English, Shona, and Ndebele, with moderation",
+  "text": "Knowledge library of crop guides",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR20.8",
+  "full": "Certified extension officers can log and verify grades (see FR10.19), with their credentials shown",
+  "text": "Certified extension officers can log and verify grades (see FR10.19), with their credentials shown",
+  "module": "Advisor Desk",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR20.9",
+  "full": "Economist tools give anonymised market, cost, and yield analytics and price outlook reports",
+  "text": "Economist tools give anonymised market, cost, and yield analytics and price outlook reports",
+  "module": "Advisor Desk",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR20.10",
+  "full": "Paid advice marketplace: private advisors list services and fees and are booked and paid through escrow, while public extension stays free",
+  "text": "Paid advice marketplace: private advisors list services and fees and are booked and paid through escrow",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR20.11",
+  "full": "Performance tracking of advice given, adoption, and outcomes such as yield change",
+  "text": "Performance tracking of advice given, adoption, and outcomes such as yield change",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR20.12",
+  "full": "Conflict-of-interest disclosure for advisors who sell inputs or earn commissions, with independent status flagged (see FR13.8)",
+  "text": "Conflict-of-interest disclosure for advisors who sell inputs or earn commissions, with independent status flagged (see FR13.8)",
+  "module": "Advisor Desk",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR20.13",
+  "full": "Credential verification and accreditation, with ratings",
+  "text": "Credential verification and accreditation, with ratings",
+  "module": "Advisor Desk",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.1",
+  "full": "Agent registration and verification (level 3), with accreditation and assigned territory",
+  "text": "Agent registration and verification (level 3), with accreditation and assigned territory",
+  "module": "Agent Console",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.2",
+  "full": "Assisted transactions, such as onboarding, freight booking, and sale logging on a farmer's behalf, only with consent or a recorded delegation (see FR15.6 and FR16)",
+  "text": "Assisted transactions, such as onboarding",
+  "module": "Agent Console",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR21.3",
+  "full": "Client roster showing activation stage, needs, and follow-ups, linked to the CRM (FR17)",
+  "text": "Client roster showing activation stage, needs, and follow-ups, linked to the CRM (FR17)",
+  "module": "Agent Console",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.4",
+  "full": "Collection point management: aggregate produce or bales from several farmers into a batch, record weights and grades, split shares per farmer (see FR10.18), and issue receipts",
+  "text": "Collection point management: aggregate produce or bales from several farmers into a batch",
+  "module": "Agent Console",
+  "obj": "BO2",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR21.5",
+  "full": "Commission engine with configurable rules (per onboarding, per transaction, per kilogram, tiered), automatic calculation, payment through escrow, statements, and a dispute route (see FR13.14)",
+  "text": "Commission engine with configurable rules (per onboarding, per transaction, per kilogram, tiered)",
+  "module": "Agent Console",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR21.6",
+  "full": "Cash handling controls: minimise cash, use mobile money floats, reconcile daily, set caps, and keep an audit trail",
+  "text": "Cash handling controls: minimise cash, use mobile money floats, reconcile daily, set caps, and keep an audit trail",
+  "module": "Agent Console",
+  "obj": "BO3",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.7",
+  "full": "Performance dashboard and quality checks covering onboardings, activation, retention, and error rates, with a supervisor view",
+  "text": "Performance dashboard and quality checks covering onboardings, activation, retention, and error rates, with a supervisor view",
+  "module": "Agent Console",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.8",
+  "full": "Training and certification modules with refreshers",
+  "text": "Training and certification modules with refreshers",
+  "module": "Agent Console",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.9",
+  "full": "Conduct rules, conflict-of-interest disclosure, and a complaints route",
+  "text": "Conduct rules, conflict-of-interest disclosure, and a complaints route",
+  "module": "Agent Console",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.10",
+  "full": "Fraud controls: duplicate and ghost-farmer detection, geo-verification of onboardings, and device binding for agent accounts",
+  "text": "Fraud controls: duplicate and ghost-farmer detection, geo-verification of onboardings, and device binding for agent accounts",
+  "module": "Agent Console",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR21.11",
+  "full": "Separate books when an agent also acts in another role, such as transporter (see FR13.7)",
+  "text": "Separate books when an agent also acts in another role, such as transporter (see FR13.7)",
+  "module": "Agent Console",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR21.12",
+  "full": "Offline-first operation with sync",
+  "text": "Offline-first operation with sync",
+  "module": "Agent Console",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR22.1",
+  "full": "Business onboarding and verification of registration and licences, such as agrochemical registration and seed certification",
+  "text": "Business onboarding and verification of registration and licences, such as agrochemical registration and seed certification",
+  "module": "Service Provider Portal",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR22.2",
+  "full": "Catalogue and price management with bulk upload",
+  "text": "Catalogue and price management with bulk upload",
+  "module": "Service Provider Portal",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR22.3",
+  "full": "Demand insights from consented, aggregated crop areas and planting calendars by district, so suppliers can plan stock",
+  "text": "Demand insights from consented, aggregated crop areas and planting calendars by district, so suppliers can plan stock",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR22.4",
+  "full": "Voucher redemption: scan or enter a code, verify the item and farmer, confirm hand-over, and receive payment from escrow (see FR8.10)",
+  "text": "Voucher redemption: scan or enter a code",
+  "module": "Service Provider Portal",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR22.5",
+  "full": "Orders and fulfilment, with delivery scheduling through the Logistics Module",
+  "text": "Orders and fulfilment, with delivery scheduling through the Logistics Module",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR22.6",
+  "full": "Equipment-as-a-Service management with booking calendar, operators, pricing per hour or acre, GPS or QR usage logs, and a maintenance schedule",
+  "text": "Equipment-as-a-Service management with booking calendar",
+  "module": "Service Provider Portal",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR22.7",
+  "full": "Receivables tracker showing who owes what and ageing, with repayment through the waterfall (FR8.14) and, with consent, a risk view of customers",
+  "text": "Receivables tracker showing who owes what and ageing",
+  "module": "Service Provider Portal",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR22.8",
+  "full": "Payment reconciliation, statements, and tax invoices",
+  "text": "Payment reconciliation, statements, and tax invoices",
+  "module": "Service Provider Portal",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR22.9",
+  "full": "Product authenticity registry with batch codes and recall notices to buyers",
+  "text": "Product authenticity registry with batch codes and recall notices to buyers",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR22.10",
+  "full": "Customer communication and after-sales support, linked to the CRM (FR17)",
+  "text": "Customer communication and after-sales support, linked to the CRM (FR17)",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR22.11",
+  "full": "Performance analytics on sales, redemptions, returns, and ratings",
+  "text": "Performance analytics on sales, redemptions, returns, and ratings",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR22.12",
+  "full": "APIs to connect supplier inventory, ERP, and point-of-sale systems",
+  "text": "APIs to connect supplier inventory, ERP, and point-of-sale systems",
+  "module": "Service Provider Portal",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.1",
+  "full": "Government workspace with role-based access for ministries, AGRITEX, local authorities, the statistics agency, and approved partners",
+  "text": "Government workspace with role-based access for ministries",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR23.2",
+  "full": "Production and area dashboards by crop, district, and season showing planted area, expected yield, and harvest progress, using minimum group sizes so individuals cannot be identified (see FR9.11)",
+  "text": "Production and area dashboards by crop",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR23.3",
+  "full": "Livelihood indicators such as farm income, costs, and debt levels in aggregate, disaggregated by gender and age where consented",
+  "text": "Livelihood indicators such as farm income, costs, and debt levels in aggregate, disaggregated by gender and age where consented",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.4",
+  "full": "Market and price monitoring covering prices, volumes, and post-harvest loss",
+  "text": "Market and price monitoring covering prices, volumes, and post-harvest loss",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.5",
+  "full": "Levy and revenue tracking showing levies collected versus expected by district, with leakage indicators (see FR2.15)",
+  "text": "Levy and revenue tracking showing levies collected versus expected by district, with leakage indicators (see FR2.15)",
+  "module": "Government & Policy Insights",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR23.6",
+  "full": "Early warning maps for drought, floods, and pest or disease outbreaks, built from platform signals and shared as alerts to affected areas",
+  "text": "Early warning maps for drought",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.7",
+  "full": "Programme targeting and delivery, such as subsidised inputs sent to verified farmers as escrow vouchers, with tracking and a legal basis",
+  "text": "Programme targeting and delivery",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.8",
+  "full": "Policy scenario tools to test the effect of levy changes or price floors",
+  "text": "Policy scenario tools to test the effect of levy changes or price floors",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.9",
+  "full": "A formal data-request workflow with legal-basis check, approval, minimum-data rule, and logging",
+  "text": "A formal data-request workflow with legal-basis check, approval, minimum-data rule, and logging",
+  "module": "Government & Policy Insights",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR23.10",
+  "full": "Periodic public reports and an API for approved researchers, using anonymised data only",
+  "text": "Periodic public reports and an API for approved researchers, using anonymised data only",
+  "module": "Government & Policy Insights",
+  "obj": "BO6",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR23.11",
+  "full": "Coverage indicators showing what share of farmers are on the platform, so users can see the bias in the data",
+  "text": "Coverage indicators showing what share of farmers are on the platform, so users can see the bias in the data",
+  "module": "Government & Policy Insights",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR23.12",
+  "full": "Data governance with data-sharing agreements and, where required, hosting options that keep data in country",
+  "text": "Data governance with data-sharing agreements and, where required, hosting options that keep data in country",
+  "module": "Government & Policy Insights",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR9.1",
+  "full": "One identity and one unified data core, with each account holding one or more roles",
+  "text": "One identity and one unified data core, with each account holding one or more roles",
+  "module": "Workspace Engine",
+  "obj": "BO6",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.2",
+  "full": "Workspaces are composed from shared modules through configuration; adding a workspace or crop vertical needs no new application",
+  "text": "Workspaces are composed from shared modules through configuration; adding a workspace or crop vertical needs no new application",
+  "module": "Workspace Engine",
+  "obj": "BO6",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.3",
+  "full": "Each workspace shows only the tools, metrics, and workflows for that role, with data access controlled by role and consent",
+  "text": "Each workspace shows only the tools, metrics, and workflows for that role, with data access controlled by role and consent",
+  "module": "Workspace Engine",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.4",
+  "full": "Users with several roles can switch workspace without logging out",
+  "text": "Users with several roles can switch workspace without logging out",
+  "module": "Workspace Engine",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.5",
+  "full": "Every workspace has a default dashboard and standard reports that can be filtered, exported (PDF, Excel, CSV), and scheduled",
+  "text": "Every workspace has a default dashboard and standard reports that can be filtered, exported (PDF, Excel, CSV), and scheduled",
+  "module": "Workspace Engine",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.6",
+  "full": "The farmer workspace has a single master dashboard combining crop calendar, cash position, debt, loads in transit, and alerts",
+  "text": "The farmer workspace has a single master dashboard combining crop calendar, cash position, debt, loads in transit, and alerts",
+  "module": "Workspace Engine",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.7",
+  "full": "Delegated access: a farmer can grant a bank, contractor, or advisor time-limited, revocable access to defined data",
+  "text": "Delegated access: a farmer can grant a bank, contractor, or advisor time-limited, revocable access to defined data",
+  "module": "Workspace Engine",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR9.8",
+  "full": "Notifications are routed by role, channel (push, SMS, USSD, email), and language preference",
+  "text": "Notifications are routed by role, channel (push, SMS, USSD, email), and language preference",
+  "module": "Workspace Engine",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR9.9",
+  "full": "A cross-workspace event bus means one event, such as a signed proof of delivery, updates settlement, the ledger, and the regulator record in near real time",
+  "text": "A cross-workspace event bus means one event",
+  "module": "Workspace Engine",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR9.10",
+  "full": "Country- and vertical-specific parameters (crop, regulator rules, levies, currency, language) are configurable without code changes",
+  "text": "Country- and vertical-specific parameters (crop, regulator rules, levies, currency, language) are configurable without code\u2026",
+  "module": "Workspace Engine",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR9.11",
+  "full": "Aggregated, anonymised analytics for government and research use minimum group sizes so individuals cannot be identified",
+  "text": "Aggregated, anonymised analytics for government and research use minimum group sizes so individuals cannot be identified",
+  "module": "Workspace Engine",
+  "obj": "BO4",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR9.12",
+  "full": "An audit log records who viewed or changed what in every workspace",
+  "text": "An audit log records who viewed or changed what in every workspace",
+  "module": "Workspace Engine",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.1",
+  "full": "On opening the app or web platform, the user lands on a clean, high-contrast home screen in their last-used lens",
+  "text": "On opening the app or web platform, the user lands on a clean, high-contrast home screen in their last-used lens",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.2",
+  "full": "A simple top-bar toggle switches between the user's verified active roles without changing applications (see the Multi-Role Hub, FR13.1 to FR13.4)",
+  "text": "A simple top-bar toggle switches between the user's verified active roles without changing applications\u2026",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.3",
+  "full": "The Global Metric Mirror (top header) is a live ticker of financial health, pending escrow actions, active task alerts, and weather and market indices, configured per role",
+  "text": "The Global Metric Mirror (top header) is a live ticker of financial health",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.4",
+  "full": "The modular drawer (bottom or side navigation) lights up icons dynamically for the active role, such as Feasibility, Agronomy, Accounting, Logistics, or Auction Floor",
+  "text": "The modular drawer (bottom or side navigation) lights up icons dynamically for the active role",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.5",
+  "full": "Hero card shows the immediate seasonal status and next action, for example \"Tobacco growth stage: Topping. Next action: apply NPK top dressing in 3 days\"",
+  "text": "Hero card shows the immediate seasonal status and next action",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.6",
+  "full": "Quick-action dial with three prominent buttons: Snap & Solve (camera for AI pest check or receipt OCR), Book Transport (one-tap request for a local haulage truck), and My Ledger (visual cash-in versus cash-out with no accounting jargon)",
+  "text": "Quick-action dial with three prominent buttons: Snap & Solve (camera for AI pest check or receipt OCR)",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.7",
+  "full": "Offline-first indicator: a subtle green dot shows sync status, so the farmer knows data is safely cached in areas with intermittent coverage",
+  "text": "Offline-first indicator: a subtle green dot shows sync status",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.8",
+  "full": "Live Freight Radar: a split screen with a local map of available farm-gate pickup pins (tobacco bales, tomato crates) matched against the vehicle's current capacity",
+  "text": "Live Freight Radar: a split screen with a local map of available farm-gate pickup pins (tobacco bales, tomato crates) matched\u2026",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR12.9",
+  "full": "Escrow Vault status shows funds locked for active jobs in real time, removing payment anxiety",
+  "text": "Escrow Vault status shows funds locked for active jobs in real time, removing payment anxiety",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR12.10",
+  "full": "One-tap proof of delivery: a large camera or QR scanner trigger used at collection points and at auction floor or market drop-offs to unlock escrow funds",
+  "text": "One-tap proof of delivery: a large camera or QR scanner trigger used at collection points and at auction floor or market\u2026",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "FR12.11",
+  "full": "Risk Portfolio Heatmap: a macro view of all funded farmers colour-coded by performance health (green on track, yellow minor crop stress, red default or side-marketing risk)",
+  "text": "Risk Portfolio Heatmap: a macro view of all funded farmers colour-coded by performance health\u2026",
+  "module": "Dashboard UX",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR12.12",
+  "full": "Automated Waterfall Dashboard: live tallies of input loan recoveries arriving from auction floor sales",
+  "text": "Automated Waterfall Dashboard: live tallies of input loan recoveries arriving from auction floor sales",
+  "module": "Dashboard UX",
+  "obj": "BO5",
+  "pri": "Should",
+  "phase": "4"
+ },
+ {
+  "id": "FR12.13",
+  "full": "Other lenses (regulator, auction floor, retailer, agent, and so on) follow the same design system and layout pattern",
+  "text": "Other lenses (regulator, auction floor, retailer, agent, and so on) follow the same design system and layout pattern",
+  "module": "Dashboard UX",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR12.14",
+  "full": "Zero training required: if a farmer can use WhatsApp or mobile money, they can navigate Transfarmation; text is minimised, and icons, voice input, and visual colour-coding lead",
+  "text": "Zero training required: if a farmer can use WhatsApp or mobile money, they can navigate Transfarmation",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.15",
+  "full": "Native Shona and Ndebele toggles across all agronomy, financial, and transport prompts (see NFR3)",
+  "text": "Native Shona and Ndebele toggles across all agronomy, financial, and transport prompts (see NFR3)",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.16",
+  "full": "Progressive disclosure: a new user sees only basic features (weather, agronomy, ledger); advanced modules such as Bankable Feasibility and Forward Contracting unlock as the farm profile matures, and can always be opened on request",
+  "text": "Progressive disclosure: a new user sees only basic features (weather, agronomy, ledger)",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR12.17",
+  "full": "Accessibility: high contrast readable in sunlight, large touch targets, colour never the only signal, voice input and output, and screen-reader support",
+  "text": "Accessibility: high contrast readable in sunlight",
+  "module": "Dashboard UX",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.1",
+  "full": "A Dynamic Multi-Role Switcher on the home screen shows all of the user's active roles and switches between them in one tap (this replaces the single-role toggle in FR12.2)",
+  "text": "A Dynamic Multi-Role Switcher on the home screen shows all of the user's active roles and switches between them in one tap\u2026",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.2",
+  "full": "An optional combined home view merges tasks, alerts, and metrics across roles, each tagged by role, for users who act in several roles at once",
+  "text": "An optional combined home view merges tasks",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR13.3",
+  "full": "The active role is always visible, and every transaction is recorded under the role it belongs to, to prevent mistakes such as booking freight as a farmer when acting as a transporter",
+  "text": "The active role is always visible",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.4",
+  "full": "Adding a role is a simple guided step with role-specific verification (for example driver's licence and vehicle for a transporter, identity checks for an agent, business registration for a service provider); users start with the roles they qualify for and add others later, in line with progressive disclosure in FR12.16",
+  "text": "Adding a role is a simple guided step with role-specific verification\u2026",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.5",
+  "full": "One account and one digital ID per person; roles are profiles of the person, not separate accounts",
+  "text": "One account and one digital ID per person; roles are profiles of the person, not separate accounts",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.6",
+  "full": "Permissions, data, and workspace are defined per role, and every action is checked against the role it is performed in, with least privilege",
+  "text": "Permissions, data, and workspace are defined per role",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.7",
+  "full": "Separate books per role: ledger entries are tagged by role so farm, freight, and service income stay separate, with a consolidated personal net-position view (extends FR8.4)",
+  "text": "Separate books per role: ledger entries are tagged by role so farm",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR13.8",
+  "full": "Conflict-of-interest rules stop or flag a user acting on both sides of the same transaction, for example a farmer booking their own truck through escrow, an agent approving their own client's loan, or an advisor recommending inputs they sell; required disclosures are recorded",
+  "text": "Conflict-of-interest rules stop or flag a user acting on both sides of the same transaction",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR13.9",
+  "full": "With consent, the credit profile combines verified income across roles, which can raise a multi-role user's eligibility",
+  "text": "With consent, the credit profile combines verified income across roles, which can raise a multi-role user's eligibility",
+  "module": "Multi-Role",
+  "obj": "BO5",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR13.10",
+  "full": "Statutory and licence obligations attach to the role (for example a transporter's operator licence, a supplier's tax registration, a grower's TIMB levies), with a consolidated compliance view",
+  "text": "Statutory and licence obligations attach to the role\u2026",
+  "module": "Multi-Role",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR13.11",
+  "full": "Roles can be suspended or revoked independently, so losing a transporter licence does not remove the farmer role, and every role change is logged",
+  "text": "Roles can be suspended or revoked independently",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR13.12",
+  "full": "Consent and data sharing are set per role: data shared with a bank for the farming role is not automatically visible to counterparties in the freight role",
+  "text": "Consent and data sharing are set per role",
+  "module": "Multi-Role",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.13",
+  "full": "Shared-device support: several people, such as family members, can use one phone with separate PINs and separate profiles",
+  "text": "Shared-device support: several people, such as family members, can use one phone with separate PINs and separate profiles",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR13.14",
+  "full": "Commission and fee handling for informal agents and intermediaries, paid through escrow with itemised statements",
+  "text": "Commission and fee handling for informal agents and intermediaries, paid through escrow with itemised statements",
+  "module": "Multi-Role",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "FR15.1",
+  "full": "One person record with a unique platform ID; roles are linked profiles, not separate accounts (see FR13.5)",
+  "text": "One person record with a unique platform ID; roles are linked profiles, not separate accounts (see FR13.5)",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.2",
+  "full": "Identity matching and de-duplication on national ID number, mobile number, and biometric template, with an audited merge process to stop duplicate and ghost accounts",
+  "text": "Identity matching and de-duplication on national ID number",
+  "module": "Identity Database",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.3",
+  "full": "Verification level is stored per person and per role, and each role and module states the minimum level it needs",
+  "text": "Verification level is stored per person and per role, and each role and module states the minimum level it needs",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.4",
+  "full": "Role profile schema with type, status, effective dates, and role-specific attributes (for example vehicle capacity and licence expiry for a transporter, business registration number for a supplier, service area for an agent)",
+  "text": "Role profile schema with type, status",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.5",
+  "full": "Organisation accounts with staff memberships and permission scopes, so a bank, contractor, or floor can manage its own users",
+  "text": "Organisation accounts with staff memberships and permission scopes, so a bank, contractor, or floor can manage its own users",
+  "module": "Identity Database",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR15.6",
+  "full": "Delegation and shared-device support: delegations carry a scope and an expiry date, and each person on a shared phone has a separate PIN and profile (see FR13.13)",
+  "text": "Delegation and shared-device support: delegations carry a scope and an expiry date",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.7",
+  "full": "Biometric templates are stored as protected templates or hashes in a separate store, raw images are not kept, and access is only through the matching service",
+  "text": "Biometric templates are stored as protected templates or hashes in a separate store",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.8",
+  "full": "An append-only consent ledger records purpose, role, recipient, language, version, time, and withdrawal for every consent (see FR5.1)",
+  "text": "An append-only consent ledger records purpose",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.9",
+  "full": "Every data record is tagged with its owner person and role, and access checks combine role, verification level, and consent (see FR13.6 and FR13.12)",
+  "text": "Every data record is tagged with its owner person and role",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.10",
+  "full": "Tamper-evident audit logs for identity creation, verification, role changes, delegation, and data access",
+  "text": "Tamper-evident audit logs for identity creation, verification, role changes, delegation, and data access",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.11",
+  "full": "TIMB linkage stores the grower number and sync status, runs a reconciliation job, and flags mismatches for review",
+  "text": "TIMB linkage stores the grower number and sync status, runs a reconciliation job, and flags mismatches for review",
+  "module": "Identity Database",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "FR15.12",
+  "full": "Offline enrolment captures identity and role data on the device with local encryption, syncs later under the conflict rules in NFR12, and keeps the record pending until verified",
+  "text": "Offline enrolment captures identity and role data on the device with local encryption",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.13",
+  "full": "Account recovery for a lost phone or changed SIM uses agent-assisted verification, step-up authentication, SIM-swap checks, and a cooling-off period before high-risk actions",
+  "text": "Account recovery for a lost phone or changed SIM uses agent-assisted verification",
+  "module": "Identity Database",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR15.14",
+  "full": "Data subject rights: export, correction, and deletion, subject to legal retention (see FR5.2)",
+  "text": "Data subject rights: export, correction, and deletion, subject to legal retention (see FR5.2)",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR15.15",
+  "full": "Standards-based integration: OAuth 2.0 and OpenID Connect for sign-in and partner access, and APIs to national ID, TIMB, and mobile money KYC where available (see NFR8)",
+  "text": "Standards-based integration: OAuth 2.0 and OpenID Connect for sign-in and partner access",
+  "module": "Identity Database",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR15.16",
+  "full": "Pseudonymised identifiers for aggregate analytics, so government and research views cannot identify individuals (see FR9.11)",
+  "text": "Pseudonymised identifiers for aggregate analytics, so government and research views cannot identify individuals (see FR9.11)",
+  "module": "Identity Database",
+  "obj": "All",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR15.17",
+  "full": "Sized for the 500 pilot participants but designed for millions of persons, with defined targets for sign-in speed and availability",
+  "text": "Sized for the 500 pilot participants but designed for millions of persons, with defined targets for sign-in speed and availability",
+  "module": "Identity Database",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.1",
+  "full": "Offline agent app with a guided step-by-step flow that can be paused and resumed",
+  "text": "Offline agent app with a guided step-by-step flow that can be paused and resumed",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.2",
+  "full": "Read-aloud audio for every screen and consent line in English, Shona, and Ndebele",
+  "text": "Read-aloud audio for every screen and consent line in English, Shona, and Ndebele",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.3",
+  "full": "Consent capture with language, version, time, and agent ID, stored in the consent ledger (FR15.8)",
+  "text": "Consent capture with language, version, time, and agent ID, stored in the consent ledger (FR15.8)",
+  "module": "Onboarding",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.4",
+  "full": "A teach-back check that the agent must complete before basic consent is accepted",
+  "text": "A teach-back check that the agent must complete before basic consent is accepted",
+  "module": "Onboarding",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.5",
+  "full": "GPS boundary capture with an accuracy indicator and a warning when accuracy is poor",
+  "text": "GPS boundary capture with an accuracy indicator and a warning when accuracy is poor",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.6",
+  "full": "Role questions that start each role's verification path and show what is still needed (FR13.4)",
+  "text": "Role questions that start each role's verification path and show what is still needed (FR13.4)",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.7",
+  "full": "Household and shared-phone setup with a separate PIN per person (FR13.13)",
+  "text": "Household and shared-phone setup with a separate PIN per person (FR13.13)",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.8",
+  "full": "SMS or printed confirmation slip with the farmer's ID, language, and helpline",
+  "text": "SMS or printed confirmation slip with the farmer's ID, language, and helpline",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "FR16.9",
+  "full": "Agent dashboard showing onboardings, completion rate, verification level reached, and quality-check results",
+  "text": "Agent dashboard showing onboardings, completion rate, verification level reached, and quality-check results",
+  "module": "Onboarding",
+  "obj": "BO1",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "NFR1",
+  "full": "Offline-first. Module 1's core farm profiling and feasibility generation must function without network connectivity, syncing when a connection becomes available",
+  "text": "Offline-first. Module 1's core farm profiling and feasibility generation must function without network connectivity",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR2",
+  "full": "Security. Digital contracts and biometric data must be cryptographically secured end to end",
+  "text": "Security. Digital contracts and biometric data must be cryptographically secured end to end",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR3",
+  "full": "Localization. All contract terms and key UI content available in Shona and Ndebele, in addition to English",
+  "text": "Localization. All contract terms and key UI content available in Shona and Ndebele, in addition to English",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR4",
+  "full": "Low-bandwidth resilience. Suitable for rural connectivity conditions typical of communal farming areas",
+  "text": "Low-bandwidth resilience. Suitable for rural connectivity conditions typical of communal farming areas",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR5",
+  "full": "Auditability. Grower registration, levy deductions, and compliance clearances must be traceable for regulatory audit",
+  "text": "Auditability. Grower registration, levy deductions, and compliance clearances must be traceable for regulatory audit",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO4",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "NFR6",
+  "full": "Interoperability. Must integrate with TIMB's existing Biometric Grower Registration System and mapping standards without requiring TIMB to replace its own systems",
+  "text": "Interoperability. Must integrate with TIMB's existing Biometric Grower Registration System and mapping standards without\u2026",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO3",
+  "pri": "Must",
+  "phase": "2"
+ },
+ {
+  "id": "NFR7",
+  "full": "Scalability. Cloud-native, multi-tenant architecture able to scale from a single pilot vertical (tobacco, Zimbabwe) to additional crops and countries without re-architecture",
+  "text": "Scalability. Cloud-native, multi-tenant architecture able to scale from a single pilot vertical (tobacco, Zimbabwe) to\u2026",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "1"
+ },
+ {
+  "id": "NFR8",
+  "full": "API-first design. Well-documented APIs for TIMB, banks, payment processors, and future third-party integrations",
+  "text": "API-first design. Well-documented APIs for TIMB, banks, payment processors, and future third-party integrations",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "NFR9",
+  "full": "Data privacy & protection. Compliance with Zimbabwe's Cyber and Data Protection Act and relevant regional data-protection regulation, with farmer biometric and financial data encrypted at rest and in transit",
+  "text": "Data privacy & protection. Compliance with Zimbabwe's Cyber and Data Protection Act and relevant regional data-protection\u2026",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR10",
+  "full": "Payment security. PCI-DSS-aligned handling for any card/mobile-money payment flows introduced by the ecommerce/marketplace layer",
+  "text": "Payment security. PCI-DSS-aligned handling for any card/mobile-money payment flows introduced by the ecommerce/marketplace layer",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO5",
+  "pri": "Must",
+  "phase": "3"
+ },
+ {
+  "id": "NFR11",
+  "full": "Role-based access control. Distinct permission levels for farmers, advisors, bankers, regulators, agents, and administrators",
+  "text": "Role-based access control. Distinct permission levels for farmers, advisors, bankers, regulators, agents, and administrators",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR12",
+  "full": "Offline-sync conflict resolution. Deterministic merge rules when offline-captured farm/module data reconciles with the server on reconnect",
+  "text": "Offline-sync conflict resolution. Deterministic merge rules when offline-captured farm/module data reconciles with the server\u2026",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR13",
+  "full": "Availability & disaster recovery. Defined uptime target for transacting modules (offtake sign-off, payments) plus backup/restore procedures for farmer and compliance data",
+  "text": "Availability & disaster recovery. Defined uptime target for transacting modules (offtake sign-off, payments) plus\u2026",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "NFR14",
+  "full": "Analytics & reporting. Dashboards/exports to satisfy government and regulator statutory reporting obligations",
+  "text": "Analytics & reporting. Dashboards/exports to satisfy government and regulator statutory reporting obligations",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO4",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "NFR15",
+  "full": "Accessibility. Usable on low-cost Android devices and by low-literacy users, consistent with the plain-language/local-language requirement in Module 1",
+  "text": "Accessibility. Usable on low-cost Android devices and by low-literacy users",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO1",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR16",
+  "full": "Multi-currency support. USD and local currency handling for financial and marketplace transactions",
+  "text": "Multi-currency support. USD and local currency handling for financial and marketplace transactions",
+  "module": "Platform (Non-Functional)",
+  "obj": "BO6",
+  "pri": "Should",
+  "phase": "3"
+ },
+ {
+  "id": "NFR17",
+  "full": "Erasure-compatible architecture, with personal data kept out of immutable ledgers (see GDPR section)",
+  "text": "Erasure-compatible architecture, with personal data kept out of immutable ledgers (see GDPR section)",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR18",
+  "full": "Data protection impact assessment completed before each biometric or credit-scoring release",
+  "text": "Data protection impact assessment completed before each biometric or credit-scoring release",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "NFR19",
+  "full": "Transfer register and Standard Contractual Clauses for EU-related data flows",
+  "text": "Transfer register and Standard Contractual Clauses for EU-related data flows",
+  "module": "Platform (Non-Functional)",
+  "obj": "All",
+  "pri": "Could",
+  "phase": "Post-pilot"
+ },
+ {
+  "id": "FR5.1",
+  "full": "Consent capture and withdrawal for each data use, with a timestamped consent record",
+  "text": "Consent capture and withdrawal for each data use, with a timestamped consent record",
+  "module": "Privacy & Data Protection",
+  "obj": "All",
+  "pri": "Must",
+  "phase": "1"
+ },
+ {
+  "id": "FR5.2",
+  "full": "Self-service data access, correction, export, and deletion requests",
+  "text": "Self-service data access, correction, export, and deletion requests",
+  "module": "Privacy & Data Protection",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "2"
+ },
+ {
+  "id": "FR5.3",
+  "full": "Human review path and explanation view for any automated credit or compliance decision",
+  "text": "Human review path and explanation view for any automated credit or compliance decision",
+  "module": "Privacy & Data Protection",
+  "obj": "All",
+  "pri": "Should",
+  "phase": "2"
+ }
+]
