@@ -1,27 +1,229 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Default rule: allow access to authenticated users
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+
+    // ── Helpers ──────────────────────────────────────────────
+    function signedIn() {
+      return request.auth != null;
     }
 
-    // You can optionally make these catalogue collections public to everyone
-    match /commodity_prices/{document=**} {
-      allow read: if true;
+    function isUser(uid) {
+      return signedIn() && request.auth.uid == uid;
     }
-    match /farm_inputs/{document=**} {
-      allow read: if true;
+
+    // Create: the new document must name the caller as its owner.
+    function createsOwned(field) {
+      return signedIn() && request.resource.data[field] == request.auth.uid;
     }
-    match /weather_alerts/{document=**} {
-      allow read: if true;
+
+    // Update/delete: the caller owns the existing document and cannot hand it to someone else.
+    function ownsExisting(field) {
+      return signedIn() && resource.data[field] == request.auth.uid;
     }
-    match /experts/{document=**} {
-      allow read: if true;
+
+    // Experts are verified by an admin writing verified_experts/{uid}. A user
+    // cannot grant themselves this: clients have no write access to it.
+    function isVerifiedAs(professions) {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/verified_experts/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/verified_experts/$(request.auth.uid))
+          .data.profession in professions;
     }
-    match /forum_posts/{document=**} {
-      allow read: if true;
+
+    function isVerifiedExpert() {
+      return isVerifiedAs(['Agronomist', 'Veterinarian']);
     }
+
+    function isVerifiedLender() {
+      return isVerifiedAs(['Lender']);
+    }
+
+    // Admins are added by hand in the console/by script (admins/{uid}). No
+    // client can write that collection, so nobody can promote themselves.
+    function isAdmin() {
+      return signedIn() &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function keepsOwner(field) {
+      return request.resource.data[field] == resource.data[field];
+    }
+
+    // ── Per-user data (owner = document id) ──────────────────
+    match /users/{uid} {
+      allow read, create, update: if isUser(uid);
+      allow delete: if false;
+    }
+
+    // ── Per-user data (owner field present in every document) ─
+    // A loan application. The farmer creates it (always pending) and may edit
+    // it only while it is pending. A verified lender can read applications and
+    // may only record a decision on a pending one.
+    match /loans/{id} {
+      allow read: if ownsExisting('farmerId') || isVerifiedLender();
+      allow create: if createsOwned('farmerId') && request.resource.data.status == 'pending';
+      allow update: if
+        (ownsExisting('farmerId') && keepsOwner('farmerId') &&
+          resource.data.status == 'pending' && request.resource.data.status == 'pending')
+        ||
+        (isVerifiedLender() && resource.data.status == 'pending' &&
+          request.resource.data.status in ['approved', 'rejected'] &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['status', 'lenderName', 'lenderId', 'decidedAt', 'decisionNote', 'updatedAt']));
+      allow delete: if false;
+    }
+
+    match /diagnosis_results/{id} {
+      allow read, delete: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+    }
+
+    // Requests for a human agronomist to review a diagnosis.
+    // Farmers create and read their own; verified experts read all and may only
+    // add a reply (status, reply, repliedBy, repliedAt).
+    match /diagnosis_escalations/{id} {
+      allow read: if ownsExisting('farmerId') || isVerifiedExpert();
+      allow create: if createsOwned('farmerId') && request.resource.data.status == 'open';
+      allow update: if isVerifiedExpert() &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'reply', 'repliedBy', 'repliedAt']);
+      allow delete: if false;
+    }
+
+    // Loan offers: anyone can compare them; only a verified lender can publish
+    // one under their own id, and only that lender can change or withdraw it.
+    match /loan_offers/{id} {
+      allow read: if true;
+      allow create: if isVerifiedLender() && request.resource.data.lenderId == request.auth.uid;
+      allow update: if isVerifiedLender() && resource.data.lenderId == request.auth.uid &&
+        request.resource.data.lenderId == resource.data.lenderId;
+      allow delete: if isVerifiedLender() && resource.data.lenderId == request.auth.uid;
+    }
+
+    match /admins/{uid} {
+      allow read: if isUser(uid);
+      allow write: if false;
+    }
+
+    // Only an admin can verify an expert.
+    match /verified_experts/{uid} {
+      allow read: if isUser(uid) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // An expert applies once; an admin approves or rejects. A rejected
+    // applicant may delete the application and apply again.
+    match /expert_applications/{uid} {
+      allow read: if isUser(uid) || isAdmin();
+      allow create: if isUser(uid) &&
+        request.resource.data.status == 'pending' &&
+        request.resource.data.keys().hasOnly(
+          ['uid', 'name', 'profession', 'licenceNumber', 'organisation',
+           'email', 'status', 'submittedAt']);
+      allow update: if isAdmin() &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'reviewedBy', 'reviewedAt', 'reviewNote']);
+      allow delete: if isUser(uid) && resource.data.status == 'rejected';
+    }
+
+    match /subsidy_applications/{id} {
+      allow read, delete: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+    }
+
+    match /feasibility_plans/{id} {
+      allow read, delete: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+    }
+
+    match /ledger_entries/{id} {
+      allow read, delete: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+    }
+
+    match /farms/{farmId} {
+      allow read, delete: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+
+      match /{sub}/{docId} {
+        allow read, write: if signedIn() &&
+          get(/databases/$(database)/documents/farms/$(farmId)).data.farmerId == request.auth.uid;
+      }
+    }
+
+    match /savings_transactions/{id} {
+      allow read: if ownsExisting('memberId');
+      allow create: if createsOwned('memberId');
+      allow update, delete: if false;
+    }
+
+    // Documents keyed by the farmer's uid.
+    match /group_orders/{orderId} {
+      allow read: if signedIn();
+      allow write: if false; // quantities are maintained by Cloud Functions
+      match /participants/{farmerId} {
+        allow read: if isUser(farmerId);
+        allow create, update: if isUser(farmerId);
+        allow delete: if false;
+      }
+    }
+
+    match /farming_contracts/{contractId} {
+      allow read: if true;
+      allow write: if false;
+      match /applications/{farmerId} {
+        allow read, create, update: if isUser(farmerId);
+        allow delete: if false;
+      }
+    }
+
+    // ── Marketplace ──────────────────────────────────────────
+    match /marketplace_products/{id} {
+      allow read: if true;
+      allow create: if createsOwned('sellerId');
+      allow update: if ownsExisting('sellerId') && keepsOwner('sellerId');
+      allow delete: if ownsExisting('sellerId');
+    }
+
+    match /products/{id} {
+      allow read: if true;
+      allow create: if createsOwned('sellerId');
+      allow update: if ownsExisting('sellerId') && keepsOwner('sellerId');
+      allow delete: if ownsExisting('sellerId');
+    }
+
+    // ── Read-only catalogue data (maintained by admins / functions) ─
+    match /commodity_prices/{id}  { allow read: if true; allow write: if false; }
+    match /farm_inputs/{id}       { allow read: if true; allow write: if false; }
+    match /weather_alerts/{id}    { allow read: if true; allow write: if false; }
+    match /weather_forecasts/{id} { allow read: if true; allow write: if false; }
+    match /experts/{id}           { allow read: if true; allow write: if false; }
+    match /app_services/{id}      { allow read: if true; allow write: if false; }
+    match /cooperatives/{id}      { allow read: if signedIn(); allow write: if false; }
+    match /savings_groups/{id}    { allow read: if signedIn(); allow create: if signedIn(); allow update, delete: if false; }
+
+    // ── Signed-in only for now ───────────────────────────────
+    // These collections are written by the app without an owner field in the
+    // document, so ownership cannot be enforced yet. Add farmerId to each sync
+    // payload, then move them to the owner rules above.
+    match /farm_workers/{id}           { allow read, write: if signedIn(); }
+    match /farm_tasks/{id}             { allow read, write: if signedIn(); }
+    match /iot_sensors/{id}            { allow read, write: if signedIn(); }
+    match /iot_devices/{id}            { allow read, write: if signedIn(); }
+    match /bookings/{id}               { allow read, write: if signedIn(); }
+    match /marketplace_listings/{id}   { allow read, write: if signedIn(); }
+    match /traceability_logs/{id}      { allow read, write: if signedIn(); }
+    match /notifications/{id}          { allow read, write: if signedIn(); }
+
+    // Community content: anyone can read, signed-in users can post, no edits.
+    match /forum_posts/{id}     { allow read: if true; allow create: if signedIn(); allow update, delete: if false; }
+    match /community_posts/{id} { allow read: if true; allow create: if signedIn(); allow update, delete: if false; }
+
+    // Everything else is denied.
   }
 }

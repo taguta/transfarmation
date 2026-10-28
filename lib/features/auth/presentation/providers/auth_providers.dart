@@ -24,3 +24,12 @@ final authStateProvider = StreamProvider<User?>((ref) {
 final currentFarmerIdProvider = Provider<String?>((ref) {
   return ref.watch(authStateProvider).valueOrNull?.uid;
 });
+
+/// Id used for data created while signed out (demo/guest mode).
+const guestFarmerId = 'farmer-001';
+
+/// The id every per-user query and write should use: the signed-in user's uid,
+/// or [guestFarmerId] when nobody is signed in.
+final activeFarmerIdProvider = Provider<String>((ref) {
+  return ref.watch(currentFarmerIdProvider) ?? guestFarmerId;
+});

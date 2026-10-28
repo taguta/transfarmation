@@ -14,6 +14,12 @@ class Loan {
   final double? farmSize;
   final double amountRepaid;
   final String? lenderName;
+  final String? province;
+  final String? farmingType;
+  final String? decisionNote;
+
+  /// Feasibility plan numbers the farmer chose to share with lenders.
+  final Map<String, dynamic>? planSummary;
 
   Loan({
     required this.id,
@@ -29,6 +35,10 @@ class Loan {
     this.farmSize,
     this.amountRepaid = 0,
     this.lenderName,
+    this.province,
+    this.farmingType,
+    this.decisionNote,
+    this.planSummary,
   });
 
   double get repaidPercent =>
@@ -49,6 +59,7 @@ class Loan {
     double? farmSize,
     double? amountRepaid,
     String? lenderName,
+    String? decisionNote,
   }) {
     return Loan(
       id: id ?? this.id,
@@ -64,6 +75,10 @@ class Loan {
       farmSize: farmSize ?? this.farmSize,
       amountRepaid: amountRepaid ?? this.amountRepaid,
       lenderName: lenderName ?? this.lenderName,
+      province: province,
+      farmingType: farmingType,
+      decisionNote: decisionNote ?? this.decisionNote,
+      planSummary: planSummary,
     );
   }
 }
@@ -78,6 +93,10 @@ class LoanOffer {
   final String? conditions;
   final bool isRecommended;
 
+  /// True for demo offers that do not come from a real lender.
+  final bool isSample;
+  final String? lenderId;
+
   const LoanOffer({
     required this.id,
     required this.lenderName,
@@ -87,6 +106,8 @@ class LoanOffer {
     required this.monthlyPayment,
     this.conditions,
     this.isRecommended = false,
+    this.isSample = false,
+    this.lenderId,
   });
 }
 

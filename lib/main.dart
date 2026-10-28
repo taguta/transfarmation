@@ -1,8 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:sqflite/sqflite.dart' show databaseFactory;
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+
+import 'firebase_options.dart';
 
 import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
@@ -20,10 +25,8 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Hive.initFlutter();
-  // Run `flutterfire configure` to generate lib/firebase_options.dart, then replace
-  // the line below with:
-  //   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (kIsWeb) databaseFactory = databaseFactoryFfiWeb;
   final db = await initDatabase();
   await DataSeeder(db, FarmLocalDataSource(db), LoanLocalDataSource(db)).seedIfEmpty();
 

@@ -12,7 +12,7 @@ class ProfileRemoteDataSourceFirestoreImpl implements ProfileRemoteDataSource {
 
   @override
   Future<ProfileSettings> getSettings(String userId) async {
-    final doc = await firestore.collection('user_profiles').doc(userId).get();
+    final doc = await firestore.collection('users').doc(userId).get();
     if (!doc.exists || doc.data() == null) return const ProfileSettings();
     final data = doc.data()!;
     return ProfileSettings(
@@ -25,7 +25,7 @@ class ProfileRemoteDataSourceFirestoreImpl implements ProfileRemoteDataSource {
 
   @override
   Future<void> updateSettings(String userId, ProfileSettings settings) async {
-    await firestore.collection('user_profiles').doc(userId).set({
+    await firestore.collection('users').doc(userId).set({
       'pushNotifications': settings.pushNotifications,
       'smsAlerts': settings.smsAlerts,
       'emailUpdates': settings.emailUpdates,

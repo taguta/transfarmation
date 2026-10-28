@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/farming_contract.dart';
@@ -78,7 +79,10 @@ class ContractFarmingScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xxl),
 
               // Contract cards
-              ...contracts.map((c) => _ContractCard(contract: c)),
+              ResponsiveWrap(
+                minItemWidth: 420,
+                children: [for (final c in contracts) _ContractCard(contract: c)],
+              ),
 
               if (contracts.isEmpty)
                 Padding(

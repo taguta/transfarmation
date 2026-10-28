@@ -6,13 +6,19 @@ class SqliteService {
   static Future<Database> init() async {
     return openDatabase(
       join(await getDatabasesPath(), 'agrolink.db'),
-      version: 7,
+      version: 13,
       onCreate: (db, version) async {
         await _createAllTables(db);
         await _migrateToV4(db);
         await _migrateToV5(db);
         await _migrateToV6(db);
         await _migrateToV7(db);
+        await _migrateToV8(db);
+        await _migrateToV9(db);
+        await _migrateToV10(db);
+        await _migrateToV11(db);
+        await _migrateToV12(db);
+        await _migrateToV13(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -32,6 +38,24 @@ class SqliteService {
         }
         if (oldVersion < 7) {
           await _migrateToV7(db);
+        }
+        if (oldVersion < 8) {
+          await _migrateToV8(db);
+        }
+        if (oldVersion < 9) {
+          await _migrateToV9(db);
+        }
+        if (oldVersion < 10) {
+          await _migrateToV10(db);
+        }
+        if (oldVersion < 11) {
+          await _migrateToV11(db);
+        }
+        if (oldVersion < 12) {
+          await _migrateToV12(db);
+        }
+        if (oldVersion < 13) {
+          await _migrateToV13(db);
         }
       },
     );
@@ -477,6 +501,111 @@ class SqliteService {
         isSynced INTEGER DEFAULT 0
       )
     ''');
+  }
+
+  /// Ledger entries from one sale share a group so they stay consistent.
+  static Future<void> _migrateToV13(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(ledger_entries)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    if (!cols.contains('groupId')) {
+      await db.execute('ALTER TABLE ledger_entries ADD COLUMN groupId TEXT');
+    }
+  }
+
+  /// Offers now come from verified lenders; demo offers are flagged as samples.
+  static Future<void> _migrateToV12(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(loan_offers)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    for (final c in ['isSample INTEGER DEFAULT 0', 'lenderId TEXT']) {
+      if (!cols.contains(c.split(' ').first)) {
+        await db.execute('ALTER TABLE loan_offers ADD COLUMN $c');
+      }
+    }
+  }
+
+  /// Loans kept only an amount; a lender needs the whole application.
+  static Future<void> _migrateToV11(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(loans)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    for (final c in [
+      'farmName TEXT',
+      'province TEXT',
+      'farmSize REAL',
+      'cropType TEXT',
+      'farmingType TEXT',
+      'purpose TEXT',
+      'repaymentPeriod TEXT',
+      'amountRepaid REAL DEFAULT 0',
+      'lenderName TEXT',
+      'decisionNote TEXT',
+      'planSummary TEXT',
+    ]) {
+      if (!cols.contains(c.split(' ').first)) {
+        await db.execute('ALTER TABLE loans ADD COLUMN $c');
+      }
+    }
+  }
+
+  /// Stores the agronomist's reply next to the diagnosis it answers.
+  static Future<void> _migrateToV10(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(diagnosis_results)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    for (final c in ['expertReply TEXT', 'repliedAt TEXT']) {
+      if (!cols.contains(c.split(' ').first)) {
+        await db.execute('ALTER TABLE diagnosis_results ADD COLUMN $c');
+      }
+    }
+  }
+
+  /// Adds the columns the diagnosis code already writes (the original table
+  /// lacked them, so saving a diagnosis failed) plus symptom/escalation data.
+  static Future<void> _migrateToV9(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(diagnosis_results)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    for (final c in [
+      'subjectName TEXT',
+      'notes TEXT',
+      'matchCount INTEGER',
+      'symptoms TEXT',
+      'escalatedAt TEXT',
+      'topMatchDescription TEXT',
+    ]) {
+      if (!cols.contains(c.split(' ').first)) {
+        await db.execute('ALTER TABLE diagnosis_results ADD COLUMN $c');
+      }
+    }
+  }
+
+  static Future<void> _migrateToV8(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS feasibility_plans(
+        id TEXT PRIMARY KEY,
+        farmerId TEXT NOT NULL,
+        crop TEXT NOT NULL,
+        data TEXT NOT NULL,
+        createdAt TEXT NOT NULL,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS ledger_entries(
+        id TEXT PRIMARY KEY,
+        farmerId TEXT NOT NULL,
+        type TEXT NOT NULL,
+        category TEXT,
+        amount REAL NOT NULL,
+        note TEXT,
+        date TEXT NOT NULL,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_ledger_date ON ledger_entries(date)');
   }
 
   static Future<void> _migrateToV7(Database db) async {

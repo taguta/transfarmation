@@ -1,17 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/diagnosis.dart';
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 class DiagnosisNotifier extends AsyncNotifier<List<DiagnosisResult>> {
   @override
   Future<List<DiagnosisResult>> build() async {
     final repo = ref.watch(diagnosisRepositoryImplProvider);
-    return repo.getDiagnosisHistory('farmer-001');
+    return repo.getDiagnosisHistory(ref.watch(activeFarmerIdProvider));
   }
 
   Future<void> addResult(DiagnosisResult result) async {
     final repo = ref.read(diagnosisRepositoryImplProvider);
     await repo.saveDiagnosis(result);
+    ref.invalidateSelf();
+  }
+
+  Future<void> escalate(DiagnosisResult result) async {
+    await ref.read(diagnosisRepositoryImplProvider).escalate(result);
     ref.invalidateSelf();
   }
 }

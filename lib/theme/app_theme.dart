@@ -331,6 +331,7 @@ abstract final class AppTheme {
           modalBackgroundColor: AppColors.surface,
           dragHandleColor: AppColors.border,
           showDragHandle: true,
+          constraints: BoxConstraints(maxWidth: 640),
         ),
 
         // ── ListTile ──
@@ -568,6 +569,7 @@ abstract final class AppTheme {
           ),
           dragHandleColor: AppColors.dividerDark,
           showDragHandle: true,
+          constraints: const BoxConstraints(maxWidth: 640),
         ),
 
         snackBarTheme: SnackBarThemeData(

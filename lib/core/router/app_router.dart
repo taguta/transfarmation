@@ -5,6 +5,13 @@ import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/contracts/presentation/screens/contract_farming_screen.dart';
 import '../../features/diagnosis/presentation/screens/diagnosis_screen.dart';
+import '../../features/diagnosis/presentation/screens/symptom_check_screen.dart';
+import '../../features/advisory/presentation/screens/admin_experts_screen.dart';
+import '../../features/credit_desk/presentation/screens/credit_desk_screen.dart';
+import '../../features/advisory/presentation/screens/advisory_desk_screen.dart';
+import '../../features/feasibility/presentation/screens/feasibility_screen.dart';
+import '../../features/ledger/presentation/screens/ledger_screen.dart';
+import '../../features/ledger/presentation/screens/sale_screen.dart';
 import '../../features/expert/presentation/screens/expert_chat_screen.dart';
 import '../../features/expert/presentation/screens/expert_list_screen.dart';
 import '../../features/farm_records/presentation/screens/farm_record_screen.dart';
@@ -189,6 +196,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/diagnosis',
             builder: (context, state) => const DiagnosisScreen(),
+            routes: [
+              GoRoute(
+                path: 'check',
+                builder: (context, state) => SymptomCheckScreen(
+                  type: state.uri.queryParameters['type'] ?? 'crop',
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: '/weather',
@@ -221,6 +236,32 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/market-prices',
             builder: (context, state) => const MarketPriceScreen(),
+          ),
+          GoRoute(
+            path: '/credit-desk',
+            builder: (context, state) => const CreditDeskScreen(),
+          ),
+          GoRoute(
+            path: '/admin/experts',
+            builder: (context, state) => const AdminExpertsScreen(),
+          ),
+          GoRoute(
+            path: '/advisory-desk',
+            builder: (context, state) => const AdvisoryDeskScreen(),
+          ),
+          GoRoute(
+            path: '/feasibility',
+            builder: (context, state) => const FeasibilityScreen(),
+          ),
+          GoRoute(
+            path: '/ledger',
+            builder: (context, state) => const LedgerScreen(),
+            routes: [
+              GoRoute(
+                path: 'sale',
+                builder: (context, state) => const SaleScreen(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/contracts',

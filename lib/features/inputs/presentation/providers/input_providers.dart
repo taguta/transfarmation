@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/farm_input.dart';
 
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 final inputsProvider = FutureProvider<List<FarmInput>>((ref) async {
   final repo = ref.watch(inputRepositoryImplProvider);
@@ -26,5 +27,5 @@ final subsidyProgramsProvider = FutureProvider<List<SubsidyProgram>>((ref) async
 
 final subsidyApplicationsProvider = FutureProvider<List<SubsidyApplication>>((ref) async {
   final repo = ref.watch(inputRepositoryImplProvider);
-  return repo.getMyApplications('farmer-001');
+  return repo.getMyApplications(ref.watch(activeFarmerIdProvider));
 });

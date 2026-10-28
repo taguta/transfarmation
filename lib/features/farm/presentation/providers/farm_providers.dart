@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/farm.dart';
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 final farmProfileRepositoryProvider = Provider((ref) {
   return ref.watch(databaseProvider);
@@ -17,7 +18,7 @@ class FarmNotifier extends AsyncNotifier<Farm> {
       // Create initial DB if it doesn't exist
       final initialFarm = Farm(
         id: 'farm-001',
-        farmerId: 'farmer-001',
+        farmerId: ref.read(activeFarmerIdProvider),
         name: 'My Farm',
         province: 'Mashonaland East',
         sizeHectares: 0,

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/cooperative.dart';
 import '../providers/group_buying_providers.dart';
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 class GroupBuyingScreen extends ConsumerWidget {
   const GroupBuyingScreen({super.key});
@@ -60,14 +62,14 @@ class GroupBuyingScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.md),
-              ...openOrders.map((entry) => _GroupOrderCard(coop: entry.key, order: entry.value)),
+              ResponsiveWrap(minItemWidth: 420, children: [for (final entry in openOrders) _GroupOrderCard(coop: entry.key, order: entry.value)]),
 
               const SizedBox(height: AppSpacing.xxl),
 
               // Cooperatives
               Text('Cooperatives', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
               const SizedBox(height: AppSpacing.md),
-              ...coops.map((c) => _CoopCard(coop: c)),
+              ResponsiveWrap(minItemWidth: 420, children: [for (final c in coops) _CoopCard(coop: c)]),
 
               const SizedBox(height: AppSpacing.xxl),
 
@@ -245,7 +247,7 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
                   setState(() => _isJoining = true);
                   try {
                     final repo = ref.read(groupBuyingRepositoryImplProvider);
-                    await repo.joinOrder(order.id, 'farmer-001', 1);
+                    await repo.joinOrder(order.id, ref.read(activeFarmerIdProvider), 1);
                     ref.invalidate(cooperativesProvider);
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

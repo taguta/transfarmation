@@ -1,4 +1,4 @@
-import 'dart:io';
+import '../../../../core/utils/picked_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -245,8 +245,8 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
             if (message.imagePath != null) ...[
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                child: Image.file(
-                  File(message.imagePath!),
+                child: PickedImage(
+                  message.imagePath!,
                   height: 150,
                   width: double.infinity,
                   fit: BoxFit.cover,

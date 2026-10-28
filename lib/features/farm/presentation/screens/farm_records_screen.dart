@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/farm.dart';
@@ -71,10 +72,12 @@ class FarmRecordsScreen extends ConsumerWidget {
                       AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                ...farm.crops.map((crop) => Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                      child: _CropCard(crop: crop),
-                    )),
+                ResponsiveWrap(
+                  minItemWidth: 420,
+                  children: [
+                    for (final crop in farm.crops) _CropCard(crop: crop),
+                  ],
+                ),
 
                 const SizedBox(height: AppSpacing.xl),
 

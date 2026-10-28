@@ -38,6 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _emailController.text.trim(),
         _passwordController.text,
       );
+      if (mounted) context.go('/home');
     } catch (e) {
       if (mounted) {
         String msg = 'Sign in failed. Please try again.';
@@ -79,17 +80,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: AppSpacing.huge),
 
                 // Logo area
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                Center(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.xl),
-                  ),
-                  child: const Icon(
-                    Icons.eco_rounded,
-                    size: 44,
-                    color: Colors.white,
+                    child: Image.asset(
+                      'assets/transfarmation_icon.png',
+                      width: 96,
+                      height: 96,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxl),
@@ -102,7 +101,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
-                  'Sign in to manage your farm and finances',
+                  'Sign in to sync your farm plan, ledger and loans',
                   style: AppTextStyles.bodyMd.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -207,18 +206,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   label: const Text('Continue with Google'),
                 ),
 
-                const SizedBox(height: AppSpacing.xxl),
+                const SizedBox(height: AppSpacing.sm),
 
-                OutlinedButton.icon(
-                  onPressed: _isLoading
-                      ? null
-                      : () => ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Phone login coming soon'),
-                            ),
-                          ),
-                  icon: const Icon(Icons.phone_android_rounded),
-                  label: const Text('Continue with Phone'),
+                TextButton.icon(
+                  onPressed: _isLoading ? null : () => context.go('/home'),
+                  icon: const Icon(Icons.offline_bolt_rounded),
+                  label: const Text('Use offline without an account'),
                 ),
 
                 const SizedBox(height: AppSpacing.xxxl),
@@ -289,6 +282,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           );
           
           await FirebaseAuth.instance.signInWithCredential(credential);
+          if (mounted) context.go('/home');
         } else {
           throw FirebaseAuthException(
             code: 'ERROR_MISSING_GOOGLE_ID_TOKEN',

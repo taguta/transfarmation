@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/loan.dart';
@@ -50,54 +51,76 @@ class RepaymentDashboardScreen extends ConsumerWidget {
             _ScheduleItem('Jun 2026', 224, false),
           ];
 
+          final summaryColumn = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Loan summary card
+              _buildLoanSummary(loan),
+              const SizedBox(height: AppSpacing.xxl),
+
+              // Progress ring
+              _buildRepaymentProgress(loan),
+              const SizedBox(height: AppSpacing.xxl),
+
+              // Quick pay button
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton.icon(
+                  onPressed: () => _showPaymentSheet(context),
+                  icon: const Icon(Icons.payment_rounded),
+                  label: const Text('Make Payment'),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+
+              // Payment breakdown
+              _buildPaymentBreakdown(loan),
+            ],
+          );
+
+          final historyColumn = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Schedule
+              Text(
+                'Repayment Schedule',
+                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              ...schedule.map((s) => _buildScheduleRow(s)),
+              const SizedBox(height: AppSpacing.xxl),
+
+              // Payment history
+              Text(
+                'Payment History',
+                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _buildPaymentHistory(),
+            ],
+          );
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Loan summary card
-                _buildLoanSummary(loan),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // Progress ring
-                _buildRepaymentProgress(loan),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // Quick pay button
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _showPaymentSheet(context),
-                    icon: const Icon(Icons.payment_rounded),
-                    label: const Text('Make Payment'),
+            child: context.isTabletOrDesktop && context.screenWidth >= 1000
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: summaryColumn),
+                      const SizedBox(width: AppSpacing.xxl),
+                      Expanded(child: historyColumn),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      summaryColumn,
+                      const SizedBox(height: AppSpacing.xxl),
+                      historyColumn,
+                      const SizedBox(height: AppSpacing.xxxl),
+                    ],
                   ),
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // Payment breakdown
-                _buildPaymentBreakdown(loan),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // Schedule
-                Text(
-                  'Repayment Schedule',
-                  style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                ...schedule.map((s) => _buildScheduleRow(s)),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // Payment history
-                Text(
-                  'Payment History',
-                  style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                _buildPaymentHistory(),
-                const SizedBox(height: AppSpacing.xxxl),
-              ],
-            ),
           );
         },
       ),

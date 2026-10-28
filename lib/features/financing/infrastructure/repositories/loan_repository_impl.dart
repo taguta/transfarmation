@@ -22,10 +22,19 @@ class LoanRepositoryImpl implements LoanRepository {
         'id': loan.id,
         'farmerId': loan.farmerId,
         'amount': loan.amount,
+        'status': 'pending',
         'createdAt': loan.createdAt.toIso8601String(),
+        'farmName': loan.farmName,
+        'province': loan.province,
+        'farmSize': loan.farmSize,
+        'cropType': loan.cropType,
+        'farmingType': loan.farmingType,
+        'purpose': loan.purpose,
+        'repaymentPeriod': loan.repaymentPeriod,
+        'planSummary': loan.planSummary,
       }),
       'retryCount': 0
-    });
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override

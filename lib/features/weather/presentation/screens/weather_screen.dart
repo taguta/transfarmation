@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/weather.dart';
@@ -45,7 +46,7 @@ class WeatherScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.xxl),
                 Text('Active Alerts', style: AppTextStyles.h3.copyWith(color: AppColors.error)),
                 const SizedBox(height: AppSpacing.md),
-                ...alerts.map((a) => _AlertCard(alert: a)),
+                ResponsiveWrap(minItemWidth: 420, children: [for (final a in alerts) _AlertCard(alert: a)]),
               ],
 
               // Agronomic Indices & Disease Risk Matrix
@@ -126,7 +127,7 @@ class WeatherScreen extends ConsumerWidget {
                   ),
                 )
               else
-                ...activities.map((a) => _ActivityCard(activity: a)),
+                ResponsiveWrap(minItemWidth: 420, children: [for (final a in activities) _ActivityCard(activity: a)]),
 
               const SizedBox(height: AppSpacing.xxxl),
             ],

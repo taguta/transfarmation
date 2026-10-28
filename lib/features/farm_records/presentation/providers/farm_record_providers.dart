@@ -2,11 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/farm.dart';
 
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 // --- Farm list provider ---
 final farmListProvider = FutureProvider<List<Farm>>((ref) async {
   final repo = ref.watch(farmRepositoryImplProvider);
-  return await repo.getFarms('farmer-001');
+  return await repo.getFarms(ref.watch(activeFarmerIdProvider));
 });
 
 // --- Selected farm provider ---

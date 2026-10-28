@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/utils/app_prefs.dart';
 import '../../../../theme/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,8 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _navigateAfterDelay() async {
     await Future.delayed(const Duration(milliseconds: 3500));
+    final seen = await AppPrefs.onboardingDone;
     if (mounted) {
-      context.go('/onboarding');
+      context.go(seen ? '/login' : '/onboarding');
     }
   }
 

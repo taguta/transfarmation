@@ -25,7 +25,7 @@ class LoanOffersScreen extends ConsumerWidget {
       body: offers.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
-        data: (offersData) => Column(
+        data: (offersData) => offersData.isEmpty ? const _NoOffers() : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
@@ -42,7 +42,7 @@ class LoanOffersScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    '${offersData.length} lenders are offering you financing',
+                    '${offersData.length} ${offersData.length == 1 ? 'offer' : 'offers'} published by lenders. Apply first, then the lender decides.',
                     style: AppTextStyles.bodyMd.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -149,6 +149,17 @@ class _OfferCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if (offer.isSample)
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.xs),
+                  child: Chip(
+                    label: const Text('Sample'),
+                    visualDensity: VisualDensity.compact,
+                    backgroundColor: AppColors.warningSurface,
+                    side: BorderSide.none,
+                    labelStyle: AppTextStyles.labelSm.copyWith(color: AppColors.warning),
+                  ),
+                ),
               if (offer.isRecommended)
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -270,6 +281,40 @@ class _OfferStat extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _NoOffers extends StatelessWidget {
+  const _NoOffers();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xxl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.local_offer_outlined, size: 48, color: AppColors.textTertiary),
+            const SizedBox(height: AppSpacing.md),
+            Text('No lender offers yet', style: AppTextStyles.h3),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Offers appear here when verified lenders publish them. Sign in and '
+              'connect to the internet to load the latest. You can still apply for a '
+              'loan and let lenders review your application.',
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            FilledButton(
+              onPressed: () => context.go('/financing/apply'),
+              child: const Text('Apply for a loan'),
+            ),
+          ],
+        ),
       ),
     );
   }

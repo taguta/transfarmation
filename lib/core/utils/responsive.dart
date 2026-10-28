@@ -84,6 +84,42 @@ class ResponsiveCenter extends StatelessWidget {
   }
 }
 
+/// Flows [children] into as many equal-width columns as fit, given a
+/// [minItemWidth]. Unlike GridView, items keep their natural height, so it can
+/// sit inside a scroll view and hold cards of varying size.
+class ResponsiveWrap extends StatelessWidget {
+  final List<Widget> children;
+  final double minItemWidth;
+  final double spacing;
+
+  const ResponsiveWrap({
+    super.key,
+    required this.children,
+    this.minItemWidth = 360,
+    this.spacing = 16,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final available = constraints.maxWidth;
+        final columns = ((available + spacing) / (minItemWidth + spacing))
+            .floor()
+            .clamp(1, children.isEmpty ? 1 : children.length);
+        final itemWidth = (available - spacing * (columns - 1)) / columns;
+        return Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: [
+            for (final child in children) SizedBox(width: itemWidth, child: child),
+          ],
+        );
+      },
+    );
+  }
+}
+
 /// A two-column layout for desktop: wide [main] content beside a fixed-width
 /// [sidebar]. Falls back to [main] only on mobile/tablet.
 class ResponsiveTwoPane extends StatelessWidget {

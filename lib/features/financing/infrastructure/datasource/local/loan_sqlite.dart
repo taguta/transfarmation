@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import '../../../domain/entities/loan.dart';
 
@@ -14,6 +15,17 @@ class LoanLocalDataSource {
       'status': loan.status.name,
       'createdAt': loan.createdAt.toIso8601String(),
       'isSynced': loan.isSynced ? 1 : 0,
+      'farmName': loan.farmName,
+      'province': loan.province,
+      'farmSize': loan.farmSize,
+      'cropType': loan.cropType,
+      'farmingType': loan.farmingType,
+      'purpose': loan.purpose,
+      'repaymentPeriod': loan.repaymentPeriod,
+      'amountRepaid': loan.amountRepaid,
+      'lenderName': loan.lenderName,
+      'decisionNote': loan.decisionNote,
+      'planSummary': loan.planSummary == null ? null : jsonEncode(loan.planSummary),
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -32,52 +44,51 @@ class LoanLocalDataSource {
             status: LoanStatus.values.firstWhere((s) => s.name == e['status']),
             createdAt: DateTime.parse(e['createdAt'] as String),
             isSynced: (e['isSynced'] as int) == 1,
+            farmName: e['farmName'] as String?,
+            province: e['province'] as String?,
+            farmSize: (e['farmSize'] as num?)?.toDouble(),
+            cropType: e['cropType'] as String?,
+            farmingType: e['farmingType'] as String?,
+            purpose: e['purpose'] as String?,
+            repaymentPeriod: e['repaymentPeriod'] as String?,
+            amountRepaid: (e['amountRepaid'] as num?)?.toDouble() ?? 0,
+            lenderName: e['lenderName'] as String?,
+            decisionNote: e['decisionNote'] as String?,
+            planSummary: e['planSummary'] == null
+                ? null
+                : Map<String, dynamic>.from(jsonDecode(e['planSummary'] as String) as Map),
           ),
         )
         .toList();
   }
 
   Future<List<LoanOffer>> getLoanOffers() async {
-    final data = await db.query('loan_offers');
-    
-    if (data.isEmpty) {
-      return [
-        LoanOffer(
-          id: 'lo1',
-          lenderName: 'AgriBank ZW',
-          interestRate: 8.5,
-          amount: 5000.0,
-          repaymentPeriod: '12 Months',
-          monthlyPayment: 452.0,
-          conditions: 'Requires 2 years farming history. Equipment collateral.',
-          isRecommended: true,
-        ),
-        LoanOffer(
-          id: 'lo2',
-          lenderName: 'MicroFinance Coop',
-          interestRate: 12.0,
-          amount: 1500.0,
-          repaymentPeriod: '6 Months',
-          monthlyPayment: 268.0,
-          conditions: 'No collateral. Fast approval.',
-          isRecommended: false,
-        ),
-      ];
-    }
-
+    final data = await db.query('loan_offers', orderBy: 'interestRate ASC');
     return data
         .map(
           (e) => LoanOffer(
             id: e['id'] as String,
             lenderName: e['lenderName'] as String,
-            interestRate: e['interestRate'] as double,
-            amount: e['amount'] as double,
+            interestRate: (e['interestRate'] as num).toDouble(),
+            amount: (e['amount'] as num).toDouble(),
             repaymentPeriod: e['repaymentPeriod'] as String,
-            monthlyPayment: e['monthlyPayment'] as double,
-            conditions: e['conditions'] as String,
+            monthlyPayment: (e['monthlyPayment'] as num).toDouble(),
+            conditions: e['conditions'] as String?,
             isRecommended: (e['isRecommended'] as int?) == 1,
+            isSample: (e['isSample'] as int?) == 1,
+            lenderId: e['lenderId'] as String?,
           ),
         )
         .toList();
+  }
+
+  /// Replaces the local copy with the offers currently published by lenders.
+  Future<void> replaceOffers(List<Map<String, Object?>> rows) async {
+    final batch = db.batch();
+    batch.delete('loan_offers');
+    for (final r in rows) {
+      batch.insert('loan_offers', r, conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+    await batch.commit(noResult: true);
   }
 }

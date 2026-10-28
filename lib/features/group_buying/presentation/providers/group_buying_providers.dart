@@ -2,10 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/cooperative.dart';
 
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 final cooperativesProvider = FutureProvider<List<Cooperative>>((ref) async {
   final repo = ref.watch(groupBuyingRepositoryImplProvider);
-  return repo.getCooperatives('farmer-001');
+  return repo.getCooperatives(ref.watch(activeFarmerIdProvider));
 });
 
 /// All active group orders across all cooperatives.

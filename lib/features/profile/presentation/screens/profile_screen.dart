@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../theme/theme_provider.dart';
+import '../../../advisory/presentation/providers/advisory_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../farm/presentation/providers/farm_providers.dart';
 import '../providers/profile_providers.dart';
@@ -238,6 +239,17 @@ class ProfileScreen extends ConsumerWidget {
                   );
                 },
               ),
+
+              if (ref.watch(isAdminProvider).valueOrNull == true) ...[
+                const SizedBox(height: AppSpacing.xl),
+                _SectionHeader(title: 'Administration'),
+                _SettingsTile(
+                  icon: Icons.verified_user_rounded,
+                  title: 'Verify Experts',
+                  subtitle: 'Review agronomist and vet applications',
+                  onTap: () => context.push('/admin/experts'),
+                ),
+              ],
 
               const SizedBox(height: AppSpacing.xl),
               _SectionHeader(title: 'Data & Sync'),

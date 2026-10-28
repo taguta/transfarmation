@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../feasibility/domain/entities/feasibility_plan.dart';
+import '../../../feasibility/domain/services/feasibility_calculator.dart';
+import '../../../feasibility/presentation/providers/feasibility_providers.dart';
+import '../../domain/entities/loan.dart';
+import '../providers/loan_providers.dart';
 
-class ApplyLoanScreen extends StatefulWidget {
+class ApplyLoanScreen extends ConsumerStatefulWidget {
   const ApplyLoanScreen({super.key});
 
   @override
-  State<ApplyLoanScreen> createState() => _ApplyLoanScreenState();
+  ConsumerState<ApplyLoanScreen> createState() => _ApplyLoanScreenState();
 }
 
-class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
+class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
   int _currentStep = 0;
   final _formKeys = List.generate(4, (_) => GlobalKey<FormState>());
 
@@ -32,6 +41,11 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
   // Step 4: Review — no controllers needed
 
   bool _submitted = false;
+  bool _submitting = false;
+
+  // Optional: share a saved feasibility plan with the lender.
+  FeasibilityPlan? _sharedPlan;
+  bool _consentToShare = false;
 
   @override
   void dispose() {
@@ -59,8 +73,59 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
     }
   }
 
-  void _submit() {
-    setState(() => _submitted = true);
+  /// Months in the chosen repayment period, e.g. "12 months" -> 12.
+  int get _months => int.tryParse(_repaymentPeriod.split(' ').first) ?? 6;
+
+  Map<String, dynamic>? _planSummary() {
+    final plan = _sharedPlan;
+    if (plan == null || !_consentToShare) return null;
+    final r = FeasibilityCalculator.compute(plan.inputs);
+    return {
+      'crop': plan.inputs.crop,
+      'hectares': plan.inputs.hectares,
+      'revenue': r.totalRevenue,
+      'costs': r.totalCosts,
+      'levies': r.totalLevies,
+      'repayments': r.totalRepayment,
+      'netProfit': r.netProfit,
+      'dscr': r.dscr.isFinite ? r.dscr : null,
+      'minCash': r.minCash,
+      'bankable': r.bankable,
+      'warnings': r.warnings,
+    };
+  }
+
+  Future<void> _submit() async {
+    if (_submitting) return;
+    setState(() => _submitting = true);
+    try {
+      final loan = Loan(
+        id: const Uuid().v4(),
+        farmerId: ref.read(activeFarmerIdProvider),
+        amount: double.tryParse(_amountController.text.trim()) ?? 0,
+        status: LoanStatus.pending,
+        createdAt: DateTime.now(),
+        isSynced: false,
+        farmName: _farmNameController.text.trim(),
+        province: _province,
+        farmSize: double.tryParse(_farmSizeController.text.trim()),
+        cropType: _cropType,
+        farmingType: _farmingType,
+        purpose: _loanPurpose,
+        repaymentPeriod: _repaymentPeriod,
+        planSummary: _planSummary(),
+      );
+      await ref.read(loanRepositoryImplProvider).applyLoan(loan);
+      ref.invalidate(loanProvider);
+      if (mounted) setState(() => _submitted = true);
+    } catch (e) {
+      if (mounted) {
+        setState(() => _submitting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not save your application: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -433,14 +498,14 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   _amountController.text.isNotEmpty
-                      ? '\$${((double.tryParse(_amountController.text) ?? 0) * 1.12 / 6).toStringAsFixed(0)}/month'
+                      ? '\$${((double.tryParse(_amountController.text) ?? 0) * (1 + 0.12 * _months / 12) / _months).toStringAsFixed(0)}/month'
                       : '--',
                   style: AppTextStyles.h2.copyWith(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 Text(
-                  'at 12% annual interest',
+                  'at 12% annual interest (estimate only; the lender sets the real rate)',
                   style: AppTextStyles.caption.copyWith(
                     color: AppColors.textTertiary,
                   ),
@@ -448,8 +513,56 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
               ],
             ),
           ),
+          const SizedBox(height: AppSpacing.lg),
+          _buildPlanShare(),
         ],
       ),
+    );
+  }
+
+  Widget _buildPlanShare() {
+    final plans = ref.watch(feasibilityPlansProvider).valueOrNull ?? const [];
+    if (plans.isEmpty) {
+      return Text(
+        'Tip: build a feasibility plan first and you can attach it to strengthen this application.',
+        style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        DropdownButtonFormField<FeasibilityPlan?>(
+          initialValue: _sharedPlan,
+          decoration: const InputDecoration(
+            labelText: 'Attach a feasibility plan (optional)',
+            prefixIcon: Icon(Icons.request_quote_rounded),
+          ),
+          items: [
+            const DropdownMenuItem(value: null, child: Text('No plan')),
+            for (final p in plans)
+              DropdownMenuItem(
+                value: p,
+                child: Text('${p.inputs.crop}, ${p.inputs.hectares} ha'),
+              ),
+          ],
+          onChanged: (p) => setState(() {
+            _sharedPlan = p;
+            _consentToShare = false;
+          }),
+        ),
+        if (_sharedPlan != null)
+          CheckboxListTile(
+            contentPadding: EdgeInsets.zero,
+            value: _consentToShare,
+            onChanged: (v) => setState(() => _consentToShare = v ?? false),
+            controlAffinity: ListTileControlAffinity.leading,
+            title: Text(
+              'I agree to share this plan\'s totals (revenue, costs, profit, '
+              'debt cover) with the lender reviewing my application.',
+              style: AppTextStyles.bodySm,
+            ),
+          ),
+      ],
     );
   }
 
@@ -523,7 +636,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
             Expanded(
               flex: 2,
               child: ElevatedButton(
-                onPressed: _next,
+                onPressed: _submitting ? null : _next,
                 child: Text(
                   _currentStep == 3 ? 'Submit Application' : 'Continue',
                 ),

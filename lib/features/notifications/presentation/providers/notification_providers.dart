@@ -1,12 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/notification.dart';
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 class NotificationNotifier extends AsyncNotifier<List<AppNotification>> {
   @override
   Future<List<AppNotification>> build() async {
     final repo = ref.watch(notificationRepositoryImplProvider);
-    return repo.getNotifications('farmer-001');
+    return repo.getNotifications(ref.watch(activeFarmerIdProvider));
   }
 
   Future<void> markAsRead(String id) async {

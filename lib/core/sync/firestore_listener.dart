@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
+import '../../features/financing/infrastructure/datasource/local/loan_sqlite.dart';
 
 /// Pulls data from Firestore collections for the signed-in user and writes
 /// changes back into SQLite. Utilizes Delta Polling (only fetching changes since last sync)
@@ -54,9 +55,11 @@ class FirestoreListener {
   Future<void> _pullAllChanges(String farmerId) async {
     await Future.wait([
       _pullLoans(farmerId),
+      _pullLoanOffers(),
       _pullFarms(farmerId),
       _pullSavingsTransactions(farmerId),
       _pullDiagnosis(farmerId),
+      _pullEscalationReplies(farmerId),
       _pullSubsidies(farmerId),
       _pullFarmInputs(),
       _pullCommodityPrices(),
@@ -89,10 +92,33 @@ class FirestoreListener {
           'amount': (d['amount'] as num?)?.toDouble() ?? 0.0,
           'status': d['status'] as String? ?? 'pending',
           'createdAt': d['createdAt'] as String? ?? '',
+          'lenderName': d['lenderName'] as String?,
+          'decisionNote': d['decisionNote'] as String?,
         });
       }
       await _setLastSync('loans', DateTime.now().toIso8601String());
     }
+  }
+
+  /// Offers are small and change rarely, so the whole set is mirrored.
+  Future<void> _pullLoanOffers() async {
+    final snap = await firestore.collection('loan_offers').get();
+    final rows = <Map<String, Object?>>[
+      for (final doc in snap.docs)
+        {
+          'id': doc.id,
+          'lenderName': doc.data()['lenderName'] as String? ?? 'Lender',
+          'lenderId': doc.data()['lenderId'] as String?,
+          'interestRate': (doc.data()['interestRate'] as num?)?.toDouble() ?? 0,
+          'amount': (doc.data()['amount'] as num?)?.toDouble() ?? 0,
+          'repaymentPeriod': doc.data()['repaymentPeriod'] as String? ?? '',
+          'monthlyPayment': (doc.data()['monthlyPayment'] as num?)?.toDouble() ?? 0,
+          'conditions': doc.data()['conditions'] as String? ?? '',
+          'isRecommended': (doc.data()['isRecommended'] as bool? ?? false) ? 1 : 0,
+          'isSample': (doc.data()['isSample'] as bool? ?? false) ? 1 : 0,
+        },
+    ];
+    await LoanLocalDataSource(db).replaceOffers(rows);
   }
 
   Future<void> _pullFarms(String farmerId) async {
@@ -184,6 +210,26 @@ class FirestoreListener {
         });
       }
       await _setLastSync('diagnosis_results', DateTime.now().toIso8601String());
+    }
+  }
+
+  /// Copies agronomist replies onto the farmer's local diagnosis records.
+  Future<void> _pullEscalationReplies(String farmerId) async {
+    final snap = await firestore
+        .collection('diagnosis_escalations')
+        .where('farmerId', isEqualTo: farmerId)
+        .where('status', isEqualTo: 'answered')
+        .get();
+    for (final doc in snap.docs) {
+      final d = doc.data();
+      final diagnosisId = d['diagnosisId'] as String?;
+      if (diagnosisId == null) continue;
+      await db.update(
+        'diagnosis_results',
+        {'expertReply': d['reply'] as String?, 'repliedAt': d['repliedAt'] as String?},
+        where: 'id = ?',
+        whereArgs: [diagnosisId],
+      );
     }
   }
 

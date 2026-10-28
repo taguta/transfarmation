@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/farm_input.dart';
@@ -38,7 +39,7 @@ class SubsidyTrackingScreen extends ConsumerWidget {
                 style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
               ),
               const SizedBox(height: AppSpacing.md),
-              ...applications.map((app) => _ApplicationCard(application: app)),
+              ResponsiveWrap(minItemWidth: 420, children: [for (final app in applications) _ApplicationCard(application: app)]),
               const SizedBox(height: AppSpacing.xxl),
             ],
 
@@ -48,7 +49,7 @@ class SubsidyTrackingScreen extends ConsumerWidget {
               style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
             ),
             const SizedBox(height: AppSpacing.md),
-            ...programs.map((p) => _ProgramCard(program: p)),
+            ResponsiveWrap(minItemWidth: 420, children: [for (final p in programs) _ProgramCard(program: p)]),
           ],
         ),
       ),

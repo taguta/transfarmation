@@ -1,13 +1,13 @@
-import 'dart:io';
+import '../../../../core/utils/picked_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/diagnosis.dart';
+import '../../domain/services/symptom_matcher.dart';
 import '../providers/diagnosis_providers.dart';
 
 class DiagnosisScreen extends ConsumerWidget {
@@ -16,7 +16,6 @@ class DiagnosisScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final history = ref.watch(diagnosisHistoryProvider);
-    final isLoading = ref.watch(diagnosisLoadingProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -29,54 +28,48 @@ class DiagnosisScreen extends ConsumerWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: () => context.pop(),
+                    onPressed: () => context.canPop() ? context.pop() : context.go('/home'),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('AI Diagnosis', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Crop & Animal Check',
+                      style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
-              Text('Photograph a sick crop or animal for instant diagnosis',
+              Text('Describe what you see and get likely causes, with an agronomist on call',
                   style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
-
               const SizedBox(height: AppSpacing.xxl),
-
-              // Capture cards
               Row(
                 children: [
-                  Expanded(child: _CaptureCard(
-                    title: 'Crop',
-                    subtitle: 'Scan leaf, stem, or fruit',
-                    icon: Icons.grass_rounded,
-                    color: AppColors.primary,
-                    isLoading: isLoading,
-                    onTap: () => _showCapture(context, ref, 'crop'),
-                  )),
+                  Expanded(
+                    child: _CaptureCard(
+                      title: 'Crop',
+                      subtitle: 'Leaves, stems, fruit or grain',
+                      icon: Icons.grass_rounded,
+                      color: AppColors.primary,
+                      onTap: () => context.push('/diagnosis/check?type=crop'),
+                    ),
+                  ),
                   const SizedBox(width: AppSpacing.md),
-                  Expanded(child: _CaptureCard(
-                    title: 'Livestock',
-                    subtitle: 'Scan skin, eyes, or symptoms',
-                    icon: Icons.pets_rounded,
-                    color: AppColors.secondary,
-                    isLoading: isLoading,
-                    onTap: () => _showCapture(context, ref, 'livestock'),
-                  )),
+                  Expanded(
+                    child: _CaptureCard(
+                      title: 'Livestock',
+                      subtitle: 'Cattle, goats, pigs, poultry',
+                      icon: Icons.pets_rounded,
+                      color: AppColors.secondary,
+                      onTap: () => context.push('/diagnosis/check?type=livestock'),
+                    ),
+                  ),
                 ],
               ),
-
               const SizedBox(height: AppSpacing.xxl),
-
-              // How it works
-              _HowItWorks(),
-
+              const _HowItWorks(),
               const SizedBox(height: AppSpacing.xxl),
-
-              // History
-              Text('Diagnosis History', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('History', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               history.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) => Center(child: Text('Error: $err')),
+                error: (err, stack) => Center(child: Text('Could not load history: $err')),
                 data: (data) {
                   if (data.isEmpty) {
                     return Center(
@@ -84,16 +77,17 @@ class DiagnosisScreen extends ConsumerWidget {
                         padding: const EdgeInsets.all(AppSpacing.xxl),
                         child: Column(
                           children: [
-                            Icon(Icons.history_rounded, size: 48, color: AppColors.textTertiary),
+                            const Icon(Icons.history_rounded, size: 48, color: AppColors.textTertiary),
                             const SizedBox(height: AppSpacing.md),
-                            Text('No diagnoses yet', style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
+                            Text('No checks yet',
+                                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
                           ],
                         ),
                       ),
                     );
                   }
                   return Column(
-                    children: data.map((d) => _DiagnosisHistoryCard(diagnosis: d)).toList(),
+                    children: [for (final d in data) _HistoryCard(diagnosis: d)],
                   );
                 },
               ),
@@ -103,104 +97,6 @@ class DiagnosisScreen extends ConsumerWidget {
       ),
     );
   }
-
-  void _showCapture(BuildContext context, WidgetRef ref, String type) {
-    showModalBottomSheet(
-      context: context,
-      builder: (bottomSheetCtx) => Container(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40, height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.border,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            Text('Capture ${type == 'crop' ? 'Crop' : 'Livestock'} Image',
-                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
-            const SizedBox(height: AppSpacing.xxl),
-            Row(
-              children: [
-                Expanded(
-                  child: _CaptureOption(
-                    icon: Icons.camera_alt_rounded,
-                    label: 'Camera',
-                    onTap: () async {
-                      Navigator.pop(bottomSheetCtx);
-                      final picker = ImagePicker();
-                      final image = await picker.pickImage(source: ImageSource.camera);
-                      if (image != null && context.mounted) {
-                        _simulateDiagnosis(ref, type, image.path);
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.lg),
-                Expanded(
-                  child: _CaptureOption(
-                    icon: Icons.photo_library_rounded,
-                    label: 'Gallery',
-                    onTap: () async {
-                      Navigator.pop(bottomSheetCtx);
-                      final picker = ImagePicker();
-                      final image = await picker.pickImage(source: ImageSource.gallery);
-                      if (image != null && context.mounted) {
-                        _simulateDiagnosis(ref, type, image.path);
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _simulateDiagnosis(WidgetRef ref, String type, String imagePath) async {
-    ref.read(diagnosisLoadingProvider.notifier).state = true;
-
-    // Simulate AI processing delay
-    await Future.delayed(const Duration(seconds: 2));
-
-    final result = DiagnosisResult(
-      id: 'diag-${DateTime.now().millisecondsSinceEpoch}',
-      type: type,
-      imagePath: imagePath,
-      subjectName: type == 'crop' ? 'Tomato' : 'Goat',
-      timestamp: DateTime.now(),
-      matches: type == 'crop'
-          ? const [
-              DiagnosisMatch(
-                name: 'Tuta absoluta (Leaf Miner)',
-                confidence: 0.88,
-                description: 'Irregular mines visible in leaf tissue. Typical Tuta absoluta mining pattern.',
-                severity: 'critical',
-                treatment: 'Apply spinosad or emamectin benzoate. Alternate chemical classes to prevent resistance.',
-                prevention: 'Use pheromone traps (5/ha), remove crop residues, avoid planting solanaceae in succession.',
-              ),
-            ]
-          : const [
-              DiagnosisMatch(
-                name: 'Orf (Sore Mouth)',
-                confidence: 0.82,
-                description: 'Scabby lesions visible around mouth area. Contagious ecthyma.',
-                severity: 'medium',
-                treatment: 'Clean lesions with dilute iodine. Apply glycerin. Ensure animal can eat and drink.',
-                prevention: 'Vaccination available. Isolate new animals for 2 weeks. Handle with gloves (zoonotic).',
-              ),
-            ],
-    );
-
-    ref.read(diagnosisHistoryProvider.notifier).addResult(result);
-    ref.read(diagnosisLoadingProvider.notifier).state = false;
-  }
 }
 
 class _CaptureCard extends StatelessWidget {
@@ -208,7 +104,6 @@ class _CaptureCard extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final Color color;
-  final bool isLoading;
   final VoidCallback onTap;
 
   const _CaptureCard({
@@ -216,77 +111,30 @@ class _CaptureCard extends StatelessWidget {
     required this.subtitle,
     required this.icon,
     required this.color,
-    required this.isLoading,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: color.withValues(alpha: 0.05),
-      borderRadius: BorderRadius.circular(AppRadius.xl),
-      child: InkWell(
-        onTap: isLoading ? null : onTap,
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            border: Border.all(color: color.withValues(alpha: 0.2)),
-          ),
-          child: Column(
-            children: [
-              if (isLoading)
-                SizedBox(
-                  width: 48, height: 48,
-                  child: CircularProgressIndicator(color: color, strokeWidth: 3),
-                )
-              else
-                Container(
-                  width: 56, height: 56,
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.camera_alt_rounded, color: color, size: 28),
-                ),
-              const SizedBox(height: AppSpacing.md),
-              Icon(icon, color: color, size: 24),
-              const SizedBox(height: AppSpacing.xs),
-              Text(title, style: AppTextStyles.labelLg.copyWith(color: color)),
-              Text(subtitle, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary), textAlign: TextAlign.center),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CaptureOption extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _CaptureOption({required this.icon, required this.label, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surfaceElevated,
+    return InkWell(
+      onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.xl),
-          child: Column(
-            children: [
-              Icon(icon, size: 36, color: AppColors.primary),
-              const SizedBox(height: AppSpacing.sm),
-              Text(label, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
-            ],
-          ),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 36, color: color),
+            const SizedBox(height: AppSpacing.sm),
+            Text(title, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+            Text(subtitle,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+          ],
         ),
       ),
     );
@@ -294,6 +142,8 @@ class _CaptureOption extends StatelessWidget {
 }
 
 class _HowItWorks extends StatelessWidget {
+  const _HowItWorks();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -306,17 +156,12 @@ class _HowItWorks extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Icon(Icons.auto_awesome_rounded, size: 20, color: AppColors.info),
-              const SizedBox(width: AppSpacing.sm),
-              Text('How It Works', style: AppTextStyles.labelLg.copyWith(color: AppColors.info)),
-            ],
-          ),
+          Text('How it works', style: AppTextStyles.labelLg.copyWith(color: AppColors.info)),
           const SizedBox(height: AppSpacing.md),
-          _step('1', 'Take a clear photo of the affected crop or animal'),
-          _step('2', 'AI analyzes the image for diseases, pests, and conditions'),
-          _step('3', 'Get instant diagnosis with treatment recommendations'),
+          _step('1', 'Tick the signs you can see on the crop or animal'),
+          _step('2', 'We compare them with our guide to pests and diseases'),
+          _step('3', 'You get likely causes with an honest confidence level'),
+          _step('4', 'If we are unsure, one tap sends it to an agronomist'),
         ],
       ),
     );
@@ -327,12 +172,16 @@ class _HowItWorks extends StatelessWidget {
     child: Row(
       children: [
         Container(
-          width: 24, height: 24,
+          width: 24,
+          height: 24,
           decoration: BoxDecoration(
             color: AppColors.info.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Center(child: Text(num, style: AppTextStyles.caption.copyWith(color: AppColors.info, fontWeight: FontWeight.w700))),
+          child: Center(
+            child: Text(num,
+                style: AppTextStyles.caption.copyWith(color: AppColors.info, fontWeight: FontWeight.w700)),
+          ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary))),
@@ -341,13 +190,20 @@ class _HowItWorks extends StatelessWidget {
   );
 }
 
-class _DiagnosisHistoryCard extends StatelessWidget {
+class _HistoryCard extends ConsumerWidget {
   final DiagnosisResult diagnosis;
-  const _DiagnosisHistoryCard({required this.diagnosis});
+  const _HistoryCard({required this.diagnosis});
 
   @override
-  Widget build(BuildContext context) {
-    final topMatch = diagnosis.matches.first;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final top = diagnosis.matches.isEmpty ? null : diagnosis.matches.first;
+    final tier = top == null ? ConfidenceTier.unsure : ConfidenceTier.fromConfidence(top.confidence);
+    final color = switch (tier) {
+      ConfidenceTier.likely => AppColors.success,
+      ConfidenceTier.possible => AppColors.warning,
+      ConfidenceTier.unsure => AppColors.error,
+    };
+
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Container(
@@ -369,108 +225,82 @@ class _DiagnosisHistoryCard extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
-                  child: Text('${diagnosis.subjectName} — ${topMatch.name}',
-                      style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
-                ),
-                Text(
-                  '${(topMatch.confidence * 100).toInt()}%',
-                  style: AppTextStyles.h4.copyWith(
-                    color: topMatch.confidence > 0.7 ? AppColors.success : AppColors.warning,
+                  child: Text(
+                    top == null ? diagnosis.subjectName : '${diagnosis.subjectName}: ${top.name}',
+                    style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary),
                   ),
                 ),
+                if (top != null)
+                  Text('${(top.confidence * 100).round()}%',
+                      style: AppTextStyles.h4.copyWith(color: color)),
               ],
             ),
-            if (diagnosis.imagePath.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Text(tier.label, style: AppTextStyles.labelSm.copyWith(color: color)),
+            if (diagnosis.symptoms.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(diagnosis.symptoms.join(', '),
+                  style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis),
+            ],
+            if (pickedImageExists(diagnosis.imagePath)) ...[
               const SizedBox(height: AppSpacing.md),
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                child: Image.file(
-                  File(diagnosis.imagePath),
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: PickedImage(diagnosis.imagePath,
+                    height: 100, width: double.infinity, fit: BoxFit.cover),
+              ),
+            ],
+            if (diagnosis.hasReply) ...[
+              const SizedBox(height: AppSpacing.md),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.successSurface,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      const Icon(Icons.verified_rounded, size: 16, color: AppColors.success),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text('Agronomist reply', style: AppTextStyles.labelMd.copyWith(color: AppColors.success)),
+                    ]),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(diagnosis.expertReply!, style: AppTextStyles.bodySm),
+                  ],
                 ),
               ),
             ],
             const SizedBox(height: AppSpacing.sm),
-            Text(topMatch.description,
-                style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary), maxLines: 2),
-            const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                _severityBadge(topMatch.severity),
+                if (diagnosis.hasReply)
+                  const SizedBox.shrink()
+                else if (diagnosis.isEscalated)
+                  const Chip(
+                    avatar: Icon(Icons.support_agent_rounded, size: 16),
+                    label: Text('Waiting for an agronomist'),
+                    visualDensity: VisualDensity.compact,
+                  )
+                else
+                  TextButton.icon(
+                    onPressed: () =>
+                        ref.read(diagnosisHistoryProvider.notifier).escalate(diagnosis),
+                    icon: const Icon(Icons.support_agent_rounded, size: 18),
+                    label: const Text('Ask an agronomist'),
+                  ),
                 const Spacer(),
                 Text(DateFormat.yMMMd().format(diagnosis.timestamp),
                     style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
               ],
             ),
-
-            // Treatment preview
-            const SizedBox(height: AppSpacing.md),
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: BoxDecoration(
-                color: AppColors.successSurface,
-                borderRadius: BorderRadius.circular(AppRadius.md),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.medical_services_rounded, size: 16, color: AppColors.success),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(topMatch.treatment,
-                        style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary), maxLines: 3),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Added prescribed treatment to Cart!'),
-                      backgroundColor: AppColors.primary,
-                      action: SnackBarAction(
-                        label: 'VIEW',
-                        textColor: Colors.white,
-                        onPressed: () => context.go('/marketplace/cart'),
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.shopping_cart_checkout_rounded, size: 18),
-                label: const Text('Add Prescription to Cart'),
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _severityBadge(String severity) {
-    final color = switch (severity) {
-      'critical' => AppColors.error,
-      'high' => AppColors.warning,
-      'medium' => AppColors.accent,
-      _ => AppColors.info,
-    };
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.sm),
-      ),
-      child: Text(severity.toUpperCase(),
-          style: AppTextStyles.caption.copyWith(color: color, fontWeight: FontWeight.w700)),
     );
   }
 }

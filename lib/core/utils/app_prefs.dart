@@ -1,0 +1,57 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
+/// Small per-device preferences (onboarding state, chosen role).
+/// Every access is guarded so a storage failure never blocks the UI.
+class AppPrefs {
+  static const _boxName = 'app_prefs';
+
+  static Future<Box> _box() => Hive.openBox(_boxName);
+
+  static Future<bool> get onboardingDone async {
+    try {
+      return (await _box()).get('onboardingDone', defaultValue: false) as bool;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<String> get role async {
+    try {
+      return (await _box()).get('role', defaultValue: 'Farmer') as String;
+    } catch (_) {
+      return 'Farmer';
+    }
+  }
+
+  /// All roles this person holds, e.g. a farmer who is also a buyer.
+  static Future<List<String>> get roles async {
+    try {
+      final box = await _box();
+      final stored = box.get('roles');
+      if (stored is List && stored.isNotEmpty) return stored.cast<String>();
+      return [box.get('role', defaultValue: 'Farmer') as String];
+    } catch (_) {
+      return ['Farmer'];
+    }
+  }
+
+  static Future<void> setRoles(List<String> roles) async {
+    try {
+      await (await _box()).put('roles', roles);
+    } catch (_) {}
+  }
+
+  static Future<void> setRole(String role) async {
+    try {
+      await (await _box()).put('role', role);
+    } catch (_) {}
+  }
+
+  static Future<void> completeOnboarding(String role) async {
+    try {
+      final box = await _box();
+      await box.put('onboardingDone', true);
+      await box.put('role', role);
+    } catch (_) {}
+  }
+}

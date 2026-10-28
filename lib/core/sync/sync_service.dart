@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../features/financing/infrastructure/datasource/remote/loan_firestore.dart';
-import '../../features/financing/domain/entities/loan.dart';
 
 /// Processes the sync_queue table, retrying failed remote writes.
 /// Uses Firebase WriteBatch for atomic, faster bulk uploads and embeds sub-items.
@@ -67,6 +67,9 @@ class SyncService {
         }
         processedIds.add(item['id'] as String);
         await _markSynced(type, payload);
+      } on StateError {
+        // Signed out: keep the item queued without using up a retry.
+        continue;
       } catch (_) {
         failedIds[item['id'] as String] = retryCount + 1;
       }
@@ -120,6 +123,8 @@ class SyncService {
       'iot_sensor' => 'iot_sensors',
       'worker' => 'farm_workers',
       'farm_task' => 'farm_tasks',
+      'feasibility_plan' => 'feasibility_plans',
+      'ledger_entry' => 'ledger_entries',
       _ => null,
     };
 
@@ -128,18 +133,23 @@ class SyncService {
     }
   }
 
+  /// Stamps the signed-in user as owner so per-user rules and queries work.
+  /// Throws when signed out, which leaves the item in the queue for a retry.
+  Map<String, dynamic> _owned(Map<String, dynamic> payload) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) throw StateError('Sign in to sync this item');
+    return {
+      ...payload,
+      'farmerId': uid,
+      'updatedAt': DateTime.now().toIso8601String(),
+    };
+  }
+
   Future<void> _addToBatch(String type, Map<String, dynamic> payload, WriteBatch batch) async {
     switch (type) {
       case 'loan':
-        final loan = Loan(
-          id: payload['id'],
-          farmerId: payload['farmerId'],
-          amount: (payload['amount'] as num).toDouble(),
-          status: LoanStatus.pending,
-          createdAt: DateTime.parse(payload['createdAt']),
-          isSynced: false,
-        );
-        await loanRemote.sendLoan(loan); // This sends it instantly, outside batch for now (assume it has complex logic).
+        final ref = firestore.collection('loans').doc(payload['id']);
+        batch.set(ref, _owned(payload));
 
       case 'farm':
         final fullFarm = await _buildFarmDocument(payload['id'], payload);
@@ -173,11 +183,15 @@ class SyncService {
 
       case 'diagnosis':
         final ref = firestore.collection('diagnosis_results').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
+
+      case 'diagnosis_escalation':
+        final ref = firestore.collection('diagnosis_escalations').doc(payload['id']);
+        batch.set(ref, _owned(payload));
 
       case 'subsidy_application':
         final ref = firestore.collection('subsidy_applications').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'marketplace_listing':
         final ref = firestore.collection('marketplace_listings').doc(payload['id']);
@@ -192,7 +206,7 @@ class SyncService {
         batch.delete(ref);
 
       case 'user_profile':
-        final ref = firestore.collection('user_profiles').doc(payload['userId']);
+        final ref = firestore.collection('users').doc(payload['userId']);
         batch.set(ref, payload, SetOptions(merge: true));
 
       case 'forum_post':
@@ -214,6 +228,17 @@ class SyncService {
       case 'booking':
         final ref = firestore.collection('bookings').doc(payload['id']);
         batch.set(ref, payload);
+
+      case 'feasibility_plan':
+        final ref = firestore.collection('feasibility_plans').doc(payload['id']);
+        batch.set(ref, payload);
+
+      case 'ledger_entry':
+        final ref = firestore.collection('ledger_entries').doc(payload['id']);
+        batch.set(ref, _owned(payload));
+
+      case 'ledger_delete':
+        batch.delete(firestore.collection('ledger_entries').doc(payload['id']));
     }
   }
 
@@ -239,11 +264,13 @@ class SyncService {
     return switch (type) {
       'marketplace_listing' => 'marketplace_listings',
       'marketplace_product' => 'marketplace_products',
-      'user_profile' => 'user_profiles',
+      'user_profile' => 'users',
       'forum_post' => 'forum_posts',
       'iot_sensor' => 'iot_sensors',
       'worker' => 'farm_workers',
       'farm_task' => 'farm_tasks',
+      'feasibility_plan' => 'feasibility_plans',
+      'ledger_entry' => 'ledger_entries',
       _ => null,
     };
   }
@@ -252,7 +279,7 @@ class SyncService {
   Future<void> hydrateInitialData() async {
     final definitions = [
       {
-        'collection': 'user_profiles', 
+        'collection': 'users', 
         'table': 'farm_profile', 
         'mapper': (Map<String, dynamic> doc, String id) => {'id': id, 'data': jsonEncode(doc)} 
       },

@@ -114,7 +114,7 @@ export const monitorIotTelemetry = functions.firestore
       const userId = sensorDoc.data()?.ownerId;
       if (!userId) return;
 
-      const userDoc = await db.collection('user_profiles').doc(userId).get();
+      const userDoc = await db.collection('users').doc(userId).get();
       const fcmToken = userDoc.data()?.fcmToken;
 
       if (fcmToken) {

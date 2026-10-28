@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../domain/entities/savings_group.dart';
@@ -127,7 +128,7 @@ class SavingsGroupScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.md),
-              ...groups.map((g) => _GroupCard(group: g)),
+              ResponsiveWrap(minItemWidth: 420, children: [for (final g in groups) _GroupCard(group: g)]),
 
               const SizedBox(height: AppSpacing.xxl),
 

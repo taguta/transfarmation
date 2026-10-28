@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/app_prefs.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 
@@ -14,30 +15,48 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _currentPage = 0;
+  String _role = 'Farmer';
 
+  // Each page leads with what the farmer gets on their own, offline, on day one.
   static const _pages = [
     _OnboardingPage(
-      icon: Icons.agriculture_rounded,
-      title: 'Grow Your Farm',
+      icon: Icons.request_quote_rounded,
+      title: 'A Plan Your Bank Accepts',
       subtitle:
-          'Access financing, expert advice, and markets\nall in one platform.',
-      color: AppColors.primary,
-    ),
-    _OnboardingPage(
-      icon: Icons.account_balance_wallet_rounded,
-      title: 'Smart Financing',
-      subtitle:
-          'Apply for loans with fair rates.\nTrack repayments and build your credit score.',
+          'Build a 24-month cash-flow plan in minutes.\nNo clerk, no waiting, works without signal.',
       color: AppColors.accent,
     ),
     _OnboardingPage(
-      icon: Icons.storefront_rounded,
-      title: 'Fair Markets',
+      icon: Icons.menu_book_rounded,
+      title: 'Know Where Your Money Goes',
       subtitle:
-          'Sell your produce directly to verified buyers.\nGet the best prices for your harvest.',
+          'Record sales and costs as they happen.\nYour ledger builds the track record lenders trust.',
+      color: AppColors.primary,
+    ),
+    _OnboardingPage(
+      icon: Icons.document_scanner_rounded,
+      title: 'Snap & Solve',
+      subtitle:
+          'Photograph a sick crop for a diagnosis and remedy.\nUnsure results go to a real agronomist.',
+      color: AppColors.info,
+    ),
+    _OnboardingPage(
+      icon: Icons.handshake_rounded,
+      title: 'Fair Contracts, Fair Markets',
+      subtitle:
+          'Plain-language contracts, live market prices,\nand levies deducted openly, never hidden.',
       color: AppColors.marketplace,
     ),
   ];
+
+  static const _roles = [
+    ('Farmer', Icons.agriculture_rounded, 'I grow crops or keep livestock'),
+    ('Lender', Icons.account_balance_rounded, 'I finance farmers'),
+    ('Buyer', Icons.storefront_rounded, 'I buy produce or contract growers'),
+    ('Expert', Icons.science_rounded, 'I advise farmers (agronomist / vet)'),
+  ];
+
+  int get _lastIndex => _pages.length; // role page follows the value pages
 
   @override
   void dispose() {
@@ -45,74 +64,79 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.dispose();
   }
 
+  Future<void> _finish() async {
+    await AppPrefs.completeOnboarding(_role);
+    if (mounted) context.go('/login');
+  }
+
   void _next() {
-    if (_currentPage < _pages.length - 1) {
+    if (_currentPage < _lastIndex) {
       _controller.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
       );
     } else {
-      context.go('/login');
+      _finish();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isLast = _currentPage == _pages.length - 1;
+    final isLast = _currentPage == _lastIndex;
+    final total = _pages.length + 1;
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // Skip button
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                onPressed: () => context.go('/login'),
+                onPressed: isLast
+                    ? null
+                    : () => _controller.animateToPage(
+                          _lastIndex,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        ),
                 child: Text(
-                  'Skip',
+                  isLast ? '' : 'Skip',
                   style: AppTextStyles.labelLg.copyWith(
                     color: AppColors.textSecondary,
                   ),
                 ),
               ),
             ),
-
-            // Pages
             Expanded(
               child: PageView.builder(
                 controller: _controller,
                 onPageChanged: (i) => setState(() => _currentPage = i),
-                itemCount: _pages.length,
-                itemBuilder: (context, i) => _pages[i],
+                itemCount: total,
+                itemBuilder: (context, i) =>
+                    i < _pages.length ? _pages[i] : _rolePage(),
               ),
             ),
-
-            // Indicators
             Padding(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  _pages.length,
+                  total,
                   (i) => AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     width: _currentPage == i ? 28 : 8,
                     height: 8,
                     decoration: BoxDecoration(
-                      color:
-                          _currentPage == i
-                              ? AppColors.primary
-                              : AppColors.border,
+                      color: _currentPage == i
+                          ? AppColors.primary
+                          : AppColors.border,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 ),
               ),
             ),
-
-            // Action button
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppSpacing.xxl,
@@ -135,13 +159,81 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Voice Assistant Active: "Hello, I can read this screen to you. Just ask!"')),
+            const SnackBar(
+              content: Text('Voice guide is coming soon in Shona and Ndebele.'),
+            ),
           );
         },
         icon: const Icon(Icons.mic_rounded),
         label: const Text('Voice Guide'),
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
+      ),
+    );
+  }
+
+  Widget _rolePage() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+      child: Column(
+        children: [
+          Text(
+            'How will you use Transfarmation?',
+            style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            'One account, many roles. You can change this later.',
+            style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          for (final (name, icon, desc) in _roles)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                onTap: () => setState(() => _role = name),
+                child: Container(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  decoration: BoxDecoration(
+                    color: _role == name
+                        ? AppColors.primarySurface
+                        : AppColors.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    border: Border.all(
+                      color: _role == name ? AppColors.primary : AppColors.border,
+                      width: _role == name ? 2 : 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(icon, color: AppColors.primary, size: 28),
+                      const SizedBox(width: AppSpacing.lg),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(name, style: AppTextStyles.labelLg),
+                            Text(
+                              desc,
+                              style: AppTextStyles.bodySm.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (_role == name)
+                        const Icon(Icons.check_circle_rounded,
+                            color: AppColors.primary),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

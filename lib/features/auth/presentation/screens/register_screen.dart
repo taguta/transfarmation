@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../core/providers/data_providers.dart';
+import '../../../../core/utils/app_prefs.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -26,6 +31,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    AppPrefs.role.then((r) {
+      if (mounted) setState(() => _selectedRole = r);
+    });
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -43,6 +56,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         _passwordController.text,
         _nameController.text.trim(),
       );
+      await _saveProfile();
+      if (mounted) context.go('/home');
     } catch (e) {
       if (mounted) {
         String msg = 'Registration failed. Please try again.';
@@ -58,6 +73,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  /// Stores role and phone locally and queues them for sync, so they are not lost.
+  Future<void> _saveProfile() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    await AppPrefs.setRole(_selectedRole);
+    final db = ref.read(databaseProvider);
+    await db.insert('sync_queue', {
+      'id': 'profile_$uid',
+      'type': 'user_profile',
+      'payload': jsonEncode({
+        'id': uid,
+        'userId': uid,
+        'name': _nameController.text.trim(),
+        'phone': _phoneController.text.trim(),
+        'role': _selectedRole,
+        'updatedAt': DateTime.now().toIso8601String(),
+      }),
+      'retryCount': 0,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   String _errorMessage(String code) => switch (code) {
@@ -95,7 +131,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
-                  'Join thousands of farmers growing smarter',
+                  'One account for your farm, finances and markets',
                   style: AppTextStyles.bodyMd.copyWith(
                     color: AppColors.textSecondary,
                   ),

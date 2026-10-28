@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/loan.dart';
 
 import '../../../../core/providers/data_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 
 final loanProvider = FutureProvider<List<Loan>>((ref) async {
   final repo = ref.watch(loanRepositoryImplProvider);
-  return await repo.getLoans('farmer-001');
+  return await repo.getLoans(ref.watch(activeFarmerIdProvider));
 });
 
 /// Active loans (approved, disbursed)
