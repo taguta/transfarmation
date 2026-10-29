@@ -6,6 +6,7 @@ import '../../../../core/providers/data_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 
 final loanProvider = FutureProvider<List<Loan>>((ref) async {
+  ref.watch(syncTickProvider);
   final repo = ref.watch(loanRepositoryImplProvider);
   return await repo.getLoans(ref.watch(activeFarmerIdProvider));
 });
@@ -29,6 +30,7 @@ final outstandingBalanceProvider = Provider<double>((ref) {
 });
 
 final loanOffersProvider = FutureProvider<List<LoanOffer>>((ref) async {
+  ref.watch(syncTickProvider);
   final repo = ref.watch(loanRepositoryImplProvider);
   return repo.getLoanOffers();
 });

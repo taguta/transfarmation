@@ -59,13 +59,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     setState(() => _consentError = !_consent);
     if (!formOk || !_consent) return;
     setState(() => _isLoading = true);
+    // Read everything up front: the sign-in guard moves the user to /home as
+    // soon as the account exists, which disposes this screen before the awaits
+    // below finish. Using `ref` or the controllers afterwards would throw and
+    // the profile and consent record would never be saved.
+    final repo = ref.read(authRepositoryProvider);
+    final db = ref.read(databaseProvider);
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final role = _selectedRole;
+    final gender = _gender;
+    final ageBand = _ageBand;
     try {
-      await ref.read(authRepositoryProvider).register(
-        _emailController.text.trim(),
-        _passwordController.text,
-        _nameController.text.trim(),
+      await repo.register(email, password, name);
+      await _saveProfile(
+        db,
+        name: name,
+        phone: phone,
+        role: role,
+        gender: gender,
+        ageBand: ageBand,
       );
-      await _saveProfile();
       if (mounted) context.go('/home');
     } catch (e) {
       if (mounted) {
@@ -85,24 +101,30 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   /// Stores role and phone locally and queues them for sync, so they are not lost.
-  Future<void> _saveProfile() async {
+  Future<void> _saveProfile(
+    Database db, {
+    required String name,
+    required String phone,
+    required String role,
+    required String gender,
+    required String ageBand,
+  }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
-    await AppPrefs.setRole(_selectedRole);
-    final db = ref.read(databaseProvider);
+    await AppPrefs.setRole(role);
     await db.insert('sync_queue', {
       'id': 'profile_$uid',
       'type': 'user_profile',
       'payload': jsonEncode({
         'id': uid,
         'userId': uid,
-        'name': _nameController.text.trim(),
-        'phone': _phoneController.text.trim(),
-        'role': _selectedRole,
-        'gender': _gender,
-        'ageBand': _ageBand,
+        'name': name,
+        'phone': phone,
+        'role': role,
+        'gender': gender,
+        'ageBand': ageBand,
         'consentVersion': _consentVersion,
-        'consentAt': DateTime.now().toIso8601String(),
+        'consentAt': DateTime.now().toUtc().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
       }),
       'retryCount': 0,

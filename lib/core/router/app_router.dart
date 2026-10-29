@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,15 +51,22 @@ import '../../features/weather/presentation/screens/weather_screen.dart';
 const requireAuth = bool.fromEnvironment('REQUIRE_AUTH', defaultValue: true);
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  // We strictly use the architecture's provider stream, never direct SDK calls
-  final authState = ref.watch(authStateProvider);
+  // The router must be created once. Watching the auth state here would build
+  // a new router (back at the splash screen) on every sign-in, which tears
+  // down the screen that is mid-registration. Instead the router is told to
+  // re-run its redirect when auth changes.
+  final authChanged = ValueNotifier<int>(0);
+  ref.listen(authStateProvider, (_, _) => authChanged.value++);
+  ref.onDispose(authChanged.dispose);
 
-  return GoRouter(
+  final router = GoRouter(
     initialLocation: '/',
+    refreshListenable: authChanged,
     // Sign-in is required by default. For local testing without an account,
     // run with --dart-define=REQUIRE_AUTH=false.
     redirect: (context, state) {
       if (!requireAuth) return null;
+      final authState = ref.read(authStateProvider);
       // Wait for auth to initialize
       if (authState.isLoading) return null;
 
@@ -278,4 +286,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+  ref.onDispose(router.dispose);
+  return router;
 });

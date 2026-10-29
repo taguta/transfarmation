@@ -14,7 +14,22 @@ class SyncService {
 
   SyncService(this.db, this.loanRemote, this.firestore);
 
+  bool _running = false;
+
+  /// Pushes queued changes to the cloud. Safe to call often: a call made while
+  /// a run is in progress is skipped, because that run will pick the items up
+  /// on the next tick.
   Future<void> processQueue() async {
+    if (_running) return;
+    _running = true;
+    try {
+      await _processQueueOnce();
+    } finally {
+      _running = false;
+    }
+  }
+
+  Future<void> _processQueueOnce() async {
     final now = DateTime.now();
     final items = await db.query(
       'sync_queue',

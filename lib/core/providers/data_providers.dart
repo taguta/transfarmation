@@ -114,10 +114,15 @@ final syncServiceProvider = Provider<SyncService>((ref) {
   );
 });
 
+/// Bumped each time the cloud has been pulled into the local database.
+/// Providers that read synced data watch it so they reload.
+final syncTickProvider = StateProvider<int>((ref) => 0);
+
 final firestoreListenerProvider = Provider<FirestoreListener>((ref) {
   final listener = FirestoreListener(
     ref.watch(firestoreProvider),
     ref.watch(databaseProvider),
+    onPulled: () => ref.read(syncTickProvider.notifier).state++,
   );
   ref.onDispose(listener.dispose);
   return listener;

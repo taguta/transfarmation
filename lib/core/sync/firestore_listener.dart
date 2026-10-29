@@ -14,7 +14,10 @@ class FirestoreListener {
   StreamSubscription<User?>? _authSub;
   Timer? _pollingTimer;
 
-  FirestoreListener(this.firestore, this.db);
+  /// Called after every pull so screens can reload what changed locally.
+  final void Function()? onPulled;
+
+  FirestoreListener(this.firestore, this.db, {this.onPulled});
 
   /// Starts watching Firebase Auth state. The delta poller is started
   /// automatically when a user signs in and cancelled when they sign out.
@@ -53,6 +56,16 @@ class FirestoreListener {
   }
 
   Future<void> _pullAllChanges(String farmerId) async {
+    try {
+      await _pullEverything(farmerId);
+    } catch (_) {
+      // One failing collection must not stop the others from being shown.
+    } finally {
+      onPulled?.call();
+    }
+  }
+
+  Future<void> _pullEverything(String farmerId) async {
     await Future.wait([
       _pullLoans(farmerId),
       _pullLoanOffers(),

@@ -6,6 +6,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 class NotificationNotifier extends AsyncNotifier<List<AppNotification>> {
   @override
   Future<List<AppNotification>> build() async {
+    ref.watch(syncTickProvider);
     final repo = ref.watch(notificationRepositoryImplProvider);
     return repo.getNotifications(ref.watch(activeFarmerIdProvider));
   }

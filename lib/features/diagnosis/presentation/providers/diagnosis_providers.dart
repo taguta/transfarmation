@@ -6,6 +6,7 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 class DiagnosisNotifier extends AsyncNotifier<List<DiagnosisResult>> {
   @override
   Future<List<DiagnosisResult>> build() async {
+    ref.watch(syncTickProvider);
     final repo = ref.watch(diagnosisRepositoryImplProvider);
     return repo.getDiagnosisHistory(ref.watch(activeFarmerIdProvider));
   }

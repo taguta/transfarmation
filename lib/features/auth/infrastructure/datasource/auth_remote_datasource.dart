@@ -37,6 +37,10 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
     final user = cred.user;
     if (user == null) throw Exception("Registration failed");
 
+    // Keep the name on the auth user too, so every screen that shows
+    // displayName (home, profile, PDFs) has it.
+    await user.updateDisplayName(name);
+
     // Save profile to firestore
     final docMap = {
       'name': name,

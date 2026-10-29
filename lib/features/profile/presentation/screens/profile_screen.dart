@@ -15,6 +15,9 @@ import '../../../../theme/theme_provider.dart';
 import '../../../advisory/presentation/providers/advisory_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../farm/presentation/providers/farm_providers.dart';
+import '../../../farm_records/presentation/providers/farm_record_providers.dart';
+import '../../../feasibility/presentation/providers/feasibility_providers.dart';
+import '../../../financing/presentation/providers/loan_providers.dart';
 import '../providers/profile_providers.dart';
 import '../../domain/entities/profile_settings.dart';
 
@@ -30,7 +33,13 @@ class ProfileScreen extends ConsumerWidget {
     final initials = displayName.split(' ').map((e) => e.isNotEmpty ? e[0] : '').take(2).join().toUpperCase();
     final email = user?.email ?? 'Farmer · Mashonaland East';
     final farmState = ref.watch(farmProvider);
-    final farmSize = farmState.valueOrNull?.sizeHectares.toString() ?? '12';
+    // Same sources the Home screen uses, so the two never disagree.
+    final recordedHa = ref.watch(farmSummaryProvider)['totalHa'] as double?;
+    final profileHa = farmState.valueOrNull?.sizeHectares ?? 0;
+    final hectares = (recordedHa != null && recordedHa > 0) ? recordedHa : profileHa;
+    final farmSize = hectares == 0 ? '-' : hectares.toStringAsFixed(hectares % 1 == 0 ? 0 : 1);
+    final loanCount = ref.watch(loanProvider).valueOrNull?.length ?? 0;
+    final planCount = ref.watch(feasibilityPlansProvider).valueOrNull?.length ?? 0;
 
     return Scaffold(
       body: SafeArea(
@@ -106,11 +115,11 @@ class ProfileScreen extends ConsumerWidget {
               // Stats row
               Row(
                 children: [
-                  _ProfileStat(label: 'Farm Size', value: '$farmSize ha'),
+                  _ProfileStat(label: 'Farm Size', value: farmSize == '-' ? '-' : '$farmSize ha'),
                   const SizedBox(width: AppSpacing.md),
-                  _ProfileStat(label: 'Loans', value: '3'),
+                  _ProfileStat(label: 'Loans', value: '$loanCount'),
                   const SizedBox(width: AppSpacing.md),
-                  _ProfileStat(label: 'Score', value: '72'),
+                  _ProfileStat(label: 'Plans', value: '$planCount'),
                 ],
               ),
 
