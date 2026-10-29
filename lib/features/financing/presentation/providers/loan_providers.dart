@@ -11,6 +11,13 @@ final loanProvider = FutureProvider<List<Loan>>((ref) async {
   return await repo.getLoans(ref.watch(activeFarmerIdProvider));
 });
 
+/// Payments recorded against one loan, newest first.
+final loanPaymentsProvider =
+    FutureProvider.family<List<LoanPayment>, String>((ref, loanId) async {
+  ref.watch(syncTickProvider);
+  return ref.watch(loanRepositoryImplProvider).getPayments(loanId);
+});
+
 /// Active loans (approved, disbursed)
 final activeLoansProvider = Provider<List<Loan>>((ref) {
   final loansAsync = ref.watch(loanProvider);

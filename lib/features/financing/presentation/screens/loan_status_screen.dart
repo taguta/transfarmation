@@ -7,6 +7,8 @@ import 'package:printing/printing.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../data_sharing/domain/data_share.dart';
+import '../../../data_sharing/presentation/screens/data_sharing_screen.dart';
 import '../../../ledger/domain/farmer_statement.dart';
 import '../../../ledger/presentation/providers/ledger_providers.dart';
 import '../../domain/entities/loan.dart';
@@ -40,6 +42,19 @@ class _LoanStatusScreenState extends ConsumerState<LoanStatusScreen> {
 
   Future<void> _shareLoanFile(Loan loan) async {
     final messenger = ScaffoldMessenger.of(context);
+    // Exporting a loan file shares the farmer's records with someone, so ask who
+    // and record it. Cancelling stops the export.
+    final recipient = await showShareSheet(
+      context,
+      ref,
+      initialRecipient: loan.lenderName ?? '',
+      initialScopes: {
+        ShareScope.loanFile,
+        ShareScope.ledgerSummary,
+        if (loan.planSummary != null && loan.planSummary!.isNotEmpty) ShareScope.plan,
+      },
+    );
+    if (recipient == null) return;
     try {
       final loans = ref.read(loanProvider).valueOrNull ?? const <Loan>[];
       final entries = await ref.read(ledgerEntriesProvider.future);
@@ -49,7 +64,7 @@ class _LoanStatusScreenState extends ConsumerState<LoanStatusScreen> {
         statement: FarmerStatement.build(entries: entries, loans: loans),
         entries: entries,
         farmerName: name,
-        sharedWith: loan.lenderName,
+        sharedWith: recipient,
       );
       await Printing.sharePdf(bytes: bytes, filename: 'loan-file-${loan.id}.pdf');
     } catch (e) {

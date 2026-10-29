@@ -49,6 +49,27 @@ class AppPrefs {
     }
   }
 
+  /// Whose data this device currently holds, so it can be cleared when a
+  /// different person signs in. Null when no one has signed in yet.
+  static Future<String?> get dataOwnerUid async {
+    try {
+      return (await _box()).get('dataOwnerUid') as String?;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> setDataOwnerUid(String? uid) async {
+    try {
+      final box = await _box();
+      if (uid == null) {
+        await box.delete('dataOwnerUid');
+      } else {
+        await box.put('dataOwnerUid', uid);
+      }
+    } catch (_) {}
+  }
+
   static Future<void> setRoles(List<String> roles) async {
     try {
       await (await _box()).put('roles', roles);

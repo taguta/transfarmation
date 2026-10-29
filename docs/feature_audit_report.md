@@ -50,9 +50,14 @@ My first re-check searched only for `_dummy` and so missed hard-coded data. A fu
 * **Still open in sync:** items are marked synced locally *before* the batch commits, so a failed commit can leave a row showing "synced" while still queued. Fix by marking after commit.
 * **Not checked:** other screens may still contain hard-coded sample values. Repayment and offers screens were not reviewed line by line.
 
+## 2a-ii. Privacy gaps still open (found 2026-10-29)
+* **Local data is not scoped per farmer.** For example `LedgerRepository.getEntries()` reads every row in the local table with no `farmerId` filter. On a phone used by two people, the second person can see the first person's ledger until the data is cleared. Check every local repository, and either filter by `farmerId` or clear local data on sign-out.
+* **Sharing is recorded, not enforced.** The new sharing screen records who the farmer has shared with. Lenders and contractors are not yet restricted to active shares on the server.
+
 ## 2b. Added after the go-to-market audit (2026-10-29)
 * **Farmer Statement (`/statement`)** is built from the ledger and loans (`FarmerStatement`, unit tested). It shows money in, money spent, loans owed and projected take-home.
 * **Consent at registration** is stored as `consentVersion` and `consentAt` on the user profile.
+* **Per-recipient sharing consent** (`data_shares`, schema v16): share four scopes with a named recipient, stop in one tap, history kept, loan-file export records the share.
 * **Loan file (PDF)** built from the loan, ledger and shared plan (`LoanFilePdf`, tested).
 * **Data deletion request**, **optional gender and age band** at registration, and **compressed chat photos**.
 * **Sign-in guard** is on by default. Use `--dart-define=REQUIRE_AUTH=false` for testing.

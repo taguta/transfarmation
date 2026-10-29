@@ -111,6 +111,28 @@ class LoanOffer {
   });
 }
 
+/// A payment the farmer has made towards a loan and recorded in the app.
+/// Transfarmation does not move the money; this is the farmer's own record.
+class LoanPayment {
+  final String id;
+  final String loanId;
+  final String farmerId;
+  final double amount;
+  final DateTime date;
+  final String method;
+  final bool isSynced;
+
+  const LoanPayment({
+    required this.id,
+    required this.loanId,
+    required this.farmerId,
+    required this.amount,
+    required this.date,
+    required this.method,
+    this.isSynced = false,
+  });
+}
+
 class Repayment {
   final String id;
   final String loanId;

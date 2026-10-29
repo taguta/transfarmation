@@ -146,6 +146,8 @@ class SyncService {
       'farm_task' => 'farm_tasks',
       'feasibility_plan' => 'feasibility_plans',
       'ledger_entry' => 'ledger_entries',
+      'loan_payment' => 'loan_payments',
+      'data_share' => 'data_shares',
       _ => null,
     };
 
@@ -269,8 +271,16 @@ class SyncService {
       case 'notification_mark_all_read':
         break;
 
+      case 'data_share':
+        final ref = firestore.collection('data_shares').doc(payload['id']);
+        batch.set(ref, _owned(payload));
+
       case 'data_deletion_request':
         final ref = firestore.collection('deletion_requests').doc(payload['id']);
+        batch.set(ref, _owned(payload));
+
+      case 'loan_payment':
+        final ref = firestore.collection('loan_payments').doc(payload['id']);
         batch.set(ref, _owned(payload));
 
       case 'ledger_delete':

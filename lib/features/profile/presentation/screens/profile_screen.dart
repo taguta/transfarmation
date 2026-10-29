@@ -274,6 +274,12 @@ class ProfileScreen extends ConsumerWidget {
                 onTap: () => context.go('/profile/sync'),
               ),
               _SettingsTile(
+                icon: Icons.lock_person_rounded,
+                title: 'Who can see my data',
+                subtitle: 'Lenders and others you share with',
+                onTap: () => context.go('/profile/sharing'),
+              ),
+              _SettingsTile(
                 icon: Icons.delete_outline_rounded,
                 title: 'Request data deletion',
                 subtitle: 'Ask us to delete your account data',

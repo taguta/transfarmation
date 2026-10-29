@@ -5,4 +5,6 @@ abstract class LoanRepository {
   Future<void> applyLoan(Loan loan);
   Future<List<Loan>> getLoans(String farmerId);
   Future<List<LoanOffer>> getLoanOffers();
+  Future<void> recordPayment(LoanPayment payment);
+  Future<List<LoanPayment>> getPayments(String loanId);
 }

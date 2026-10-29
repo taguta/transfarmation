@@ -7,8 +7,15 @@ class LedgerRepository {
   final Database db;
   LedgerRepository(this.db);
 
-  Future<List<LedgerEntry>> getEntries() async {
-    final rows = await db.query('ledger_entries', orderBy: 'date DESC');
+  /// Entries for [farmerId]. Without an id every row is returned, so callers
+  /// that show data to a person must always pass one.
+  Future<List<LedgerEntry>> getEntries({String? farmerId}) async {
+    final rows = await db.query(
+      'ledger_entries',
+      where: farmerId == null ? null : 'farmerId = ?',
+      whereArgs: farmerId == null ? null : [farmerId],
+      orderBy: 'date DESC',
+    );
     return rows.map(LedgerEntry.fromMap).toList();
   }
 

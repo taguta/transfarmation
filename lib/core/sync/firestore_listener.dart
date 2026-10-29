@@ -17,6 +17,8 @@ class FirestoreListener {
   /// Called after every pull so screens can reload what changed locally.
   final void Function()? onPulled;
 
+  static const pollInterval = Duration(minutes: 1);
+
   FirestoreListener(this.firestore, this.db, {this.onPulled});
 
   /// Starts watching Firebase Auth state. The delta poller is started
@@ -26,8 +28,9 @@ class FirestoreListener {
       _stopPolling();
       if (user != null) {
         _pullAllChanges(user.uid);
-        // Poll every 5 minutes while the app is alive
-        _pollingTimer = Timer.periodic(const Duration(minutes: 5), (_) {
+        // Poll every minute while the app is alive, so a reply or a lender's
+        // decision shows up soon after it is made.
+        _pollingTimer = Timer.periodic(pollInterval, (_) {
           _pullAllChanges(user.uid);
         });
       }
@@ -55,12 +58,18 @@ class FirestoreListener {
     );
   }
 
+  bool _pulling = false;
+
   Future<void> _pullAllChanges(String farmerId) async {
+    // A slow pull must not overlap the next tick.
+    if (_pulling) return;
+    _pulling = true;
     try {
       await _pullEverything(farmerId);
     } catch (_) {
       // One failing collection must not stop the others from being shown.
     } finally {
+      _pulling = false;
       onPulled?.call();
     }
   }
@@ -69,6 +78,7 @@ class FirestoreListener {
     await Future.wait([
       _pullLoans(farmerId),
       _pullLoanOffers(),
+      _pullLoanPayments(farmerId),
       _pullFarms(farmerId),
       _pullSavingsTransactions(farmerId),
       _pullDiagnosis(farmerId),
@@ -110,6 +120,24 @@ class FirestoreListener {
         });
       }
       await _setLastSync('loans', DateTime.now().toIso8601String());
+    }
+  }
+
+  Future<void> _pullLoanPayments(String farmerId) async {
+    final snap = await firestore
+        .collection('loan_payments')
+        .where('farmerId', isEqualTo: farmerId)
+        .get();
+    for (final doc in snap.docs) {
+      final d = doc.data();
+      await _upsertIfNotPending('loan_payments', doc.id, {
+        'id': doc.id,
+        'loanId': d['loanId'] as String? ?? '',
+        'farmerId': farmerId,
+        'amount': (d['amount'] as num?)?.toDouble() ?? 0.0,
+        'date': d['date'] as String? ?? DateTime.now().toIso8601String(),
+        'method': d['method'] as String?,
+      });
     }
   }
 

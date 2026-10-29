@@ -1,14 +1,19 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:sqflite/sqflite.dart' show databaseFactory;
+import 'package:sqflite/sqflite.dart' show Database, databaseFactory;
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'firebase_options.dart';
 
+import 'core/account/account_guard.dart';
+import 'core/account/local_data_cleaner.dart';
 import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
 import 'core/sync/connectivity_sync_notifier.dart';
@@ -34,17 +39,73 @@ void main() async {
     await DataSeeder(db, FarmLocalDataSource(db), LoanLocalDataSource(db)).seedIfEmpty();
   }
 
+  // If a different person signed in since this device last held data, clear the
+  // previous person's data before any screen can read it.
+  final guard = AccountGuard(LocalDataCleaner(db));
+  String? startUid;
+  try {
+    startUid = (await FirebaseAuth.instance
+            .authStateChanges()
+            .first
+            .timeout(const Duration(seconds: 5)))
+        ?.uid;
+  } catch (_) {}
+  await guard.reconcile(startUid);
+
   FlutterNativeSplash.remove();
 
+  runApp(AccountScope(db: db, initialUid: startUid));
+}
 
-  runApp(
-    ProviderScope(
-      overrides: [
-        databaseProvider.overrideWithValue(db),
-      ],
+/// Hosts the app's providers and rebuilds them whenever a signed-in person
+/// leaves (sign-out or switching accounts), so no screen keeps the previous
+/// person's data in memory. Going from signed out to signed in does not reset
+/// anything, which keeps sign-up and sign-in flows intact.
+class AccountScope extends StatefulWidget {
+  final Database db;
+  final String? initialUid;
+  const AccountScope({super.key, required this.db, required this.initialUid});
+
+  @override
+  State<AccountScope> createState() => _AccountScopeState();
+}
+
+class _AccountScopeState extends State<AccountScope> {
+  int _epoch = 0;
+  String? _uid;
+  StreamSubscription<User?>? _sub;
+  late final AccountGuard _guard = AccountGuard(LocalDataCleaner(widget.db));
+
+  @override
+  void initState() {
+    super.initState();
+    _uid = widget.initialUid;
+    _sub = FirebaseAuth.instance.authStateChanges().listen(_onAuth);
+  }
+
+  Future<void> _onAuth(User? user) async {
+    final uid = user?.uid;
+    if (uid == _uid) return;
+    final previous = _uid;
+    _uid = uid;
+    final cleared = await _guard.reconcile(uid);
+    if ((previous != null || cleared) && mounted) setState(() => _epoch++);
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ProviderScope(
+      key: ValueKey(_epoch),
+      overrides: [databaseProvider.overrideWithValue(widget.db)],
       child: const TransfarmationApp(),
-    ),
-  );
+    );
+  }
 }
 
 class TransfarmationApp extends ConsumerStatefulWidget {

@@ -35,6 +35,13 @@ class LoanLocalDataSource {
       where: 'farmerId = ?',
       whereArgs: [farmerId],
     );
+    // What has been repaid is the sum of the recorded payments.
+    final sums = {
+      for (final r in await db.rawQuery(
+          'SELECT loanId, SUM(amount) AS paid FROM loan_payments WHERE farmerId = ? GROUP BY loanId',
+          [farmerId]))
+        r['loanId'] as String: (r['paid'] as num).toDouble(),
+    };
     return data
         .map(
           (e) => Loan(
@@ -51,7 +58,7 @@ class LoanLocalDataSource {
             farmingType: e['farmingType'] as String?,
             purpose: e['purpose'] as String?,
             repaymentPeriod: e['repaymentPeriod'] as String?,
-            amountRepaid: (e['amountRepaid'] as num?)?.toDouble() ?? 0,
+            amountRepaid: sums[e['id'] as String] ?? 0,
             lenderName: e['lenderName'] as String?,
             decisionNote: e['decisionNote'] as String?,
             planSummary: e['planSummary'] == null
@@ -60,6 +67,35 @@ class LoanLocalDataSource {
           ),
         )
         .toList();
+  }
+
+  Future<void> savePayment(LoanPayment p) async {
+    await db.insert('loan_payments', {
+      'id': p.id,
+      'loanId': p.loanId,
+      'farmerId': p.farmerId,
+      'amount': p.amount,
+      'date': p.date.toIso8601String(),
+      'method': p.method,
+      'isSynced': p.isSynced ? 1 : 0,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<LoanPayment>> getPayments(String loanId) async {
+    final rows = await db.query('loan_payments',
+        where: 'loanId = ?', whereArgs: [loanId], orderBy: 'date DESC');
+    return [
+      for (final e in rows)
+        LoanPayment(
+          id: e['id'] as String,
+          loanId: e['loanId'] as String,
+          farmerId: e['farmerId'] as String? ?? '',
+          amount: (e['amount'] as num).toDouble(),
+          date: DateTime.parse(e['date'] as String),
+          method: e['method'] as String? ?? '',
+          isSynced: (e['isSynced'] as int?) == 1,
+        ),
+    ];
   }
 
   Future<List<LoanOffer>> getLoanOffers() async {

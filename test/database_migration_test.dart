@@ -32,8 +32,8 @@ const _addedColumns = <String, List<String>>{
   'weather_alerts': ['type', 'timestamp', 'isSynced'],
 };
 
-/// Tables that did not exist before v8.
-const _tablesAddedInV8 = ['feasibility_plans', 'ledger_entries'];
+/// Tables that did not exist at v7 (feasibility and ledger in v8, loan payments in v15).
+const _tablesAddedInV8 = ['feasibility_plans', 'ledger_entries', 'loan_payments'];
 
 Future<Set<String>> _columns(Database db, String table) async =>
     (await db.rawQuery('PRAGMA table_info($table)')).map((r) => r['name'] as String).toSet();
@@ -73,6 +73,7 @@ void main() {
     for (final t in _tablesAddedInV8) {
       await db.execute('DROP TABLE $t');
     }
+    await db.execute('DROP TABLE IF EXISTS data_shares');
     await db.insert('loans', {
       'id': 'old-loan', 'farmerId': 'f1', 'amount': 750.0, 'status': 'approved',
       'createdAt': '2026-01-01T00:00:00.000', 'isSynced': 1,
@@ -125,6 +126,7 @@ void main() {
       for (final t in _tablesAddedInV8) {
         expect(await _columns(db, t), isNotEmpty, reason: t);
       }
+      expect(await _columns(db, 'data_shares'), containsAll(['recipientName', 'scope', 'revokedAt']));
 
       final loan = (await db.query('loans', where: 'id = ?', whereArgs: ['old-loan'])).single;
       expect(loan['amount'], 750.0);

@@ -78,7 +78,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | I1 | Sign-in required by default. Testing without an account uses `--dart-define=REQUIRE_AUTH=false` | P0 | Built |
 | I2 | Role-based access in the app and in Firestore rules | P0 | Built |
 | I3 | Explicit consent at registration, stored with a version and timestamp (`consentVersion`, `consentAt`) | P0 | Built |
-| I4 | Consent for sharing farmer data with a named lender or contractor, per recipient, revocable | P1 | Not built |
+| I4 | Consent for sharing farmer data with a named lender or contractor, per recipient, revocable | P1 | Partial (farmer can share four scopes with a named recipient, stop in one tap, history kept, synced; exporting a loan file asks who it is for and records the share. **Not yet enforced on the server for lender or contractor reads**) |
 | I5 | Data deletion request handled within a stated period | P1 | Partial (in-app request queued and synced to `deletion_requests`; rules need deploying; staff process and the stated period are still to be defined) |
 
 ## 4. Regulatory and legal requirements
@@ -176,6 +176,8 @@ See `go_to_market_audit.md` section 6 for the ranked table. The top five: TIMB a
 ## 12. Design notes for items not yet built
 
 ### Per-recipient data-sharing consent (I4)
+**Built (client side):** `data_shares` table (schema v16), `DataShare`/`ShareScope`, a "Who can see my data" screen under Profile, and a share prompt on loan-file export. Shares are synced to a `data_shares` collection that only the farmer can read. **Still to do:** make lender and contractor workspaces read farmer data only through an active share (needs a recipient identity, see the open question below), and show recipients what they may see.
+
 - **Model:** a `data_shares` record per (farmer, recipient, scope) with `grantedAt`, `revokedAt`, and a consent version. Scopes: `ledger_summary`, `plan`, `farm_location`, `loan_file`.
 - **Rule of use:** a lender or contractor workspace may read a farmer's data only while an unrevoked share exists for that scope. Enforce this in Firestore rules, not only in the app.
 - **UX:** the farmer picks the recipient and sees, in plain words, exactly what will be shared. Revoking is one tap. Exporting the loan file to a named lender should create the share.

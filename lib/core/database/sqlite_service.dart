@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 class SqliteService {
   /// Current schema version. Bump this together with a new `_migrateToVn`.
-  static const schemaVersion = 14;
+  static const schemaVersion = 16;
 
   static Future<Database> init() async =>
       openAt(join(await getDatabasesPath(), 'agrolink.db'));
@@ -28,6 +28,8 @@ class SqliteService {
         await _migrateToV12(db);
         await _migrateToV13(db);
         await _migrateToV14(db);
+        await _migrateToV15(db);
+        await _migrateToV16(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -68,6 +70,12 @@ class SqliteService {
         }
         if (oldVersion < 14) {
           await _migrateToV14(db);
+        }
+        if (oldVersion < 15) {
+          await _migrateToV15(db);
+        }
+        if (oldVersion < 16) {
+          await _migrateToV16(db);
         }
       },
     );
@@ -528,6 +536,40 @@ class SqliteService {
         await db.execute('ALTER TABLE weather_alerts ADD COLUMN $c');
       }
     }
+  }
+
+  /// A farmer's per-recipient choices about who may see which of their data.
+  static Future<void> _migrateToV16(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS data_shares(
+        id TEXT PRIMARY KEY,
+        farmerId TEXT NOT NULL,
+        recipientName TEXT NOT NULL,
+        recipientId TEXT,
+        scope TEXT NOT NULL,
+        grantedAt TEXT NOT NULL,
+        revokedAt TEXT,
+        consentVersion TEXT,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_data_shares_farmer ON data_shares(farmerId)');
+  }
+
+  /// Payments the farmer records against a loan.
+  static Future<void> _migrateToV15(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS loan_payments(
+        id TEXT PRIMARY KEY,
+        loanId TEXT NOT NULL,
+        farmerId TEXT,
+        amount REAL NOT NULL,
+        date TEXT NOT NULL,
+        method TEXT,
+        isSynced INTEGER DEFAULT 0
+      )
+    ''');
+    await db.execute('CREATE INDEX IF NOT EXISTS idx_loan_payments_loan ON loan_payments(loanId)');
   }
 
   static Future<void> _migrateToV13(Database db) async {

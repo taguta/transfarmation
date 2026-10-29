@@ -73,6 +73,15 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // A payment the farmer says they made on a loan. Append-only, so the
+    // record cannot be edited or removed afterwards. A verified lender can
+    // read it to reconcile against their own books.
+    match /loan_payments/{id} {
+      allow read: if ownsExisting('farmerId') || isVerifiedLender();
+      allow create: if createsOwned('farmerId') && request.resource.data.amount > 0;
+      allow update, delete: if false;
+    }
+
     match /diagnosis_results/{id} {
       allow read, delete: if ownsExisting('farmerId');
       allow create: if createsOwned('farmerId');
@@ -137,6 +146,18 @@ service cloud.firestore {
       allow read, delete: if ownsExisting('farmerId');
       allow create: if createsOwned('farmerId');
       allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
+    }
+
+    // A farmer's choice to share one kind of data with one named recipient.
+    // The farmer creates it and may later only record the revocation, so the
+    // grant itself cannot be rewritten. Nobody else can read it yet: access
+    // for lenders is not enforced from these records.
+    match /data_shares/{id} {
+      allow read: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId') && request.resource.data.revokedAt == null;
+      allow update: if ownsExisting('farmerId') && keepsOwner('farmerId') &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['revokedAt', 'updatedAt']);
+      allow delete: if false;
     }
 
     // A farmer's request to have their data deleted. Create-only, so the

@@ -43,6 +43,27 @@ class LoanRepositoryImpl implements LoanRepository {
   }
 
   @override
+  Future<void> recordPayment(LoanPayment p) async {
+    await local.savePayment(p);
+    await db.insert('sync_queue', {
+      'id': p.id,
+      'type': 'loan_payment',
+      'payload': jsonEncode({
+        'id': p.id,
+        'loanId': p.loanId,
+        'farmerId': p.farmerId,
+        'amount': p.amount,
+        'date': p.date.toIso8601String(),
+        'method': p.method,
+      }),
+      'retryCount': 0
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  @override
+  Future<List<LoanPayment>> getPayments(String loanId) => local.getPayments(loanId);
+
+  @override
   Future<List<LoanOffer>> getLoanOffers() {
     return local.getLoanOffers();
   }
