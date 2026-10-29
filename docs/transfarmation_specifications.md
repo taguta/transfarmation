@@ -1,6 +1,6 @@
 # Transfarmation: Product and Requirements Specification
 
-*Version 2.0, 2026-10-29. Replaces the earlier AgroLink spec (archived in `docs/archive/agrolink_chat_history.md`).*
+*Version 2.1, 2026-10-29. Replaces the earlier AgroLink spec (archived in `docs/archive/agrolink_chat_history.md`).*
 *Related: `Transfarmation_Value_Proposition.docx` (stakeholder document), `go_to_market_audit.md` (evidence and rationale), `feature_audit_report.md` (build status).*
 
 Priorities: **P0** = needed for the first 30–50 farmer pilot, **P1** = before the ~500-participant Cluster-Zero pilot, **P2** = later.
@@ -25,6 +25,8 @@ Status: **Built** = in the codebase, **Partial** = some of it exists, **Not buil
 
 One identity can hold several roles. Each role sees its own workspace (a configuration of shared modules).
 
+**How a professional role is granted:** a person applies in the app with a licence number. An admin approves, which writes a verified record that the Firestore rules check. Choosing a role at sign-up only changes the workspace shown; it grants no access to other people's data.
+
 | Role | Workspace | Core needs |
 |---|---|---|
 | Farmer | My Farm | Ledger, statement, plan, contracts, advice, loans |
@@ -41,12 +43,12 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | ID | Requirement | Pri | Status |
 |---|---|---|---|
 | F1 | Farm and field records with GPS plot capture, working offline | P0 | Built |
-| F2 | Farm ledger: income and expense entries, sale recording with levy and loan deductions shown line by line | P0 | Built |
+| F2 | Farm ledger: income and expense entries, sale recording with levy and loan deductions shown line by line | P0 | Built (the levy rate is a placeholder until the real rate is confirmed) |
 | F3 | **Farmer statement:** plain-language view of money in, money spent, loans still owed, and projected take-home (can be negative) | P0 | Built (`/statement`) |
-| F4 | Feasibility plan (24-month cash flow) with PDF export that can be shared with a lender | P0 | Built |
+| F4 | Feasibility plan (24-month cash flow) with PDF export that can be shared with a lender | P0 | Built (tobacco and tomato templates; tobacco levy is a placeholder) |
 | F5 | Contract view in plain language with offer acceptance | P1 | Partial |
-| F6 | Crop diagnosis with confidence level and escalation to a human agronomist | P1 | Built (symptom match with confidence, escalation queue in the Advisory Desk) |
-| F7 | Weather and crop-stage alerts, proactive rather than on demand | P1 | Partial |
+| F6 | Crop diagnosis with confidence level and escalation to a human agronomist | P1 | Built (symptom match with confidence capped by the number of symptoms ticked; escalation queue and replies in the Advisory Desk; photo attachment not yet tested end to end) |
+| F7 | Weather and crop-stage alerts, proactive rather than on demand | P1 | Partial (generated on the device from weather and crop stage; no push notifications yet) |
 | F8 | Savings groups, group buying, inputs, traceability, labour, community, market prices | P1 | Built (SQLite-backed; review depth before pilot) |
 | F9 | IoT sensors dashboard | P2 | Built, not needed for pilot |
 
@@ -54,7 +56,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 
 | ID | Requirement | Pri | Status |
 |---|---|---|---|
-| M1 | Loan application, offers and repayment tracking | P0 | Built |
+| M1 | Loan application, offers and repayment tracking | P0 | Built (offers published by verified lenders; Credit Desk approve or reject with a note; repayments are recorded by the farmer, the schedule is principal only, and nothing is confirmed by the lender yet) |
 | M2 | Bank-ready loan file export from ledger and plan data, tested with a bank officer | P1 | Partial (PDF built from the loan, ledger and shared plan; **not yet tested with a bank officer**) |
 | M3 | Input credit and payouts through a **licensed bank or PSP partner**. Transfarmation does not hold funds | P1 | Not built |
 | M4 | Escrow and settlement waterfall (levies, loan, freight, farmer) | P2 | Not built |
@@ -76,11 +78,11 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | ID | Requirement | Pri | Status |
 |---|---|---|---|
 | I1 | Sign-in required by default. Testing without an account uses `--dart-define=REQUIRE_AUTH=false` | P0 | Built |
-| I2 | Role-based access in the app and in Firestore rules | P0 | Built |
+| I2 | Role-based access in the app and in Firestore rules | P0 | Built (lender, expert and admin roles are granted only by an admin-written record; every farmer-owned collection is owner-only; tested against the live database with throwaway accounts) |
 | I3 | Explicit consent at registration, stored with a version and timestamp (`consentVersion`, `consentAt`) | P0 | Built |
 | I4 | Consent for sharing farmer data with a named lender or contractor, per recipient, revocable | P1 | Partial (farmer can share four scopes with a named recipient, stop in one tap, history kept, synced; exporting a loan file asks who it is for and records the share. **Not yet enforced on the server for lender or contractor reads**) |
 | I6 | One person's data is removed from a shared device when they sign out or another account signs in; unsent changes are warned about, never sent under another account | P0 | Built (see feature audit for residual gaps) |
-| I5 | Data deletion request handled within a stated period | P1 | Partial (in-app request queued and synced to `deletion_requests`; rules need deploying; staff process and the stated period are still to be defined) |
+| I5 | Data deletion request handled within a stated period | P1 | Partial (in-app request queued and synced to `deletion_requests`, rules deployed; staff process and the stated period are still to be defined) |
 
 ## 4. Regulatory and legal requirements
 
@@ -95,12 +97,12 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 
 ## 5. Non-functional requirements
 
-- **Offline-first:** the UI reads only from local SQLite. Writes go to a local sync queue and reach Firestore when online. States: pending, syncing, synced, failed. Retry uses backoff.
+- **Offline-first:** the UI reads only from local SQLite. Writes go to a local sync queue and reach Firestore when online: queued changes are sent every 45 seconds while the app is open and on sign-in, and the cloud is checked every minute. States: pending, syncing, synced, failed. Retry uses backoff.
 - **Performance:** first meaningful screen under 3 seconds on a low-end Android phone on 3G; no screen blocks on the network.
-- **Security:** Firebase Auth, Firestore rules per role and owner, field validation on loans, no secrets in the client, audit log for loan decisions. Local encryption of sensitive data is **P1, not yet done**.
+- **Security:** Firebase Auth, Firestore rules per role and owner, field validation on loans, no secrets in the client. A loan decision records the lender, time and note on the loan itself; a separate append-only audit log is **not yet built**. Local encryption of sensitive data is **P1, not yet done**.
 - **Privacy:** data minimisation, per-recipient sharing consent, deletion on request.
 - **Availability:** aim for 99.5% for sync and auth. The farmer's own tools must keep working with no availability at all.
-- **Platforms:** Android first (pilot), web (Firebase Hosting, responsive shell), iOS and desktop later.
+- **Platforms:** Android first (pilot), web (Firebase Hosting, responsive shell), iOS and desktop later. **So far tested on web and in automated tests; not yet run on a real Android or iOS device.**
 - **Accessibility:** large touch targets, icon-led layout, plain language, English now, Shona and Ndebele next.
 
 ## 6. Architecture
