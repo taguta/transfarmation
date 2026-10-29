@@ -45,7 +45,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | F3 | **Farmer statement:** plain-language view of money in, money spent, loans still owed, and projected take-home (can be negative) | P0 | Built (`/statement`) |
 | F4 | Feasibility plan (24-month cash flow) with PDF export that can be shared with a lender | P0 | Built |
 | F5 | Contract view in plain language with offer acceptance | P1 | Partial |
-| F6 | Crop diagnosis with confidence level and escalation to a human agronomist | P1 | Partial |
+| F6 | Crop diagnosis with confidence level and escalation to a human agronomist | P1 | Built (symptom match with confidence, escalation queue in the Advisory Desk) |
 | F7 | Weather and crop-stage alerts, proactive rather than on demand | P1 | Partial |
 | F8 | Savings groups, group buying, inputs, traceability, labour, community, market prices | P1 | Built (SQLite-backed; review depth before pilot) |
 | F9 | IoT sensors dashboard | P2 | Built, not needed for pilot |
@@ -68,8 +68,8 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | A1 | USSD/SMS fallback for: view balance, confirm a delivery, receive alerts | P0 | Not built |
 | A2 | Field-agent assisted onboarding that works fully offline, with consent recorded | P0 | Partial |
 | A3 | Shona and Ndebele for all farmer-facing text, reviewed by native speakers. Voice later | P1 | Not built |
-| A4 | Low-data mode: compressed images, sync tolerant of days offline | P0 | Partial |
-| A5 | Track women's and youth participation from day one | P1 | Not built |
+| A4 | Low-data mode: compressed images, sync tolerant of days offline | P0 | Partial (photos in diagnosis and expert chat compressed to 1024px at quality 60; multi-day offline sync not yet stress-tested) |
+| A5 | Track women's and youth participation from day one | P1 | Partial (optional gender and age band collected at registration; no reporting view yet) |
 
 ### 3.4 Identity and access
 
@@ -79,7 +79,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | I2 | Role-based access in the app and in Firestore rules | P0 | Built |
 | I3 | Explicit consent at registration, stored with a version and timestamp (`consentVersion`, `consentAt`) | P0 | Built |
 | I4 | Consent for sharing farmer data with a named lender or contractor, per recipient, revocable | P1 | Not built |
-| I5 | Data deletion request handled within a stated period | P1 | Not built |
+| I5 | Data deletion request handled within a stated period | P1 | Partial (in-app request queued and synced to `deletion_requests`; rules need deploying; staff process and the stated period are still to be defined) |
 
 ## 4. Regulatory and legal requirements
 

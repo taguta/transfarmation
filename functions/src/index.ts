@@ -128,3 +128,6 @@ export const monitorIotTelemetry = functions.firestore
       }
     }
   });
+
+// 6. Weather forecasts (Open-Meteo → weather_forecasts)
+export { refreshWeatherForecasts, refreshWeatherNow } from './weather';

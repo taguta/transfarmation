@@ -30,6 +30,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _obscurePassword = true;
   bool _isLoading = false;
   bool _consent = false;
+  String _gender = 'Prefer not to say';
+  String _ageBand = 'Prefer not to say';
   bool _consentError = false;
 
   /// Bump when the wording below changes, so stored consents stay traceable.
@@ -97,6 +99,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         'name': _nameController.text.trim(),
         'phone': _phoneController.text.trim(),
         'role': _selectedRole,
+        'gender': _gender,
+        'ageBand': _ageBand,
         'consentVersion': _consentVersion,
         'consentAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
@@ -203,6 +207,36 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ),
                   ],
                   onChanged: (v) => setState(() => _selectedRole = v!),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+
+                // Optional. Used only to see whether women and young farmers are
+                // being reached, never to decide access or credit.
+                DropdownButtonFormField<String>(
+                  initialValue: _gender,
+                  decoration: const InputDecoration(
+                    labelText: 'Gender (optional)',
+                    prefixIcon: Icon(Icons.diversity_1_outlined),
+                  ),
+                  items: [
+                    for (final g in ['Female', 'Male', 'Prefer not to say'])
+                      DropdownMenuItem(value: g, child: Text(g)),
+                  ],
+                  onChanged: (v) => setState(() => _gender = v!),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+
+                DropdownButtonFormField<String>(
+                  initialValue: _ageBand,
+                  decoration: const InputDecoration(
+                    labelText: 'Age (optional)',
+                    prefixIcon: Icon(Icons.cake_outlined),
+                  ),
+                  items: [
+                    for (final a in ['Under 25', '25–35', '36–55', 'Over 55', 'Prefer not to say'])
+                      DropdownMenuItem(value: a, child: Text(a)),
+                  ],
+                  onChanged: (v) => setState(() => _ageBand = v!),
                 ),
                 const SizedBox(height: AppSpacing.lg),
 

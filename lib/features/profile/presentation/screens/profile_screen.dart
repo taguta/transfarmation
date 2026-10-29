@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/providers/data_providers.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../theme/theme_provider.dart';
@@ -259,6 +263,12 @@ class ProfileScreen extends ConsumerWidget {
                 subtitle: 'Manage offline uploads',
                 onTap: () => context.go('/profile/sync'),
               ),
+              _SettingsTile(
+                icon: Icons.delete_outline_rounded,
+                title: 'Request data deletion',
+                subtitle: 'Ask us to delete your account data',
+                onTap: () => _requestDeletion(context, ref),
+              ),
 
               const SizedBox(height: AppSpacing.xl),
               _SectionHeader(title: 'Preferences'),
@@ -420,6 +430,55 @@ class ProfileScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// Asks for the farmer's data to be deleted. The request is queued locally,
+/// so it is kept and sent even if the farmer is offline when they tap it.
+Future<void> _requestDeletion(BuildContext context, WidgetRef ref) async {
+  final uid = FirebaseAuth.instance.currentUser?.uid;
+  final messenger = ScaffoldMessenger.of(context);
+  if (uid == null) {
+    messenger.showSnackBar(
+      const SnackBar(content: Text('Sign in to request data deletion.')),
+    );
+    return;
+  }
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('Delete my data?'),
+      content: const Text(
+        'We will delete your account data after checking the request. '
+        'You may lose access to your records, loans and contracts. '
+        'Records a lender or contractor must keep by law may be retained.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text('Send request'),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true) return;
+  await ref.read(databaseProvider).insert('sync_queue', {
+    'id': 'deletion_$uid',
+    'type': 'data_deletion_request',
+    'payload': jsonEncode({
+      'id': 'deletion_$uid',
+      'userId': uid,
+      'requestedAt': DateTime.now().toIso8601String(),
+      'status': 'requested',
+    }),
+    'retryCount': 0,
+  }, conflictAlgorithm: ConflictAlgorithm.replace);
+  messenger.showSnackBar(
+    const SnackBar(content: Text('Request saved. It will be sent when you are online.')),
+  );
 }
 
 class _ProfileStat extends StatelessWidget {

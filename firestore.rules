@@ -139,6 +139,14 @@ service cloud.firestore {
       allow update: if ownsExisting('farmerId') && keepsOwner('farmerId');
     }
 
+    // A farmer's request to have their data deleted. Create-only, so the
+    // request cannot be edited or hidden afterwards; staff act on it by hand.
+    match /deletion_requests/{id} {
+      allow read: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update, delete: if false;
+    }
+
     match /ledger_entries/{id} {
       allow read, delete: if ownsExisting('farmerId');
       allow create: if createsOwned('farmerId');

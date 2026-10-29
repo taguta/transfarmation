@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onFarmModified = exports.rollupGroupOrderQuantities = exports.rollupSavingsTransactions = void 0;
+exports.refreshWeatherNow = exports.refreshWeatherForecasts = exports.monitorIotTelemetry = exports.notifyOnCommunityAlert = exports.onFarmModified = exports.rollupGroupOrderQuantities = exports.rollupSavingsTransactions = void 0;
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
@@ -65,4 +65,59 @@ exports.onFarmModified = functions.firestore
     }
     return null;
 });
+// 4. Send Push Notifications for Community Alerts
+// Triggers when a new post is categorized as isAlert (e.g. disease outbreak in a region)
+exports.notifyOnCommunityAlert = functions.firestore
+    .document('community_posts/{postId}')
+    .onCreate(async (snapshot, context) => {
+    const data = snapshot.data();
+    if (data.isAlert === true) {
+        const payload = {
+            notification: {
+                title: `⚠️ FARMER ALERT: ${data.region}`,
+                body: data.title || 'A new urgent agricultural alert was posted in your region.',
+            },
+            topic: `region_${data.region.replace(/\s+/g, '_').toLowerCase()}`,
+        };
+        try {
+            await admin.messaging().send(payload);
+            console.log(`Alert sent to topic region_${data.region}`);
+        }
+        catch (error) {
+            console.error("Error sending alert notification:", error);
+        }
+    }
+});
+// 5. Smart IoT Telemetry Monitor
+// Sends a push notification if an IoT device reports dangerously low soil moisture
+exports.monitorIotTelemetry = functions.firestore
+    .document('iot_telemetry/{readingId}')
+    .onCreate(async (snapshot, context) => {
+    var _a, _b, _c;
+    const data = snapshot.data();
+    if (data.sensorType === 'soil_moisture' && data.value < 15.0) {
+        // Find the user who owns this sensor
+        const sensorDoc = await db.collection('iot_devices').doc(data.deviceId).get();
+        if (!sensorDoc.exists)
+            return;
+        const userId = (_a = sensorDoc.data()) === null || _a === void 0 ? void 0 : _a.ownerId;
+        if (!userId)
+            return;
+        const userDoc = await db.collection('users').doc(userId).get();
+        const fcmToken = (_b = userDoc.data()) === null || _b === void 0 ? void 0 : _b.fcmToken;
+        if (fcmToken) {
+            await admin.messaging().send({
+                token: fcmToken,
+                notification: {
+                    title: '💧 Irrigation Warning!',
+                    body: `Moisture levels for ${((_c = sensorDoc.data()) === null || _c === void 0 ? void 0 : _c.name) || 'your field'} dropped below critical threshold.`,
+                }
+            });
+        }
+    }
+});
+// 6. Weather forecasts (Open-Meteo → weather_forecasts)
+var weather_1 = require("./weather");
+Object.defineProperty(exports, "refreshWeatherForecasts", { enumerable: true, get: function () { return weather_1.refreshWeatherForecasts; } });
+Object.defineProperty(exports, "refreshWeatherNow", { enumerable: true, get: function () { return weather_1.refreshWeatherNow; } });
 //# sourceMappingURL=index.js.map

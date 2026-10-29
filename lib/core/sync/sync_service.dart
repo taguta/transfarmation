@@ -237,6 +237,10 @@ class SyncService {
         final ref = firestore.collection('ledger_entries').doc(payload['id']);
         batch.set(ref, _owned(payload));
 
+      case 'data_deletion_request':
+        final ref = firestore.collection('deletion_requests').doc(payload['id']);
+        batch.set(ref, _owned(payload));
+
       case 'ledger_delete':
         batch.delete(firestore.collection('ledger_entries').doc(payload['id']));
     }

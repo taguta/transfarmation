@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
+import '../../../../core/router/app_router.dart' show requireAuth;
 import '../providers/auth_providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -208,11 +209,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 const SizedBox(height: AppSpacing.sm),
 
-                TextButton.icon(
-                  onPressed: _isLoading ? null : () => context.go('/home'),
-                  icon: const Icon(Icons.offline_bolt_rounded),
-                  label: const Text('Use offline without an account'),
-                ),
+                // Only meaningful when the router lets signed-out users in;
+                // otherwise /home would just bounce back to this screen.
+                if (!requireAuth)
+                  TextButton.icon(
+                    onPressed: _isLoading ? null : () => context.go('/home'),
+                    icon: const Icon(Icons.offline_bolt_rounded),
+                    label: const Text('Use offline without an account'),
+                  ),
 
                 const SizedBox(height: AppSpacing.xxxl),
 

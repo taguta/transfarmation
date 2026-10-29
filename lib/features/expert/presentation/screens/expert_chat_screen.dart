@@ -296,7 +296,12 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
             onPressed: () async {
               try {
                 final picker = ImagePicker();
-                final image = await picker.pickImage(source: ImageSource.gallery);
+                final image = await picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 60,
+                  maxWidth: 1024,
+                  maxHeight: 1024,
+                );
                 if (image != null && mounted) {
                   setState(() {
                     _messages.add(_ChatMessage(
