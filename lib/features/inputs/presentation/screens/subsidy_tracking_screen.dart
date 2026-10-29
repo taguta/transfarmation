@@ -36,7 +36,7 @@ class SubsidyTrackingScreen extends ConsumerWidget {
             if (applications.isNotEmpty) ...[
               Text(
                 'My Applications',
-                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
               ),
               const SizedBox(height: AppSpacing.md),
               ResponsiveWrap(minItemWidth: 420, children: [for (final app in applications) _ApplicationCard(application: app)]),
@@ -46,7 +46,7 @@ class SubsidyTrackingScreen extends ConsumerWidget {
             // Available programs
             Text(
               'Available Programs',
-              style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
             ),
             const SizedBox(height: AppSpacing.md),
             ResponsiveWrap(minItemWidth: 420, children: [for (final p in programs) _ProgramCard(program: p)]),
@@ -68,7 +68,7 @@ class _ApplicationCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(
             color: _statusColor(application.status).withValues(alpha: 0.3),
@@ -89,7 +89,7 @@ class _ApplicationCard extends StatelessWidget {
                   child: Text(
                     application.programName,
                     style: AppTextStyles.labelLg.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                 ),
@@ -108,7 +108,7 @@ class _ApplicationCard extends StatelessWidget {
               Text(
                 application.notes!,
                 style: AppTextStyles.bodySm.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Palette.textSecondary,
                 ),
               ),
             ],
@@ -116,7 +116,7 @@ class _ApplicationCard extends StatelessWidget {
             Text(
               'Applied: ${DateFormat.yMMMd().format(application.appliedDate)}',
               style: AppTextStyles.caption.copyWith(
-                color: AppColors.textTertiary,
+                color: Palette.textTertiary,
               ),
             ),
           ],
@@ -145,9 +145,9 @@ class _ProgramCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +158,7 @@ class _ProgramCard extends StatelessWidget {
                   child: Text(
                     program.name,
                     style: AppTextStyles.h4.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                 ),
@@ -170,8 +170,8 @@ class _ProgramCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         isOpen
-                            ? AppColors.successSurface
-                            : AppColors.errorSurface,
+                            ? Palette.successSurface
+                            : Palette.errorSurface,
                     borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Text(
@@ -188,21 +188,21 @@ class _ProgramCard extends StatelessWidget {
             Text(
               program.provider,
               style: AppTextStyles.bodySm.copyWith(
-                color: AppColors.textTertiary,
+                color: Palette.textTertiary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               program.description,
               style: AppTextStyles.bodySm.copyWith(
-                color: AppColors.textSecondary,
+                color: Palette.textSecondary,
               ),
             ),
             const SizedBox(height: AppSpacing.md),
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.surfaceElevated,
+                color: Palette.surfaceElevated,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               child: Column(
@@ -246,7 +246,7 @@ class _ProgramCard extends StatelessWidget {
         child: Text(
           label,
           style: AppTextStyles.caption.copyWith(
-            color: AppColors.textTertiary,
+            color: Palette.textTertiary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -254,7 +254,7 @@ class _ProgramCard extends StatelessWidget {
       Expanded(
         child: Text(
           value,
-          style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary),
         ),
       ),
     ],

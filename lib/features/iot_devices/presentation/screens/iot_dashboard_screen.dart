@@ -41,12 +41,12 @@ class IotDashboardScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('IoT & Sensors', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('IoT & Sensors', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Live telemetry from your smart farm hardware',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
                   
               const SizedBox(height: AppSpacing.xxl),
 
@@ -78,7 +78,7 @@ class IotDashboardScreen extends ConsumerWidget {
 
               const SizedBox(height: AppSpacing.xxl),
               
-              Text('Live Moisture Chart (Field Alpha)', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('Live Moisture Chart (Field Alpha)', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               
               // Fl_Chart Implementation
@@ -86,9 +86,9 @@ class IotDashboardScreen extends ConsumerWidget {
                 height: 220,
                 padding: const EdgeInsets.only(right: 24, left: 16, top: 24, bottom: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: Palette.surface,
                   borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: Palette.border),
                 ),
                 child: LineChart(
                   LineChartData(
@@ -103,9 +103,9 @@ class IotDashboardScreen extends ConsumerWidget {
                           interval: 1,
                           getTitlesWidget: (value, meta) {
                             switch (value.toInt()) {
-                              case 1: return const Text('6am', style: TextStyle(color: AppColors.textTertiary, fontSize: 10));
-                              case 4: return const Text('12pm', style: TextStyle(color: AppColors.textTertiary, fontSize: 10));
-                              case 7: return const Text('6pm', style: TextStyle(color: AppColors.textTertiary, fontSize: 10));
+                              case 1: return Text('6am', style: TextStyle(color: Palette.textTertiary, fontSize: 10));
+                              case 4: return Text('12pm', style: TextStyle(color: Palette.textTertiary, fontSize: 10));
+                              case 7: return Text('6pm', style: TextStyle(color: Palette.textTertiary, fontSize: 10));
                             }
                             return const Text('');
                           },
@@ -117,7 +117,7 @@ class IotDashboardScreen extends ConsumerWidget {
                           interval: 20,
                           reservedSize: 28,
                           getTitlesWidget: (value, meta) {
-                            return Text('${value.toInt()}%', style: const TextStyle(color: AppColors.textTertiary, fontSize: 10));
+                            return Text('${value.toInt()}%', style: TextStyle(color: Palette.textTertiary, fontSize: 10));
                           },
                         ),
                       ),
@@ -154,7 +154,7 @@ class IotDashboardScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Paired Devices', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                  Text('Paired Devices', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                   IconButton(
                     icon: const Icon(Icons.refresh_rounded),
                     onPressed: () {},
@@ -204,8 +204,8 @@ class _StatCard extends StatelessWidget {
         children: [
           Icon(icon, color: color, size: 24),
           const SizedBox(height: AppSpacing.md),
-          Text(value, style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary)),
-          Text(title, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+          Text(value, style: AppTextStyles.h2.copyWith(color: Palette.textPrimary)),
+          Text(title, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
         ],
       ),
     );
@@ -244,19 +244,19 @@ class _SensorTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Row(
           children: [
             Container(
               width: 48, height: 48,
               decoration: BoxDecoration(
-                color: isOnline ? typeColor.withValues(alpha: 0.1) : AppColors.surfaceElevated,
+                color: isOnline ? typeColor.withValues(alpha: 0.1) : Palette.surfaceElevated,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
-              child: Icon(typeIcon, color: isOnline ? typeColor : AppColors.textTertiary),
+              child: Icon(typeIcon, color: isOnline ? typeColor : Palette.textTertiary),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -273,17 +273,17 @@ class _SensorTile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text(sensor.name, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                      Text(sensor.name, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
                     ],
                   ),
                   const SizedBox(height: 2),
                   Row(
                     children: [
                       Icon(battery > 20 ? Icons.battery_full_rounded : Icons.battery_alert_rounded, 
-                           size: 14, color: battery > 20 ? AppColors.textSecondary : AppColors.error),
+                           size: 14, color: battery > 20 ? Palette.textSecondary : AppColors.error),
                       const SizedBox(width: 4),
                       Text('$battery% • Sync: ${DateFormat.jm().format(sensor.lastUpdated)}', 
-                           style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                           style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                     ],
                   ),
                 ],
@@ -292,13 +292,13 @@ class _SensorTile extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(sensor.currentValue, style: AppTextStyles.h3.copyWith(color: isOnline ? AppColors.textPrimary : AppColors.textTertiary)),
+                Text(sensor.currentValue, style: AppTextStyles.h3.copyWith(color: isOnline ? Palette.textPrimary : Palette.textTertiary)),
                 if (isOnline)
                   Icon(
                     sensor.trend == 'increasing' ? Icons.trending_up_rounded 
                     : (sensor.trend == 'decreasing' ? Icons.trending_down_rounded : Icons.trending_flat_rounded),
                     size: 16,
-                    color: AppColors.textTertiary,
+                    color: Palette.textTertiary,
                   ),
               ],
             ),

@@ -209,7 +209,7 @@ class _ReviewScreenState extends ConsumerState<_ReviewScreen> {
           Text(
             'Based only on farm details the farmer typed in. There is no repayment '
             'history on the platform for a first-time borrower, and nothing here is verified.',
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
           ),
           const SizedBox(height: AppSpacing.lg),
           if (plan == null)
@@ -225,7 +225,7 @@ class _ReviewScreenState extends ConsumerState<_ReviewScreen> {
             for (final w in (plan['warnings'] as List? ?? const [])) Text('- $w', style: AppTextStyles.bodySm),
             Text(
               'The numbers are the farmer\'s own estimates using standard crop figures.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+              style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
             ),
           ],
           const SizedBox(height: AppSpacing.xl),
@@ -242,7 +242,7 @@ class _ReviewScreenState extends ConsumerState<_ReviewScreen> {
             Text(
               'Approving records an approval in principle. Disbursement and repayment '
               'are arranged directly with the farmer; payments are not handled in the app yet.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+              style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
             ),
             const SizedBox(height: AppSpacing.md),
             Row(

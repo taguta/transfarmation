@@ -34,12 +34,12 @@ class WeatherScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Weather & Calendar', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Weather & Calendar', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Forecasts, alerts & farming calendar',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
 
               // Alerts
               if (alerts.isNotEmpty) ...[
@@ -51,7 +51,7 @@ class WeatherScreen extends ConsumerWidget {
 
               // Agronomic Indices & Disease Risk Matrix
               const SizedBox(height: AppSpacing.xxl),
-              Text('Agronomic Analytics', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('Agronomic Analytics', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               Row(
                 children: [
@@ -59,7 +59,7 @@ class WeatherScreen extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
-                        color: AppColors.accentSurface,
+                        color: Palette.accentSurface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
                       ),
@@ -69,7 +69,7 @@ class WeatherScreen extends ConsumerWidget {
                           Icon(Icons.thermostat_auto_rounded, color: AppColors.accent),
                           const SizedBox(height: AppSpacing.sm),
                           Text('145 GDD', style: AppTextStyles.h3.copyWith(color: AppColors.accent)),
-                          Text('Growing Degree Days', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                          Text('Growing Degree Days', style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                         ],
                       ),
                     ),
@@ -89,7 +89,7 @@ class WeatherScreen extends ConsumerWidget {
                           Icon(Icons.bug_report_rounded, color: AppColors.error),
                           const SizedBox(height: AppSpacing.sm),
                           Text('80% Risk', style: AppTextStyles.h3.copyWith(color: AppColors.error)),
-                          Text('Maize Blight (High Humid)', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                          Text('Maize Blight (High Humid)', style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                         ],
                       ),
                     ),
@@ -99,31 +99,59 @@ class WeatherScreen extends ConsumerWidget {
 
               // 7-day forecast
               const SizedBox(height: AppSpacing.xxl),
-              Text('7-Day Forecast', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('7-Day Forecast', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
-              SizedBox(
-                height: 140,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: forecast.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
-                  itemBuilder: (_, i) => _ForecastCard(forecast: forecast[i], isToday: i == 0),
+              if (forecastAsync.isLoading)
+                const SizedBox(
+                  height: 140,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (forecast.isEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppSpacing.xl),
+                  decoration: BoxDecoration(
+                    color: Palette.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    border: Border.all(color: Palette.border),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.cloud_off_rounded, color: Palette.textTertiary),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Text(
+                          'No forecast available yet. Connect to the internet and check back soon.',
+                          style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                SizedBox(
+                  height: 140,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: forecast.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+                    itemBuilder: (_, i) => _ForecastCard(forecast: forecast[i], isToday: i == 0),
+                  ),
                 ),
-              ),
 
               // Seasonal calendar
               const SizedBox(height: AppSpacing.xxl),
-              Text('This Month\'s Activities', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('This Month\'s Activities', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: 2),
               Text('Based on Zimbabwe agro-ecological calendar',
-                  style: AppTextStyles.bodySm.copyWith(color: AppColors.textTertiary)),
+                  style: AppTextStyles.bodySm.copyWith(color: Palette.textTertiary)),
               const SizedBox(height: AppSpacing.md),
               if (activities.isEmpty)
                 Padding(
                   padding: const EdgeInsets.all(AppSpacing.xxl),
                   child: Center(
                     child: Text('No critical activities this month',
-                      style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
+                      style: AppTextStyles.bodyMd.copyWith(color: Palette.textTertiary)),
                   ),
                 )
               else
@@ -182,12 +210,12 @@ class _AlertCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.sm),
-            Text(alert.description, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+            Text(alert.description, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.sm),
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.surface,
+                color: Palette.surface,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               child: Row(
@@ -197,7 +225,7 @@ class _AlertCard extends StatelessWidget {
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(alert.actionAdvice,
-                        style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary)),
+                        style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary)),
                   ),
                 ],
               ),
@@ -230,9 +258,9 @@ class _ForecastCard extends StatelessWidget {
       width: 88,
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isToday ? AppColors.primarySurface : AppColors.surface,
+        color: isToday ? Palette.primarySurface : Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: isToday ? AppColors.primary : AppColors.border),
+        border: Border.all(color: isToday ? AppColors.primary : Palette.border),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -240,18 +268,18 @@ class _ForecastCard extends StatelessWidget {
           Text(
             isToday ? 'Today' : DateFormat.E().format(forecast.date),
             style: AppTextStyles.caption.copyWith(
-              color: isToday ? AppColors.primary : AppColors.textTertiary,
+              color: isToday ? AppColors.primary : Palette.textTertiary,
               fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
           Icon(_conditionIcon(forecast.condition), size: 28,
-              color: isToday ? AppColors.primary : AppColors.textSecondary),
+              color: isToday ? AppColors.primary : Palette.textSecondary),
           const SizedBox(height: AppSpacing.xs),
           Text('${forecast.tempHigh.toInt()}°',
-              style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+              style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
           Text('${forecast.tempLow.toInt()}°',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+              style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
           if (forecast.rainChance > 20) ...[
             const SizedBox(height: 2),
             Text('${forecast.rainChance}%',
@@ -289,9 +317,9 @@ class _ActivityCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Row(
           children: [
@@ -312,15 +340,15 @@ class _ActivityCard extends StatelessWidget {
                       Text(activity.crop,
                           style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
                       const SizedBox(width: AppSpacing.sm),
-                      Text('•', style: TextStyle(color: AppColors.textTertiary)),
+                      Text('•', style: TextStyle(color: Palette.textTertiary)),
                       const SizedBox(width: AppSpacing.sm),
                       Text(activity.activity,
-                          style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                          style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
                     ],
                   ),
                   const SizedBox(height: 2),
                   Text(activity.description,
-                      style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary), maxLines: 2),
+                      style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary), maxLines: 2),
                 ],
               ),
             ),

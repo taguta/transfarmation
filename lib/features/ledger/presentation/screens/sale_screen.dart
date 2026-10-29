@@ -129,7 +129,7 @@ class _SaleScreenState extends ConsumerState<SaleScreen> {
           Text(
             'The levy rate is a starting estimate. Check the rate on your sale '
             'slip or with the buyer or TIMB and change it if it differs.',
-            style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+            style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
           ),
           const SizedBox(height: AppSpacing.md),
           _field(_loan, 'Loan repayment taken by the buyer (\$)'),
@@ -177,14 +177,14 @@ class _Statement extends StatelessWidget {
     if (!show) {
       return Text(
         'Enter the quantity and price to see exactly what you will receive.',
-        style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+        style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
       );
     }
     final s = settlement;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.primarySurface,
+        color: Palette.primarySurface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Column(

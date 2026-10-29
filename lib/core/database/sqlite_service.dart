@@ -3,10 +3,18 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class SqliteService {
-  static Future<Database> init() async {
+  /// Current schema version. Bump this together with a new `_migrateToVn`.
+  static const schemaVersion = 14;
+
+  static Future<Database> init() async =>
+      openAt(join(await getDatabasesPath(), 'agrolink.db'));
+
+  /// Opens (creating or upgrading) the database at [path]. Split from [init]
+  /// so tests can run the real migrations against a temporary file.
+  static Future<Database> openAt(String path) {
     return openDatabase(
-      join(await getDatabasesPath(), 'agrolink.db'),
-      version: 13,
+      path,
+      version: schemaVersion,
       onCreate: (db, version) async {
         await _createAllTables(db);
         await _migrateToV4(db);
@@ -19,6 +27,7 @@ class SqliteService {
         await _migrateToV11(db);
         await _migrateToV12(db);
         await _migrateToV13(db);
+        await _migrateToV14(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -56,6 +65,9 @@ class SqliteService {
         }
         if (oldVersion < 13) {
           await _migrateToV13(db);
+        }
+        if (oldVersion < 14) {
+          await _migrateToV14(db);
         }
       },
     );
@@ -504,6 +516,20 @@ class SqliteService {
   }
 
   /// Ledger entries from one sale share a group so they stay consistent.
+  /// The weather data source reads and writes `type`, `timestamp` and
+  /// `isSynced`, which the original table never had, so the Weather screen
+  /// failed on every database.
+  static Future<void> _migrateToV14(Database db) async {
+    final cols = (await db.rawQuery('PRAGMA table_info(weather_alerts)'))
+        .map((r) => r['name'] as String)
+        .toSet();
+    for (final c in ['type TEXT', 'timestamp TEXT', 'isSynced INTEGER DEFAULT 0']) {
+      if (!cols.contains(c.split(' ').first)) {
+        await db.execute('ALTER TABLE weather_alerts ADD COLUMN $c');
+      }
+    }
+  }
+
   static Future<void> _migrateToV13(Database db) async {
     final cols = (await db.rawQuery('PRAGMA table_info(ledger_entries)'))
         .map((r) => r['name'] as String)

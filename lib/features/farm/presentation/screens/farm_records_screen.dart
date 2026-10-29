@@ -40,13 +40,13 @@ class FarmRecordsScreen extends ConsumerWidget {
                           Text(
                             'My Farm',
                             style: AppTextStyles.h1.copyWith(
-                              color: AppColors.textPrimary,
+                              color: Palette.textPrimary,
                             ),
                           ),
                           Text(
                             farm.name,
                             style: AppTextStyles.bodyMd.copyWith(
-                              color: AppColors.textSecondary,
+                              color: Palette.textSecondary,
                             ),
                           ),
                         ],
@@ -69,7 +69,7 @@ class FarmRecordsScreen extends ConsumerWidget {
                 Text(
                   'Crops',
                   style:
-                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                      AppTextStyles.h3.copyWith(color: Palette.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 ResponsiveWrap(
@@ -85,7 +85,7 @@ class FarmRecordsScreen extends ConsumerWidget {
                 Text(
                   'Livestock',
                   style:
-                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                      AppTextStyles.h3.copyWith(color: Palette.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 _buildLivestockGrid(farm.livestock),
@@ -96,7 +96,7 @@ class FarmRecordsScreen extends ConsumerWidget {
                 Text(
                   'Yield Summary',
                   style:
-                      AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                      AppTextStyles.h3.copyWith(color: Palette.textPrimary),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 _buildYieldSummary(farm),
@@ -195,9 +195,9 @@ class FarmRecordsScreen extends ConsumerWidget {
             ),
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: Palette.surface,
               borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Palette.border),
             ),
             child: Column(
               children: [
@@ -214,13 +214,13 @@ class FarmRecordsScreen extends ConsumerWidget {
                 Text(
                   lv.type,
                   style: AppTextStyles.labelMd.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 Text(
                   '${lv.count}',
                   style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -262,14 +262,14 @@ class FarmRecordsScreen extends ConsumerWidget {
       return Container(
         padding: const EdgeInsets.all(AppSpacing.xl),
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: Palette.surfaceElevated,
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
         child: Center(
           child: Text(
             'No harvested crops yet this season',
             style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ),
         ),
@@ -286,9 +286,9 @@ class FarmRecordsScreen extends ConsumerWidget {
           margin: const EdgeInsets.only(bottom: AppSpacing.md),
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: Row(
             children: [
@@ -296,7 +296,7 @@ class FarmRecordsScreen extends ConsumerWidget {
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
-                  color: AppColors.primarySurface,
+                  color: Palette.primarySurface,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: const Icon(
@@ -313,13 +313,13 @@ class FarmRecordsScreen extends ConsumerWidget {
                     Text(
                       crop.cropName,
                       style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     Text(
                       '${crop.areHectares.toStringAsFixed(1)} ha · ${crop.yieldPerHectare.toStringAsFixed(1)} t/ha',
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textTertiary,
+                        color: Palette.textTertiary,
                       ),
                     ),
                   ],
@@ -396,7 +396,7 @@ class _CropCard extends StatelessWidget {
         CropStatus.growing => AppColors.primary,
         CropStatus.harvesting => AppColors.accent,
         CropStatus.harvested => AppColors.success,
-        CropStatus.fallow => AppColors.textTertiary,
+        CropStatus.fallow => Palette.textTertiary,
       };
 
   String get _statusLabel => switch (crop.status) {
@@ -432,9 +432,9 @@ class _CropCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,13 +457,13 @@ class _CropCard extends StatelessWidget {
                     Text(
                       crop.cropName,
                       style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     Text(
                       '${crop.areHectares.toStringAsFixed(1)} hectares',
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textTertiary,
+                        color: Palette.textTertiary,
                       ),
                     ),
                   ],
@@ -494,7 +494,7 @@ class _CropCard extends StatelessWidget {
                 Text(
                   'Expected: ${crop.expectedYield?.toStringAsFixed(1) ?? '–'} tons',
                   style: AppTextStyles.bodySm.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
                 if (daysToHarvest != null && daysToHarvest > 0)
@@ -511,7 +511,7 @@ class _CropCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.full),
               child: LinearProgressIndicator(
                 value: growthProgress.toDouble(),
-                backgroundColor: AppColors.border,
+                backgroundColor: Palette.border,
                 color: _statusColor,
                 minHeight: 4,
               ),
@@ -531,7 +531,7 @@ class _CropCard extends StatelessWidget {
                 Text(
                   '${crop.yieldPerHectare.toStringAsFixed(1)} t/ha',
                   style: AppTextStyles.bodySm.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
               ],
@@ -541,17 +541,17 @@ class _CropCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.sticky_note_2_outlined,
                   size: 14,
-                  color: AppColors.textTertiary,
+                  color: Palette.textTertiary,
                 ),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     crop.notes!,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textTertiary,
+                      color: Palette.textTertiary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

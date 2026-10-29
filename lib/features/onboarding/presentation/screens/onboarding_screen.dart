@@ -87,87 +87,102 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: isLast
-                    ? null
-                    : () => _controller.animateToPage(
-                          _lastIndex,
-                          duration: const Duration(milliseconds: 400),
-                          curve: Curves.easeInOut,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 560),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton.icon(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Voice guide is coming soon in Shona and Ndebele.',
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.mic_rounded, size: 18),
+                      label: Text(
+                        'Voice Guide',
+                        style: AppTextStyles.labelLg.copyWith(
+                          color: AppColors.primary,
                         ),
-                child: Text(
-                  isLast ? '' : 'Skip',
-                  style: AppTextStyles.labelLg.copyWith(
-                    color: AppColors.textSecondary,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed:
+                          isLast
+                              ? null
+                              : () => _controller.animateToPage(
+                                _lastIndex,
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              ),
+                      child: Text(
+                        isLast ? '' : 'Skip',
+                        style: AppTextStyles.labelLg.copyWith(
+                          color: Palette.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: PageView.builder(
+                    controller: _controller,
+                    onPageChanged: (i) => setState(() => _currentPage = i),
+                    itemCount: total,
+                    itemBuilder:
+                        (context, i) =>
+                            i < _pages.length ? _pages[i] : _rolePage(),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: PageView.builder(
-                controller: _controller,
-                onPageChanged: (i) => setState(() => _currentPage = i),
-                itemCount: total,
-                itemBuilder: (context, i) =>
-                    i < _pages.length ? _pages[i] : _rolePage(),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  total,
-                  (i) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _currentPage == i ? 28 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _currentPage == i
-                          ? AppColors.primary
-                          : AppColors.border,
-                      borderRadius: BorderRadius.circular(4),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      total,
+                      (i) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: _currentPage == i ? 28 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color:
+                              _currentPage == i
+                                  ? AppColors.primary
+                                  : Palette.border,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.xxl,
-                0,
-                AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: _next,
-                  child: Text(isLast ? 'Get Started' : 'Continue'),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xxl,
+                    0,
+                    AppSpacing.xxl,
+                    AppSpacing.xxxl,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: _next,
+                      child: Text(isLast ? 'Get Started' : 'Continue'),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Voice guide is coming soon in Shona and Ndebele.'),
-            ),
-          );
-        },
-        icon: const Icon(Icons.mic_rounded),
-        label: const Text('Voice Guide'),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
       ),
     );
   }
@@ -179,13 +194,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Text(
             'How will you use Transfarmation?',
-            style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h1.copyWith(color: Palette.textPrimary),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'One account, many roles. You can change this later.',
-            style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMd.copyWith(
+              color: Palette.textSecondary,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.xl),
@@ -198,12 +215,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(AppSpacing.lg),
                   decoration: BoxDecoration(
-                    color: _role == name
-                        ? AppColors.primarySurface
-                        : AppColors.surface,
+                    color:
+                        _role == name
+                            ? Palette.primarySurface
+                            : Palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(
-                      color: _role == name ? AppColors.primary : AppColors.border,
+                      color:
+                          _role == name ? AppColors.primary : Palette.border,
                       width: _role == name ? 2 : 1,
                     ),
                   ),
@@ -219,15 +238,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             Text(
                               desc,
                               style: AppTextStyles.bodySm.copyWith(
-                                color: AppColors.textSecondary,
+                                color: Palette.textSecondary,
                               ),
                             ),
                           ],
                         ),
                       ),
                       if (_role == name)
-                        const Icon(Icons.check_circle_rounded,
-                            color: AppColors.primary),
+                        const Icon(
+                          Icons.check_circle_rounded,
+                          color: AppColors.primary,
+                        ),
                     ],
                   ),
                 ),
@@ -271,14 +292,14 @@ class _OnboardingPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxxl),
           Text(
             title,
-            style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h1.copyWith(color: Palette.textPrimary),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
             subtitle,
             style: AppTextStyles.bodyLg.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
               height: 1.6,
             ),
             textAlign: TextAlign.center,

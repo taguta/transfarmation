@@ -58,13 +58,13 @@ class ProfileScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.lg),
               Text(
                 displayName,
-                style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
               ),
               const SizedBox(height: 2),
               Text(
                 email,
                 style: AppTextStyles.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Palette.textSecondary,
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -74,7 +74,7 @@ class ProfileScreen extends ConsumerWidget {
                   vertical: AppSpacing.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primarySurface,
+                  color: Palette.primarySurface,
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Row(
@@ -434,21 +434,21 @@ class _ProfileStat extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           children: [
             Text(
               value,
-              style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
             ),
             const SizedBox(height: 2),
             Text(
               label,
               style: AppTextStyles.caption.copyWith(
-                color: AppColors.textTertiary,
+                color: Palette.textTertiary,
               ),
             ),
           ],
@@ -470,7 +470,7 @@ class _SectionHeader extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: AppSpacing.sm),
         child: Text(
           title,
-          style: AppTextStyles.labelMd.copyWith(color: AppColors.textTertiary),
+          style: AppTextStyles.labelMd.copyWith(color: Palette.textTertiary),
         ),
       ),
     );
@@ -499,29 +499,29 @@ class _SettingsTile extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: Palette.surfaceElevated,
           borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
-        child: Icon(icon, color: AppColors.textSecondary, size: 20),
+        child: Icon(icon, color: Palette.textSecondary, size: 20),
       ),
       title: Text(
         title,
-        style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary),
+        style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary),
       ),
       subtitle:
           subtitle != null
               ? Text(
                 subtitle!,
                 style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textTertiary,
+                  color: Palette.textTertiary,
                 ),
               )
               : null,
       trailing:
           trailing ??
-          const Icon(
+          Icon(
             Icons.chevron_right_rounded,
-            color: AppColors.textTertiary,
+            color: Palette.textTertiary,
           ),
       onTap: onTap,
     );

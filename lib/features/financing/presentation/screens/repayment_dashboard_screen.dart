@@ -35,7 +35,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
             return Center(
               child: Text(
                 'No active loans found.',
-                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary),
+                style: AppTextStyles.bodyMd.copyWith(color: Palette.textTertiary),
               ),
             );
           }
@@ -85,7 +85,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
               // Schedule
               Text(
                 'Repayment Schedule',
-                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
               ),
               const SizedBox(height: AppSpacing.md),
               ...schedule.map((s) => _buildScheduleRow(s)),
@@ -94,7 +94,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
               // Payment history
               Text(
                 'Payment History',
-                style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
               ),
               const SizedBox(height: AppSpacing.md),
               _buildPaymentHistory(),
@@ -243,9 +243,9 @@ class RepaymentDashboardScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,7 +253,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
           Text(
             'Payment Breakdown',
             style: AppTextStyles.labelLg.copyWith(
-              color: AppColors.textPrimary,
+              color: Palette.textPrimary,
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -280,20 +280,20 @@ class RepaymentDashboardScreen extends ConsumerWidget {
             label,
             style: isBold
                 ? AppTextStyles.labelLg.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   )
                 : AppTextStyles.bodyMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
           ),
           Text(
             value,
             style: isBold
                 ? AppTextStyles.labelLg.copyWith(
-                    color: color ?? AppColors.textPrimary,
+                    color: color ?? Palette.textPrimary,
                   )
                 : AppTextStyles.bodyMd.copyWith(
-                    color: color ?? AppColors.textPrimary,
+                    color: color ?? Palette.textPrimary,
                   ),
           ),
         ],
@@ -310,20 +310,20 @@ class RepaymentDashboardScreen extends ConsumerWidget {
       ),
       decoration: BoxDecoration(
         color: item.isPaid
-            ? AppColors.successSurface
-            : AppColors.surface,
+            ? Palette.successSurface
+            : Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
           color: item.isPaid
               ? AppColors.success.withValues(alpha: 0.3)
-              : AppColors.border,
+              : Palette.border,
         ),
       ),
       child: Row(
         children: [
           Icon(
             item.isPaid ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
-            color: item.isPaid ? AppColors.success : AppColors.textTertiary,
+            color: item.isPaid ? AppColors.success : Palette.textTertiary,
             size: 20,
           ),
           const SizedBox(width: AppSpacing.md),
@@ -331,7 +331,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
             child: Text(
               item.month,
               style: AppTextStyles.labelMd.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
                 decoration: item.isPaid ? TextDecoration.lineThrough : null,
               ),
             ),
@@ -339,7 +339,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
           Text(
             '\$${item.amount.toStringAsFixed(0)}',
             style: AppTextStyles.labelLg.copyWith(
-              color: item.isPaid ? AppColors.success : AppColors.textPrimary,
+              color: item.isPaid ? AppColors.success : Palette.textPrimary,
             ),
           ),
         ],
@@ -360,9 +360,9 @@ class RepaymentDashboardScreen extends ConsumerWidget {
           margin: const EdgeInsets.only(bottom: AppSpacing.sm),
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: Row(
             children: [
@@ -370,7 +370,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: AppColors.successSurface,
+                  color: Palette.successSurface,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: const Icon(
@@ -387,13 +387,13 @@ class RepaymentDashboardScreen extends ConsumerWidget {
                     Text(
                       'Payment received',
                       style: AppTextStyles.labelMd.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     Text(
                       '${p.$1} · ${p.$3}',
                       style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textTertiary,
+                        color: Palette.textTertiary,
                       ),
                     ),
                   ],
@@ -423,7 +423,7 @@ class RepaymentDashboardScreen extends ConsumerWidget {
           children: [
             Text(
               'Make a Payment',
-              style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
             ),
             const SizedBox(height: AppSpacing.xxl),
             TextField(
@@ -495,13 +495,13 @@ class _MetricCard extends StatelessWidget {
           Text(
             value,
             style: AppTextStyles.labelLg.copyWith(
-              color: AppColors.textPrimary,
+              color: Palette.textPrimary,
             ),
           ),
           Text(
             label,
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ),
         ],

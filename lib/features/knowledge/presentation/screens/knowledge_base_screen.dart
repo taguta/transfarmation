@@ -63,7 +63,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
                         child: Text(
                           'Knowledge Base',
                           style: AppTextStyles.h1
-                              .copyWith(color: AppColors.textPrimary),
+                              .copyWith(color: Palette.textPrimary),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -75,7 +75,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
                     child: Text(
                       'Offline farming encyclopedia',
                       style: AppTextStyles.bodyMd
-                          .copyWith(color: AppColors.textSecondary),
+                          .copyWith(color: Palette.textSecondary),
                     ),
                   ),
                 ],
@@ -91,7 +91,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
                   hintText: 'Search crops, livestock, pests...',
                   prefixIcon: const Icon(Icons.search_rounded),
                   filled: true,
-                  fillColor: AppColors.surfaceElevated,
+                  fillColor: Palette.surfaceElevated,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.full),
                     borderSide: BorderSide.none,
@@ -109,7 +109,7 @@ class _KnowledgeBaseScreenState extends ConsumerState<KnowledgeBaseScreen>
             TabBar(
               controller: _tabController,
               labelColor: AppColors.primary,
-              unselectedLabelColor: AppColors.textTertiary,
+              unselectedLabelColor: Palette.textTertiary,
               indicatorColor: AppColors.primary,
               tabs: const [
                 Tab(icon: Icon(Icons.grass_rounded), text: 'Crops'),
@@ -294,7 +294,7 @@ class _KnowledgeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Material(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: InkWell(
           onTap: onTap,
@@ -303,7 +303,7 @@ class _KnowledgeCard extends StatelessWidget {
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: AppColors.border),
+              border: Border.all(color: Palette.border),
             ),
             child: Row(
               children: [
@@ -327,7 +327,7 @@ class _KnowledgeCard extends StatelessWidget {
                             child: Text(
                               title,
                               style: AppTextStyles.h4.copyWith(
-                                color: AppColors.textPrimary,
+                                color: Palette.textPrimary,
                               ),
                             ),
                           ),
@@ -355,7 +355,7 @@ class _KnowledgeCard extends StatelessWidget {
                       Text(
                         subtitle,
                         style: AppTextStyles.bodySm.copyWith(
-                          color: AppColors.textSecondary,
+                          color: Palette.textSecondary,
                           fontStyle: FontStyle.italic,
                         ),
                       ),
@@ -373,14 +373,14 @@ class _KnowledgeCard extends StatelessWidget {
                                     vertical: 1,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.surfaceElevated,
+                                    color: Palette.surfaceElevated,
                                     borderRadius: BorderRadius.circular(
                                         AppRadius.xs),
                                   ),
                                   child: Text(
                                     t,
                                     style: AppTextStyles.caption.copyWith(
-                                      color: AppColors.textTertiary,
+                                      color: Palette.textTertiary,
                                       fontSize: 10,
                                     ),
                                   ),
@@ -395,7 +395,7 @@ class _KnowledgeCard extends StatelessWidget {
                 const SizedBox(width: AppSpacing.sm),
                 Icon(
                   Icons.chevron_right_rounded,
-                  color: AppColors.textTertiary,
+                  color: Palette.textTertiary,
                 ),
               ],
             ),

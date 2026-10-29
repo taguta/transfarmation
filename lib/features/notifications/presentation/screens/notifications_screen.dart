@@ -35,7 +35,7 @@ class NotificationsScreen extends ConsumerWidget {
               ),
             ),
           IconButton(
-            icon: const Icon(Icons.settings_rounded, color: AppColors.textSecondary),
+            icon: Icon(Icons.settings_rounded, color: Palette.textSecondary),
             tooltip: 'Notification Preferences',
             onPressed: () {
                ScaffoldMessenger.of(context).showSnackBar(
@@ -57,13 +57,13 @@ class NotificationsScreen extends ConsumerWidget {
                       Icon(
                         Icons.notifications_off_outlined,
                         size: 56,
-                        color: AppColors.textTertiary,
+                        color: Palette.textTertiary,
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(
                         'No notifications yet',
                         style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                     ],
@@ -154,7 +154,7 @@ class _NotificationTile extends StatelessWidget {
       child: Container(
         color: notification.isRead
             ? Colors.transparent
-            : AppColors.primarySurface.withValues(alpha: 0.4),
+            : Palette.primarySurface.withValues(alpha: 0.4),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.lg,
           vertical: AppSpacing.md,
@@ -182,7 +182,7 @@ class _NotificationTile extends StatelessWidget {
                         child: Text(
                           notification.title,
                           style: AppTextStyles.labelMd.copyWith(
-                            color: AppColors.textPrimary,
+                            color: Palette.textPrimary,
                             fontWeight: notification.isRead
                                 ? FontWeight.w500
                                 : FontWeight.w700,
@@ -195,7 +195,7 @@ class _NotificationTile extends StatelessWidget {
                       Text(
                         _timeAgo,
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                     ],
@@ -204,7 +204,7 @@ class _NotificationTile extends StatelessWidget {
                   Text(
                     notification.body,
                     style: AppTextStyles.bodySm.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Palette.textSecondary,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

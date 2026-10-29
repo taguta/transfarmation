@@ -55,7 +55,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Text(
               'Crop Type',
               style: AppTextStyles.labelLg.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -75,7 +75,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Text(
               'Area (hectares)',
               style: AppTextStyles.labelLg.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -109,7 +109,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Text(
               'Planted Date',
               style: AppTextStyles.labelLg.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -141,7 +141,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Text(
               'Expected Yield (tons)',
               style: AppTextStyles.labelLg.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -162,7 +162,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Text(
               'Notes (optional)',
               style: AppTextStyles.labelLg.copyWith(
-                color: AppColors.textPrimary,
+                color: Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -181,7 +181,7 @@ class _AddCropScreenState extends ConsumerState<AddCropScreen> {
             Container(
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
-                color: AppColors.primarySurface,
+                color: Palette.primarySurface,
                 borderRadius: BorderRadius.circular(AppRadius.lg),
                 border: Border.all(
                   color: AppColors.primary.withValues(alpha: 0.2),

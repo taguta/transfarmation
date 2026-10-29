@@ -38,12 +38,12 @@ class MarketPriceScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Market Prices', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Market Prices', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Real-time commodity prices across Zimbabwe',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
 
               const SizedBox(height: AppSpacing.lg),
 
@@ -65,13 +65,13 @@ class MarketPriceScreen extends ConsumerWidget {
                           color: isSelected ? AppColors.forestGreen : Colors.transparent,
                           borderRadius: BorderRadius.circular(AppRadius.full),
                           border: Border.all(
-                            color: isSelected ? AppColors.forestGreen : AppColors.borderLight,
+                            color: isSelected ? AppColors.forestGreen : Palette.borderLight,
                           ),
                         ),
                         child: Text(
                           cat.$2,
                           style: AppTextStyles.labelSm.copyWith(
-                            color: isSelected ? Colors.white : AppColors.textSecondary,
+                            color: isSelected ? Colors.white : Palette.textSecondary,
                           ),
                         ),
                       ),
@@ -114,7 +114,7 @@ class MarketPriceScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Show AI Predictive Trendlines', style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                  Text('Show AI Predictive Trendlines', style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
                   Switch(
                     value: true,
                     onChanged: (val) {
@@ -163,7 +163,7 @@ class _CommodityCard extends StatelessWidget {
       case 'livestock': return Colors.brown;
       case 'vegetable': return Colors.green;
       case 'fruit': return Colors.orange;
-      default: return AppColors.textSecondary;
+      default: return Palette.textSecondary;
     }
   }
 
@@ -174,9 +174,9 @@ class _CommodityCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,8 +197,8 @@ class _CommodityCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(commodity.name, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
-                    Text(commodity.unit, style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                    Text(commodity.name, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
+                    Text(commodity.unit, style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                   ],
                 ),
               ),
@@ -207,7 +207,7 @@ class _CommodityCard extends StatelessWidget {
                 children: [
                   Text(
                     '\$${commodity.currentPrice.toStringAsFixed(commodity.currentPrice < 10 ? 2 : 0)}',
-                    style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                    style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -248,8 +248,8 @@ class _CommodityCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(commodity.history.first.month, style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary, fontSize: 10)),
-                Text(commodity.history.last.month, style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary, fontSize: 10)),
+                Text(commodity.history.first.month, style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary, fontSize: 10)),
+                Text(commodity.history.last.month, style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary, fontSize: 10)),
               ],
             ),
           ],
@@ -259,7 +259,7 @@ class _CommodityCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             const Divider(height: 1),
             const SizedBox(height: AppSpacing.sm),
-            Text('Where to Sell', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
+            Text('Where to Sell', style: AppTextStyles.labelMd.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.xs),
             ...commodity.listings.take(3).map((l) => Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -278,7 +278,7 @@ class _CommodityCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(l.buyerName, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary)),
+                    child: Text(l.buyerName, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary)),
                   ),
                   Text(
                     '\$${l.priceOffered.toStringAsFixed(l.priceOffered < 10 ? 2 : 0)}',
@@ -299,7 +299,7 @@ class _CommodityCard extends StatelessWidget {
       case 'private': return AppColors.forestGreen;
       case 'auction': return AppColors.harvestGold;
       case 'export': return Colors.purple;
-      default: return AppColors.textSecondary;
+      default: return Palette.textSecondary;
     }
   }
 }
@@ -389,7 +389,7 @@ class _MarketInfoCard extends StatelessWidget {
             '• Private buyers often pay premium for quality-graded produce\n'
             '• Auction floors offer best tobacco prices — compare with contract prices\n'
             '• Store grain and sell post-harvest (Apr-Jun) for 15-25% higher prices',
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary, height: 1.6),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary, height: 1.6),
           ),
         ],
       ),

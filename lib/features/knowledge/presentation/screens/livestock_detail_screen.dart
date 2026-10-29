@@ -73,12 +73,12 @@ class _LivestockDetailBody extends StatelessWidget {
                     children: [
                       Text(item.breed,
                           style: AppTextStyles.bodyMd.copyWith(
-                              fontStyle: FontStyle.italic, color: AppColors.textSecondary)),
+                              fontStyle: FontStyle.italic, color: Palette.textSecondary)),
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primarySurface,
+                          color: Palette.primarySurface,
                           borderRadius: BorderRadius.circular(AppRadius.full),
                         ),
                         child: Text(item.category.toUpperCase(),
@@ -88,7 +88,7 @@ class _LivestockDetailBody extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  Text(item.description, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary)),
+                  Text(item.description, style: AppTextStyles.bodyMd.copyWith(color: Palette.textPrimary)),
 
                   const SizedBox(height: AppSpacing.xxl),
                   _section('Production Details'),
@@ -110,14 +110,14 @@ class _LivestockDetailBody extends StatelessWidget {
                   _section('Health'),
                   const SizedBox(height: AppSpacing.md),
                   Text('Common Diseases',
-                      style: AppTextStyles.labelLg.copyWith(color: AppColors.textSecondary)),
+                      style: AppTextStyles.labelLg.copyWith(color: Palette.textSecondary)),
                   const SizedBox(height: AppSpacing.xs),
                   ...item.commonDiseases.map((d) => _bulletItem(d, Icons.coronavirus_rounded, AppColors.error)),
 
                   if (item.vaccinations.isNotEmpty) ...[
                     const SizedBox(height: AppSpacing.lg),
                     Text('Vaccination Schedule',
-                        style: AppTextStyles.labelLg.copyWith(color: AppColors.textSecondary)),
+                        style: AppTextStyles.labelLg.copyWith(color: Palette.textSecondary)),
                     const SizedBox(height: AppSpacing.xs),
                     ...item.vaccinations.map((v) => _bulletItem(v, Icons.vaccines_rounded, AppColors.success)),
                   ],
@@ -140,7 +140,7 @@ class _LivestockDetailBody extends StatelessWidget {
   }
 
   Widget _section(String title) =>
-      Text(title, style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary));
+      Text(title, style: AppTextStyles.h3.copyWith(color: Palette.textPrimary));
 
   Widget _infoRow(IconData icon, String label, String value) => Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.sm),
@@ -153,9 +153,9 @@ class _LivestockDetailBody extends StatelessWidget {
               width: 70,
               child: Text(label,
                   style: AppTextStyles.bodySm
-                      .copyWith(color: AppColors.textTertiary, fontWeight: FontWeight.w600)),
+                      .copyWith(color: Palette.textTertiary, fontWeight: FontWeight.w600)),
             ),
-            Expanded(child: Text(value, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary))),
+            Expanded(child: Text(value, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary))),
           ],
         ),
       );
@@ -163,7 +163,7 @@ class _LivestockDetailBody extends StatelessWidget {
   Widget _infoCard(IconData icon, String title, String content) => Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: Palette.surfaceElevated,
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
         child: Column(
@@ -173,11 +173,11 @@ class _LivestockDetailBody extends StatelessWidget {
               children: [
                 Icon(icon, size: 18, color: AppColors.primary),
                 const SizedBox(width: AppSpacing.xs),
-                Text(title, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                Text(title, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
               ],
             ),
             const SizedBox(height: AppSpacing.xs),
-            Text(content, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+            Text(content, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
           ],
         ),
       );
@@ -188,7 +188,7 @@ class _LivestockDetailBody extends StatelessWidget {
           children: [
             Icon(icon, size: 16, color: color),
             const SizedBox(width: AppSpacing.sm),
-            Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary))),
+            Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary))),
           ],
         ),
       );
@@ -198,7 +198,7 @@ class _LivestockDetailBody extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.accentSurface,
+            color: Palette.accentSurface,
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
           ),
@@ -208,10 +208,10 @@ class _LivestockDetailBody extends StatelessWidget {
               Row(children: [
                 const Icon(Icons.lightbulb_rounded, size: 18, color: AppColors.accent),
                 const SizedBox(width: AppSpacing.xs),
-                Text(title, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                Text(title, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
               ]),
               const SizedBox(height: AppSpacing.xs),
-              Text(content, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+              Text(content, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
             ],
           ),
         ),

@@ -38,14 +38,14 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
                     Text(
                       'Marketplace',
                       style: AppTextStyles.h1.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       'Buy and sell farm produce',
                       style: AppTextStyles.bodyMd.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Palette.textSecondary,
                       ),
                     ),
                   ],
@@ -60,7 +60,7 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
                     hintText: 'Search produce, seeds, equipment...',
                     prefixIcon: const Icon(Icons.search_rounded),
                     filled: true,
-                    fillColor: AppColors.surfaceElevated,
+                    fillColor: Palette.surfaceElevated,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppRadius.full),
                       borderSide: BorderSide.none,
@@ -216,15 +216,15 @@ class _CategoryChip extends StatelessWidget {
       avatar: Icon(
         icon,
         size: 16,
-        color: selected ? AppColors.primary : AppColors.textSecondary,
+        color: selected ? AppColors.primary : Palette.textSecondary,
       ),
       label: Text(label),
       selected: selected,
       onSelected: (_) { if (onTap != null) onTap!(); },
-      selectedColor: AppColors.primarySurface,
+      selectedColor: Palette.primarySurface,
       checkmarkColor: AppColors.primary,
       labelStyle: AppTextStyles.labelMd.copyWith(
-        color: selected ? AppColors.primary : AppColors.textSecondary,
+        color: selected ? AppColors.primary : Palette.textSecondary,
       ),
       showCheckmark: false,
     );
@@ -252,9 +252,9 @@ class _ProduceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +284,7 @@ class _ProduceCard extends StatelessWidget {
                 Text(
                   name,
                   style: AppTextStyles.labelLg.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -293,7 +293,7 @@ class _ProduceCard extends StatelessWidget {
                 Text(
                   seller,
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textTertiary,
+                    color: Palette.textTertiary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -317,10 +317,10 @@ class _ProduceCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.location_on_outlined,
                             size: 12,
-                            color: AppColors.textTertiary,
+                            color: Palette.textTertiary,
                           ),
                           const SizedBox(width: 2),
                           Flexible(
@@ -329,7 +329,7 @@ class _ProduceCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.caption.copyWith(
-                                color: AppColors.textTertiary,
+                                color: Palette.textTertiary,
                               ),
                             ),
                           ),
@@ -389,8 +389,8 @@ class _FeatureCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
-                  Text(subtitle, style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                  Text(title, style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
+                  Text(subtitle, style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                 ],
               ),
             ),

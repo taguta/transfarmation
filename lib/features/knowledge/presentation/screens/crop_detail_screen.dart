@@ -86,7 +86,7 @@ class _CropDetailBody extends StatelessWidget {
                         crop.scientificName,
                         style: AppTextStyles.bodyMd.copyWith(
                           fontStyle: FontStyle.italic,
-                          color: AppColors.textSecondary,
+                          color: Palette.textSecondary,
                         ),
                       ),
                       const Spacer(),
@@ -96,7 +96,7 @@ class _CropDetailBody extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primarySurface,
+                          color: Palette.primarySurface,
                           borderRadius: BorderRadius.circular(AppRadius.full),
                         ),
                         child: Text(
@@ -113,7 +113,7 @@ class _CropDetailBody extends StatelessWidget {
                   Text(
                     crop.description,
                     style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
 
@@ -158,7 +158,7 @@ class _CropDetailBody extends StatelessWidget {
                             .map(
                               (r) => Chip(
                                 label: Text('Region $r'),
-                                backgroundColor: AppColors.primarySurface,
+                                backgroundColor: Palette.primarySurface,
                                 labelStyle: AppTextStyles.bodySm.copyWith(
                                   color: AppColors.primary,
                                 ),
@@ -208,7 +208,7 @@ class _CropDetailBody extends StatelessWidget {
 
   Widget _sectionTitle(String title) => Text(
     title,
-    style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+    style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
   );
 
   Widget _infoRow(IconData icon, String label, String value) => Padding(
@@ -223,7 +223,7 @@ class _CropDetailBody extends StatelessWidget {
           child: Text(
             label,
             style: AppTextStyles.bodySm.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -231,7 +231,7 @@ class _CropDetailBody extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary),
           ),
         ),
       ],
@@ -247,7 +247,7 @@ class _CropDetailBody extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary),
           ),
         ),
       ],
@@ -259,7 +259,7 @@ class _CropDetailBody extends StatelessWidget {
     child: Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.accentSurface,
+        color: Palette.accentSurface,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
       ),
@@ -277,7 +277,7 @@ class _CropDetailBody extends StatelessWidget {
               Text(
                 title,
                 style: AppTextStyles.labelLg.copyWith(
-                  color: AppColors.textPrimary,
+                  color: Palette.textPrimary,
                 ),
               ),
             ],
@@ -286,7 +286,7 @@ class _CropDetailBody extends StatelessWidget {
           Text(
             content,
             style: AppTextStyles.bodySm.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
             ),
           ),
         ],

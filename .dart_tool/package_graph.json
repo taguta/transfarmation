@@ -10,6 +10,7 @@
         "cached_network_image",
         "cloud_firestore",
         "connectivity_plus",
+        "crypto",
         "firebase_auth",
         "firebase_core",
         "fl_chart",
@@ -27,10 +28,13 @@
         "lucide_icons",
         "path",
         "path_provider",
+        "pdf",
+        "printing",
         "qr_flutter",
         "riverpod_annotation",
         "shimmer",
         "sqflite",
+        "sqflite_common_ffi_web",
         "uuid"
       ],
       "devDependencies": [
@@ -38,7 +42,19 @@
         "flutter_launcher_icons",
         "flutter_lints",
         "flutter_test",
-        "riverpod_generator"
+        "riverpod_generator",
+        "sqflite_common_ffi"
+      ]
+    },
+    {
+      "name": "sqflite_common_ffi",
+      "version": "2.4.5",
+      "dependencies": [
+        "meta",
+        "path",
+        "sqflite_common",
+        "sqlite3",
+        "synchronized"
       ]
     },
     {
@@ -138,6 +154,59 @@
       ]
     },
     {
+      "name": "crypto",
+      "version": "3.0.8",
+      "dependencies": []
+    },
+    {
+      "name": "sqflite_common_ffi_web",
+      "version": "1.2.0",
+      "dependencies": [
+        "args",
+        "dev_build",
+        "http",
+        "meta",
+        "path",
+        "process_run",
+        "pub_semver",
+        "sqflite_common",
+        "sqflite_common_ffi",
+        "sqlite3",
+        "synchronized",
+        "web"
+      ]
+    },
+    {
+      "name": "printing",
+      "version": "5.15.1",
+      "dependencies": [
+        "flutter",
+        "flutter_web_plugins",
+        "http",
+        "image",
+        "meta",
+        "pdf",
+        "pdf_widget_wrapper",
+        "plugin_platform_interface",
+        "web"
+      ]
+    },
+    {
+      "name": "pdf",
+      "version": "3.13.1",
+      "dependencies": [
+        "archive",
+        "barcode",
+        "bidi",
+        "crypto",
+        "image",
+        "meta",
+        "path_parsing",
+        "vector_math",
+        "xml"
+      ]
+    },
+    {
       "name": "qr_flutter",
       "version": "4.1.0",
       "dependencies": [
@@ -186,7 +255,7 @@
     },
     {
       "name": "flutter_native_splash",
-      "version": "2.4.7",
+      "version": "2.4.8",
       "dependencies": [
         "ansicolor",
         "args",
@@ -398,6 +467,41 @@
       ]
     },
     {
+      "name": "meta",
+      "version": "1.18.0",
+      "dependencies": []
+    },
+    {
+      "name": "synchronized",
+      "version": "3.5.0",
+      "dependencies": []
+    },
+    {
+      "name": "sqflite_common",
+      "version": "2.5.14",
+      "dependencies": [
+        "meta",
+        "path",
+        "synchronized"
+      ]
+    },
+    {
+      "name": "sqlite3",
+      "version": "3.5.2",
+      "dependencies": [
+        "code_assets",
+        "collection",
+        "crypto",
+        "ffi",
+        "hooks",
+        "meta",
+        "native_toolchain_c",
+        "path",
+        "typed_data",
+        "web"
+      ]
+    },
+    {
       "name": "yaml",
       "version": "3.1.3",
       "dependencies": [
@@ -415,11 +519,9 @@
     },
     {
       "name": "image",
-      "version": "4.8.0",
+      "version": "4.11.0",
       "dependencies": [
-        "archive",
-        "meta",
-        "xml"
+        "archive"
       ]
     },
     {
@@ -547,11 +649,6 @@
       "dependencies": []
     },
     {
-      "name": "meta",
-      "version": "1.17.0",
-      "dependencies": []
-    },
-    {
       "name": "logging",
       "version": "1.3.0",
       "dependencies": []
@@ -625,13 +722,6 @@
         "pub_semver",
         "source_span",
         "yaml"
-      ]
-    },
-    {
-      "name": "crypto",
-      "version": "3.0.7",
-      "dependencies": [
-        "typed_data"
       ]
     },
     {
@@ -856,7 +946,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.10",
+      "version": "0.7.11",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -867,6 +957,95 @@
         "stream_channel",
         "string_scanner",
         "term_glyph"
+      ]
+    },
+    {
+      "name": "dev_build",
+      "version": "1.1.15",
+      "dependencies": [
+        "args",
+        "collection",
+        "meta",
+        "path",
+        "pool",
+        "process_run",
+        "pub_semver",
+        "synchronized",
+        "yaml"
+      ]
+    },
+    {
+      "name": "process_run",
+      "version": "1.4.1",
+      "dependencies": [
+        "args",
+        "collection",
+        "meta",
+        "path",
+        "pub_semver",
+        "string_scanner",
+        "synchronized",
+        "yaml"
+      ]
+    },
+    {
+      "name": "plugin_platform_interface",
+      "version": "2.1.8",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "pdf_widget_wrapper",
+      "version": "1.0.4",
+      "dependencies": [
+        "flutter",
+        "pdf"
+      ]
+    },
+    {
+      "name": "flutter_web_plugins",
+      "version": "0.0.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
+      "name": "xml",
+      "version": "7.0.1",
+      "dependencies": [
+        "collection",
+        "meta",
+        "petitparser"
+      ]
+    },
+    {
+      "name": "path_parsing",
+      "version": "1.1.0",
+      "dependencies": [
+        "meta",
+        "vector_math"
+      ]
+    },
+    {
+      "name": "bidi",
+      "version": "2.0.13",
+      "dependencies": []
+    },
+    {
+      "name": "barcode",
+      "version": "2.2.9",
+      "dependencies": [
+        "meta",
+        "qr"
+      ]
+    },
+    {
+      "name": "archive",
+      "version": "4.5.2",
+      "dependencies": [
+        "path",
+        "posix"
       ]
     },
     {
@@ -890,13 +1069,6 @@
         "flutter",
         "meta",
         "plugin_platform_interface"
-      ]
-    },
-    {
-      "name": "flutter_web_plugins",
-      "version": "0.0.0",
-      "dependencies": [
-        "flutter"
       ]
     },
     {
@@ -1017,15 +1189,6 @@
       "name": "ansicolor",
       "version": "2.0.3",
       "dependencies": []
-    },
-    {
-      "name": "xml",
-      "version": "6.6.1",
-      "dependencies": [
-        "collection",
-        "meta",
-        "petitparser"
-      ]
     },
     {
       "name": "universal_io",
@@ -1272,15 +1435,6 @@
       ]
     },
     {
-      "name": "sqflite_common",
-      "version": "2.5.6",
-      "dependencies": [
-        "meta",
-        "path",
-        "synchronized"
-      ]
-    },
-    {
       "name": "sqflite_platform_interface",
       "version": "2.4.0",
       "dependencies": [
@@ -1347,6 +1501,50 @@
       "dependencies": []
     },
     {
+      "name": "native_toolchain_c",
+      "version": "0.17.6",
+      "dependencies": [
+        "code_assets",
+        "glob",
+        "hooks",
+        "logging",
+        "meta",
+        "pub_semver"
+      ]
+    },
+    {
+      "name": "code_assets",
+      "version": "1.0.0",
+      "dependencies": [
+        "collection",
+        "hooks"
+      ]
+    },
+    {
+      "name": "hooks",
+      "version": "1.0.2",
+      "dependencies": [
+        "collection",
+        "crypto",
+        "logging",
+        "meta",
+        "pub_semver",
+        "yaml"
+      ]
+    },
+    {
+      "name": "typed_data",
+      "version": "1.4.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "ffi",
+      "version": "2.2.0",
+      "dependencies": []
+    },
+    {
       "name": "string_scanner",
       "version": "1.4.1",
       "dependencies": [
@@ -1360,14 +1558,6 @@
         "collection",
         "path",
         "term_glyph"
-      ]
-    },
-    {
-      "name": "archive",
-      "version": "4.0.9",
-      "dependencies": [
-        "path",
-        "posix"
       ]
     },
     {
@@ -1393,13 +1583,6 @@
       "dependencies": [
         "meta",
         "path"
-      ]
-    },
-    {
-      "name": "typed_data",
-      "version": "1.4.0",
-      "dependencies": [
-        "collection"
       ]
     },
     {
@@ -1493,20 +1676,30 @@
       ]
     },
     {
+      "name": "petitparser",
+      "version": "7.0.2",
+      "dependencies": [
+        "collection",
+        "meta"
+      ]
+    },
+    {
+      "name": "posix",
+      "version": "6.5.0",
+      "dependencies": [
+        "ffi",
+        "meta",
+        "path"
+      ]
+    },
+    {
       "name": "dbus",
-      "version": "0.7.12",
+      "version": "0.7.15",
       "dependencies": [
         "args",
         "ffi",
         "meta",
         "xml"
-      ]
-    },
-    {
-      "name": "plugin_platform_interface",
-      "version": "2.1.8",
-      "dependencies": [
-        "meta"
       ]
     },
     {
@@ -1562,14 +1755,6 @@
       ]
     },
     {
-      "name": "petitparser",
-      "version": "7.0.2",
-      "dependencies": [
-        "collection",
-        "meta"
-      ]
-    },
-    {
       "name": "csslib",
       "version": "1.0.2",
       "dependencies": [
@@ -1601,11 +1786,6 @@
       ]
     },
     {
-      "name": "ffi",
-      "version": "2.2.0",
-      "dependencies": []
-    },
-    {
       "name": "platform",
       "version": "3.1.6",
       "dependencies": []
@@ -1632,20 +1812,6 @@
       ]
     },
     {
-      "name": "synchronized",
-      "version": "3.4.0",
-      "dependencies": []
-    },
-    {
-      "name": "posix",
-      "version": "6.5.0",
-      "dependencies": [
-        "ffi",
-        "meta",
-        "path"
-      ]
-    },
-    {
       "name": "custom_lint_visitor",
       "version": "1.0.0+7.7.0",
       "dependencies": [
@@ -1668,38 +1834,6 @@
       "name": "vm_service",
       "version": "15.0.2",
       "dependencies": []
-    },
-    {
-      "name": "native_toolchain_c",
-      "version": "0.17.6",
-      "dependencies": [
-        "code_assets",
-        "glob",
-        "hooks",
-        "logging",
-        "meta",
-        "pub_semver"
-      ]
-    },
-    {
-      "name": "hooks",
-      "version": "1.0.2",
-      "dependencies": [
-        "collection",
-        "crypto",
-        "logging",
-        "meta",
-        "pub_semver",
-        "yaml"
-      ]
-    },
-    {
-      "name": "code_assets",
-      "version": "1.0.0",
-      "dependencies": [
-        "collection",
-        "hooks"
-      ]
     }
   ],
   "configVersion": 1

@@ -28,19 +28,19 @@ class WorkspaceHeader extends ConsumerWidget {
             children: [
               Text(
                 _greeting(),
-                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
               ),
               const SizedBox(height: 2),
               Text(
                 displayName,
-                style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+                style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
               ),
               const SizedBox(height: AppSpacing.sm),
               ActionChip(
                 avatar: Icon(ws.icon, size: 18, color: AppColors.primary),
                 label: Text(ws.name),
                 onPressed: () => showWorkspaceSwitcher(context, ref),
-                backgroundColor: AppColors.primarySurface,
+                backgroundColor: Palette.primarySurface,
                 side: BorderSide.none,
                 labelStyle: AppTextStyles.labelMd.copyWith(color: AppColors.primary),
               ),
@@ -49,9 +49,9 @@ class WorkspaceHeader extends ConsumerWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: IconButton(
             icon: const Icon(Icons.notifications_outlined),
@@ -81,7 +81,7 @@ Future<void> showWorkspaceSwitcher(BuildContext context, WidgetRef ref) {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'One account, many roles. No need to sign out.',
-                style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
               ),
               const SizedBox(height: AppSpacing.md),
               for (final role in state.roles)
@@ -102,7 +102,7 @@ Future<void> showWorkspaceSwitcher(BuildContext context, WidgetRef ref) {
                 Text('Add another role', style: AppTextStyles.labelLg),
                 for (final role in others)
                   ListTile(
-                    leading: Icon(workspaces[role]!.icon, color: AppColors.textSecondary),
+                    leading: Icon(workspaces[role]!.icon, color: Palette.textSecondary),
                     title: Text(workspaces[role]!.name),
                     subtitle: Text(workspaces[role]!.tagline),
                     trailing: const Icon(Icons.add_rounded),
@@ -150,7 +150,7 @@ class WorkspaceActions extends ConsumerWidget {
             label: const Text('All Services'),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-              side: const BorderSide(color: AppColors.border),
+              side: BorderSide(color: Palette.border),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
@@ -175,9 +175,9 @@ class _ActionTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +189,7 @@ class _ActionTile extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.labelSm.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.labelSm.copyWith(color: Palette.textPrimary),
             ),
           ],
         ),

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
-import '../../../../theme/theme_provider.dart';
 import '../../../../core/alerts/proactive_alerts.dart';
 import '../../../notifications/presentation/providers/notification_providers.dart';
 import '../../../sync_ui/presentation/providers/sync_providers.dart';
@@ -37,7 +36,14 @@ const _destinations = <_Destination>[
     'Loans',
     '/financing',
   ),
-  _Destination(Icons.apps_outlined, Icons.apps_rounded, 'Services', '/services'),
+  // The "apps" and "grid_view_outlined" glyphs failed to draw in the web
+  // build, so both states use the rounded grid, which is known to render.
+  _Destination(
+    Icons.grid_view_rounded,
+    Icons.grid_view_rounded,
+    'Services',
+    '/services',
+  ),
   _Destination(
     Icons.support_agent_outlined,
     Icons.support_agent_rounded,
@@ -69,6 +75,28 @@ class AppShell extends ConsumerWidget {
     return 0;
   }
 
+  static const _mainRoots = {
+    'home',
+    'marketplace',
+    'financing',
+    'services',
+    'expert',
+    'profile',
+  };
+
+  /// Section label for main routes, otherwise the route name made readable
+  /// (e.g. /farm-records → "Farm Records").
+  static String _titleFor(String location, int index) {
+    final segments = Uri.parse(location).pathSegments;
+    if (segments.isEmpty || _mainRoots.contains(segments.first)) {
+      return _destinations[index].label;
+    }
+    return segments.first
+        .split('-')
+        .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
+  }
+
   static void _navigate(BuildContext context, int i) =>
       context.go(_destinations[i].route);
 
@@ -84,7 +112,7 @@ class AppShell extends ConsumerWidget {
     final pendingCount = syncQueue.valueOrNull?.length ?? 0;
 
     final topBar = _TopBar(
-      title: _destinations[currentIndex].label,
+      title: _titleFor(location, currentIndex),
       pendingCount: pendingCount,
     );
 
@@ -145,8 +173,6 @@ class _TopBar extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final mobile = context.isMobile;
     final unread = ref.watch(unreadCountProvider);
-    // Rebuild when the theme mode changes so the toggle icon stays in sync.
-    ref.watch(themeModeProvider);
     final fg = isDark ? AppColors.textOnDark : AppColors.textPrimary;
 
     return Container(
@@ -181,17 +207,6 @@ class _TopBar extends ConsumerWidget {
             const SizedBox(width: 8),
           ],
           IconButton(
-            tooltip: isDark ? 'Switch to light mode' : 'Switch to dark mode',
-            onPressed: () {
-              final notifier = ref.read(themeModeProvider.notifier);
-              isDark ? notifier.setLight() : notifier.setDark();
-            },
-            icon: Icon(
-              isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-              color: fg,
-            ),
-          ),
-          IconButton(
             tooltip: 'Notifications',
             onPressed: () => context.go('/notifications'),
             icon: Badge(
@@ -199,7 +214,7 @@ class _TopBar extends ConsumerWidget {
               label: Text(unread > 99 ? '99+' : '$unread'),
               backgroundColor: AppColors.accent,
               textColor: Colors.black,
-              child: Icon(Icons.notifications_none_rounded, color: fg),
+              child: Icon(Icons.notifications_outlined, color: fg),
             ),
           ),
           const SizedBox(width: 4),

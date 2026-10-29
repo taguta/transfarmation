@@ -23,7 +23,7 @@ class SyncScreen extends ConsumerWidget {
         ),
         title: Text(
           'Data Synchronization',
-          style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
         ),
       ),
       body: syncItemsAsync.when(
@@ -53,14 +53,14 @@ class SyncScreen extends ConsumerWidget {
                   Text(
                     'All Data Synced!',
                     style: AppTextStyles.h2.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
                     'Your app is fully up to date with the cloud.',
                     style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Palette.textSecondary,
                     ),
                   ),
                 ],
@@ -102,7 +102,7 @@ class SyncScreen extends ConsumerWidget {
                             Text(
                               '${items.length} items pending',
                               style: AppTextStyles.h3.copyWith(
-                                color: AppColors.textPrimary,
+                                color: Palette.textPrimary,
                               ),
                             ),
                             Text(
@@ -121,7 +121,7 @@ class SyncScreen extends ConsumerWidget {
                 Text(
                   'Pending Uploads',
                   style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -130,9 +130,9 @@ class SyncScreen extends ConsumerWidget {
                     margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                     padding: const EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: Palette.surface,
                       borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: Palette.border),
                     ),
                     child: Row(
                       children: [
@@ -153,7 +153,7 @@ class SyncScreen extends ConsumerWidget {
                           child: Text(
                             e.key.replaceAll('_', ' ').toUpperCase(),
                             style: AppTextStyles.labelLg.copyWith(
-                              color: AppColors.textPrimary,
+                              color: Palette.textPrimary,
                             ),
                           ),
                         ),
@@ -163,13 +163,13 @@ class SyncScreen extends ConsumerWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceElevated,
+                            color: Palette.surfaceElevated,
                             borderRadius: BorderRadius.circular(AppRadius.full),
                           ),
                           child: Text(
                             e.value.toString(),
                             style: AppTextStyles.labelMd.copyWith(
-                              color: AppColors.textSecondary,
+                              color: Palette.textSecondary,
                             ),
                           ),
                         ),

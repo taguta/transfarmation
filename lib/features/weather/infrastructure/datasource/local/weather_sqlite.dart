@@ -30,16 +30,20 @@ class WeatherLocalDataSource {
       whereArgs: [region],
       orderBy: 'timestamp DESC',
     );
+    // Rows pulled from Firestore carry fetchedAt but no type/timestamp.
     return rows
         .map(
           (r) => WeatherAlert(
             id: r['id'] as String,
-            type: r['type'] as String,
+            type: r['type'] as String? ?? 'general',
             title: r['title'] as String,
             description: r['description'] as String? ?? '',
             severity: r['severity'] as String? ?? 'info',
-            region: r['region'] as String,
-            timestamp: DateTime.parse(r['timestamp'] as String),
+            region: r['region'] as String? ?? region,
+            timestamp: DateTime.tryParse(
+                  (r['timestamp'] ?? r['fetchedAt'] ?? '') as String,
+                ) ??
+                DateTime.now(),
             actionAdvice: r['actionAdvice'] as String? ?? '',
           ),
         )

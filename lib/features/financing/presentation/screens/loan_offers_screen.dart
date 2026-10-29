@@ -37,14 +37,14 @@ class LoanOffersScreen extends ConsumerWidget {
                   Text(
                     'Compare Offers',
                     style: AppTextStyles.h2.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     '${offersData.length} ${offersData.length == 1 ? 'offer' : 'offers'} published by lenders. Apply first, then the lender decides.',
                     style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Palette.textSecondary,
                     ),
                   ),
                 ],
@@ -56,13 +56,13 @@ class LoanOffersScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Row(
                 children: [
-                  const Icon(Icons.sort_rounded,
-                      size: 18, color: AppColors.textTertiary),
+                  Icon(Icons.sort_rounded,
+                      size: 18, color: Palette.textTertiary),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
                     'Sorted by lowest rate',
                     style: AppTextStyles.labelSm.copyWith(
-                      color: AppColors.textTertiary,
+                      color: Palette.textTertiary,
                     ),
                   ),
                 ],
@@ -97,12 +97,12 @@ class _OfferCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
           color: offer.isRecommended
               ? AppColors.primary.withValues(alpha: 0.5)
-              : AppColors.border,
+              : Palette.border,
           width: offer.isRecommended ? 1.5 : 1,
         ),
       ),
@@ -116,7 +116,7 @@ class _OfferCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: AppColors.primarySurface,
+                  color: Palette.primarySurface,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
                 child: Center(
@@ -136,14 +136,14 @@ class _OfferCard extends StatelessWidget {
                     Text(
                       offer.lenderName,
                       style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     if (offer.conditions != null)
                       Text(
                         offer.conditions!,
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                   ],
@@ -155,7 +155,7 @@ class _OfferCard extends StatelessWidget {
                   child: Chip(
                     label: const Text('Sample'),
                     visualDensity: VisualDensity.compact,
-                    backgroundColor: AppColors.warningSurface,
+                    backgroundColor: Palette.warningSurface,
                     side: BorderSide.none,
                     labelStyle: AppTextStyles.labelSm.copyWith(color: AppColors.warning),
                   ),
@@ -167,7 +167,7 @@ class _OfferCard extends StatelessWidget {
                     vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primarySurface,
+                    color: Palette.primarySurface,
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                   child: Row(
@@ -198,7 +198,7 @@ class _OfferCard extends StatelessWidget {
                 value: '${offer.interestRate}%',
                 color: offer.interestRate <= 12
                     ? AppColors.success
-                    : AppColors.textPrimary,
+                    : Palette.textPrimary,
               ),
               _OfferStat(
                 label: 'Monthly',
@@ -270,14 +270,14 @@ class _OfferStat extends StatelessWidget {
           Text(
             label,
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ),
           const SizedBox(height: 2),
           Text(
             value,
             style: AppTextStyles.labelLg.copyWith(
-              color: color ?? AppColors.textPrimary,
+              color: color ?? Palette.textPrimary,
             ),
           ),
         ],
@@ -297,7 +297,7 @@ class _NoOffers extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.local_offer_outlined, size: 48, color: AppColors.textTertiary),
+            Icon(Icons.local_offer_outlined, size: 48, color: Palette.textTertiary),
             const SizedBox(height: AppSpacing.md),
             Text('No lender offers yet', style: AppTextStyles.h3),
             const SizedBox(height: AppSpacing.sm),
@@ -306,7 +306,7 @@ class _NoOffers extends StatelessWidget {
               'connect to the internet to load the latest. You can still apply for a '
               'loan and let lenders review your application.',
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
             ),
             const SizedBox(height: AppSpacing.lg),
             FilledButton(

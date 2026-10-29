@@ -165,3 +165,55 @@ abstract final class AppColors {
     ),
   ];
 }
+
+/// Theme-aware counterparts of the neutral [AppColors] used by screens.
+///
+/// [AppColors] values are compile-time constants tuned for the light theme, so
+/// screens that read them directly stay light in dark mode (dark text on dark
+/// panels). [Palette] returns the matching dark value when [dark] is set. The
+/// app root sets [dark] from the active theme and rebuilds the tree when it
+/// changes (see TransfarmationApp in main.dart).
+abstract final class Palette {
+  static bool dark = false;
+
+  static Color _pick(Color light, Color darkValue) => dark ? darkValue : light;
+
+  // Text
+  static Color get textPrimary => _pick(AppColors.textPrimary, AppColors.textOnDark);
+  static Color get textSecondary => _pick(
+        AppColors.textSecondary,
+        AppColors.textOnDark.withValues(alpha: 0.72),
+      );
+  static Color get textTertiary => _pick(
+        AppColors.textTertiary,
+        AppColors.textOnDark.withValues(alpha: 0.5),
+      );
+
+  // Surfaces
+  static Color get surface => _pick(AppColors.surface, AppColors.surfaceDark);
+  static Color get surfaceElevated =>
+      _pick(AppColors.surfaceElevated, AppColors.surfaceElevatedDark);
+  static Color get background =>
+      _pick(AppColors.background, AppColors.backgroundDark);
+
+  // Borders
+  static Color get border => _pick(AppColors.border, AppColors.dividerDark);
+  static Color get borderLight => border;
+  static Color get divider => _pick(AppColors.divider, AppColors.dividerDark);
+
+  // Tinted status surfaces become translucent washes on dark panels.
+  static Color _wash(Color light, Color tint) =>
+      _pick(light, tint.withValues(alpha: 0.18));
+  static Color get primarySurface =>
+      _wash(AppColors.primarySurface, AppColors.primaryLight);
+  static Color get successSurface =>
+      _wash(AppColors.successSurface, AppColors.success);
+  static Color get warningSurface =>
+      _wash(AppColors.warningSurface, AppColors.warning);
+  static Color get errorSurface => _wash(AppColors.errorSurface, AppColors.error);
+  static Color get infoSurface => _wash(AppColors.infoSurface, AppColors.info);
+  static Color get accentSurface =>
+      _wash(AppColors.accentSurface, AppColors.accent);
+  static Color get secondarySurface =>
+      _wash(AppColors.secondarySurface, AppColors.secondaryLight);
+}

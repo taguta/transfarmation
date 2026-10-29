@@ -39,17 +39,17 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Traceability & QR', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Traceability & QR', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Generate verifiable QR codes for your farm produce',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
                   
               const SizedBox(height: AppSpacing.xxl),
 
               if (selectedBatch == null) ...[
-                Text('Select a Recent Harvest Batch', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                Text('Select a Recent Harvest Batch', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                 const SizedBox(height: AppSpacing.md),
                 batchesAsync.when(
                   data: (batches) => Column(
@@ -78,7 +78,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text('Scan to verify origin', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
+                        Text('Scan to verify origin', style: AppTextStyles.labelMd.copyWith(color: Palette.textSecondary)),
                         const SizedBox(height: AppSpacing.lg),
                         QrImageView(
                           data: 'https://transfarmation.app/verify/${selectedBatch!.id}',
@@ -89,9 +89,9 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                             eyeShape: QrEyeShape.square,
                             color: AppColors.primary,
                           ),
-                          dataModuleStyle: const QrDataModuleStyle(
+                          dataModuleStyle: QrDataModuleStyle(
                             dataModuleShape: QrDataModuleShape.square,
-                            color: AppColors.textPrimary,
+                            color: Palette.textPrimary,
                           ),
                         ),
                         const SizedBox(height: AppSpacing.lg),
@@ -103,7 +103,7 @@ class _TraceabilityScreenState extends ConsumerState<TraceabilityScreen> {
                 
                 const SizedBox(height: AppSpacing.xxl),
                 
-                Text('Verified Data', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                Text('Verified Data', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                 const SizedBox(height: AppSpacing.md),
                 _DataRow(label: 'Farm', value: selectedBatch!.farmName),
                 _DataRow(label: 'Produce', value: selectedBatch!.crop),
@@ -165,9 +165,9 @@ class _BatchTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: Row(
             children: [
@@ -184,12 +184,12 @@ class _BatchTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(batch.crop, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
-                    Text('${batch.weight} • ${DateFormat.yMMMd().format(batch.harvestDate)}', style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+                    Text(batch.crop, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
+                    Text('${batch.weight} • ${DateFormat.yMMMd().format(batch.harvestDate)}', style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
+              Icon(Icons.chevron_right_rounded, color: Palette.textTertiary),
             ],
           ),
         ),
@@ -211,8 +211,8 @@ class _DataRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
-          Text(value, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+          Text(label, style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
+          Text(value, style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
         ],
       ),
     );

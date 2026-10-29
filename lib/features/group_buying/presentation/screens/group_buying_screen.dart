@@ -34,19 +34,19 @@ class GroupBuyingScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Group Buying', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Group Buying', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Buy together, save together',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
 
               const SizedBox(height: AppSpacing.xxl),
 
               // Open orders header
               Row(
                 children: [
-                  Text('Open Group Orders', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                  Text('Open Group Orders', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                   const Spacer(),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -67,7 +67,7 @@ class GroupBuyingScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xxl),
 
               // Cooperatives
-              Text('Cooperatives', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('Cooperatives', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               ResponsiveWrap(minItemWidth: 420, children: [for (final c in coops) _CoopCard(coop: c)]),
 
@@ -106,9 +106,9 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +116,7 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
           Row(
             children: [
               Expanded(
-                child: Text(order.productName, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
+                child: Text(order.productName, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -133,7 +133,7 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
           ),
           const SizedBox(height: 4),
           Text('${coop.name} • ${order.supplier}',
-              style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+              style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
 
           const SizedBox(height: AppSpacing.md),
 
@@ -143,11 +143,11 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Retail', style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                  Text('Retail', style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                   Text(
                     '\$${order.unitPrice.toStringAsFixed(2)}',
                     style: AppTextStyles.bodyMd.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Palette.textSecondary,
                       decoration: TextDecoration.lineThrough,
                     ),
                   ),
@@ -169,11 +169,11 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text('per ${order.unit.split(' ').last.replaceAll('(', '').replaceAll(')', '')}',
-                      style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                      style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                   Text(
                     '${daysLeft}d left',
                     style: AppTextStyles.labelSm.copyWith(
-                      color: daysLeft < 7 ? Colors.redAccent : AppColors.textSecondary,
+                      color: daysLeft < 7 ? Colors.redAccent : Palette.textSecondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -194,7 +194,7 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Price Drop Target', style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                        Text('Price Drop Target', style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                         Text('Only ${order.minimumQuantity - order.currentQuantity} ${order.unit} left to unlock -15%', style: AppTextStyles.caption.copyWith(color: AppColors.forestGreen, fontWeight: FontWeight.bold)),
                       ],
                     ),
@@ -205,7 +205,7 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
                         children: [
                           LinearProgressIndicator(
                             value: order.progress.clamp(0.0, 1.0),
-                            backgroundColor: AppColors.borderLight,
+                            backgroundColor: Palette.borderLight,
                             color: order.progress >= 1.0 ? AppColors.forestGreen : AppColors.harvestGold,
                             minHeight: 14,
                           ),
@@ -227,14 +227,14 @@ class _GroupOrderCardState extends ConsumerState<_GroupOrderCard> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.infoSurface,
+                        color: Palette.infoSurface,
                         borderRadius: BorderRadius.circular(AppRadius.sm),
                       ),
                       child: Row(
                         children: [
                           const Icon(Icons.shield_rounded, size: 12, color: AppColors.info),
                           const SizedBox(width: 4),
-                          Expanded(child: Text('Funds locked in Smart Escrow until target hit', style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary))),
+                          Expanded(child: Text('Funds locked in Smart Escrow until target hit', style: AppTextStyles.caption.copyWith(color: Palette.textPrimary))),
                         ],
                       ),
                     ),
@@ -307,9 +307,9 @@ class _CoopCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.md),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Row(
         children: [
@@ -326,9 +326,9 @@ class _CoopCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(coop.name, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
+                Text(coop.name, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
                 Text('${coop.region} • ${coop.memberCount} members',
-                    style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+                    style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
                 const SizedBox(height: 4),
                 Text(
                   '${coop.activeOrders.length} active order${coop.activeOrders.length == 1 ? '' : 's'}',
@@ -337,7 +337,7 @@ class _CoopCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary),
+          Icon(Icons.chevron_right_rounded, color: Palette.textSecondary),
         ],
       ),
     );
@@ -392,7 +392,7 @@ class _Step extends StatelessWidget {
             child: Text(num, style: AppTextStyles.labelSm.copyWith(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Expanded(child: Text(text, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary))),
+          Expanded(child: Text(text, style: AppTextStyles.bodyMd.copyWith(color: Palette.textPrimary))),
         ],
       ),
     );

@@ -59,7 +59,7 @@ class _DesktopLayout extends StatelessWidget {
                 Text(
                   'Quick Actions',
                   style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -123,7 +123,7 @@ class _MobileTabletLayout extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxl),
           Text(
             'Quick Actions',
-            style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
           ),
           const SizedBox(height: AppSpacing.md),
           _buildQuickActions(context, columns: columns),
@@ -170,7 +170,7 @@ Widget _buildSectionHeader(String title, {VoidCallback? onSeeAll}) {
     children: [
       Text(
         title,
-        style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+        style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
       ),
       if (onSeeAll != null)
         TextButton(

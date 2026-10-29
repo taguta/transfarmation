@@ -5,18 +5,10 @@ import 'package:transfarmation/features/financing/domain/entities/loan.dart';
 import 'package:transfarmation/features/financing/presentation/providers/loan_providers.dart';
 import 'package:transfarmation/features/financing/infrastructure/repositories/loan_repository_impl.dart';
 import 'package:transfarmation/core/providers/data_providers.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:transfarmation/features/financing/infrastructure/datasource/local/loan_sqlite.dart';
-import 'package:transfarmation/features/financing/infrastructure/datasource/remote/loan_firestore.dart';
+import 'package:transfarmation/features/auth/presentation/providers/auth_providers.dart';
 
-class FakeLoanRepository implements LoanRepositoryImpl {
-  @override
-  final LoanLocalDataSource local = null as dynamic;
-  @override
-  final LoanRemoteDataSource remote = null as dynamic;
-  @override
-  final Database db = null as dynamic;
-
+/// Only the members these tests use are implemented; anything else throws.
+class FakeLoanRepository extends Fake implements LoanRepositoryImpl {
   @override
   Future<void> applyLoan(Loan loan) async {}
 
@@ -41,6 +33,7 @@ void main() {
     test('loanProvider fetches loans correctly', () async {
       final container = ProviderContainer(
         overrides: [
+          activeFarmerIdProvider.overrideWithValue('farmer-001'),
           loanRepositoryImplProvider.overrideWith((ref) => FakeLoanRepository()),
         ],
       );
@@ -52,6 +45,7 @@ void main() {
     test('activeLoansProvider filters approved and disbursed loans', () async {
       final container = ProviderContainer(
         overrides: [
+          activeFarmerIdProvider.overrideWithValue('farmer-001'),
           loanRepositoryImplProvider.overrideWith((ref) => FakeLoanRepository()),
         ],
       );
@@ -65,6 +59,7 @@ void main() {
     test('outstandingBalanceProvider sums active loan balances correctly', () async {
       final container = ProviderContainer(
         overrides: [
+          activeFarmerIdProvider.overrideWithValue('farmer-001'),
           loanRepositoryImplProvider.overrideWith((ref) => FakeLoanRepository()),
         ],
       );
@@ -78,6 +73,7 @@ void main() {
     test('loanOffersProvider fetches offers correctly', () async {
       final container = ProviderContainer(
         overrides: [
+          activeFarmerIdProvider.overrideWithValue('farmer-001'),
           loanRepositoryImplProvider.overrideWith((ref) => FakeLoanRepository()),
         ],
       );

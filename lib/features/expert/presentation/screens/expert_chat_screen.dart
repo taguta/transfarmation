@@ -142,7 +142,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
                 Text(
                   'Transfarmation AI',
                   style: AppTextStyles.labelLg.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 Text(
@@ -180,7 +180,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
               vertical: AppSpacing.md,
             ),
             decoration: BoxDecoration(
-              color: AppColors.accentSurface,
+              color: Palette.accentSurface,
               borderRadius: BorderRadius.circular(AppRadius.md),
             ),
             child: Row(
@@ -196,7 +196,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
                     ),
                   ),
                 ),
-                const Icon(Icons.close, size: 16, color: AppColors.textTertiary),
+                Icon(Icons.close, size: 16, color: Palette.textTertiary),
               ],
             ),
           ),
@@ -228,7 +228,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
         margin: const EdgeInsets.only(bottom: AppSpacing.md),
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: message.isMe ? AppColors.primary : AppColors.surface,
+          color: message.isMe ? AppColors.primary : Palette.surface,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(AppRadius.lg),
             topRight: const Radius.circular(AppRadius.lg),
@@ -237,7 +237,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
           ),
           border: message.isMe
               ? null
-              : Border.all(color: AppColors.border),
+              : Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +257,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
             Text(
               message.text,
               style: AppTextStyles.bodyMd.copyWith(
-                color: message.isMe ? Colors.white : AppColors.textPrimary,
+                color: message.isMe ? Colors.white : Palette.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
@@ -266,7 +266,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
               style: AppTextStyles.caption.copyWith(
                 color: message.isMe
                     ? Colors.white.withValues(alpha: 0.6)
-                    : AppColors.textTertiary,
+                    : Palette.textTertiary,
                 fontSize: 10,
               ),
             ),
@@ -285,14 +285,14 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
         bottom: MediaQuery.of(context).padding.bottom + AppSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
+        color: Palette.surface,
+        border: Border(top: BorderSide(color: Palette.border)),
       ),
       child: Row(
         children: [
           IconButton(
             icon: const Icon(Icons.camera_alt_outlined),
-            color: AppColors.textTertiary,
+            color: Palette.textTertiary,
             onPressed: () async {
               try {
                 final picker = ImagePicker();
@@ -339,7 +339,7 @@ class _ExpertChatScreenState extends State<ExpertChatScreen> {
               decoration: InputDecoration(
                 hintText: 'Type a message...',
                 filled: true,
-                fillColor: AppColors.surfaceElevated,
+                fillColor: Palette.surfaceElevated,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppRadius.full),
                   borderSide: BorderSide.none,

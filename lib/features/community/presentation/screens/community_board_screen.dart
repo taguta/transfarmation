@@ -41,12 +41,12 @@ class CommunityBoardScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Farmer Community', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Farmer Community', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Discuss tips, alerts, and market news with locals',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
                   
               const SizedBox(height: AppSpacing.xxl),
 
@@ -102,12 +102,12 @@ class _FilterChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: isActive ? color : Colors.transparent,
         borderRadius: BorderRadius.circular(AppRadius.full),
-        border: Border.all(color: isActive ? color : AppColors.border),
+        border: Border.all(color: isActive ? color : Palette.border),
       ),
       child: Text(
         label,
         style: AppTextStyles.labelMd.copyWith(
-          color: isActive ? Colors.white : AppColors.textSecondary,
+          color: isActive ? Colors.white : Palette.textSecondary,
         ),
       ),
     );
@@ -129,9 +129,9 @@ class _ForumPostCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: isAlert ? AppColors.error.withValues(alpha: 0.05) : AppColors.surface,
+          color: isAlert ? AppColors.error.withValues(alpha: 0.05) : Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: isAlert ? AppColors.error.withValues(alpha: 0.3) : AppColors.border),
+          border: Border.all(color: isAlert ? AppColors.error.withValues(alpha: 0.3) : Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,35 +147,35 @@ class _ForumPostCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                Text(post.author, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                Text(post.author, style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
                 const Spacer(),
-                const Icon(Icons.location_on_rounded, size: 14, color: AppColors.textTertiary),
+                Icon(Icons.location_on_rounded, size: 14, color: Palette.textTertiary),
                 const SizedBox(width: 4),
-                Text(post.region, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                Text(post.region, style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            Text(post.title, style: AppTextStyles.h3.copyWith(color: isAlert ? AppColors.error : AppColors.textPrimary)),
+            Text(post.title, style: AppTextStyles.h3.copyWith(color: isAlert ? AppColors.error : Palette.textPrimary)),
             const SizedBox(height: AppSpacing.xs),
-            Text(post.content, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+            Text(post.content, style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.md),
             Wrap(
               spacing: AppSpacing.sm,
               children: tags.map((tag) => Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceElevated,
+                  color: Palette.surfaceElevated,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
-                child: Text('#$tag', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                child: Text('#$tag', style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
               )).toList(),
             ),
             const SizedBox(height: AppSpacing.md),
-            Divider(color: AppColors.border),
+            Divider(color: Palette.border),
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                Text(DateFormat.jm().format(post.time), style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                Text(DateFormat.jm().format(post.time), style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                 const Spacer(),
                 Row(
                   children: [

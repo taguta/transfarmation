@@ -54,14 +54,14 @@ class _InputMarketplaceScreenState
                             Text(
                               'Farm Inputs',
                               style: AppTextStyles.h1.copyWith(
-                                color: AppColors.textPrimary,
+                                color: Palette.textPrimary,
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               'Seeds, fertilizer, chemicals & equipment',
                               style: AppTextStyles.bodyMd.copyWith(
-                                color: AppColors.textSecondary,
+                                color: Palette.textSecondary,
                               ),
                             ),
                           ],
@@ -94,7 +94,7 @@ class _InputMarketplaceScreenState
                           avatar: Icon(c.$3, size: 16),
                           onSelected:
                               (_) => setState(() => _selectedCategory = c.$1),
-                          selectedColor: AppColors.primarySurface,
+                          selectedColor: Palette.primarySurface,
                           checkmarkColor: AppColors.primary,
                         ),
                       );
@@ -109,7 +109,7 @@ class _InputMarketplaceScreenState
               child: Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.accentSurface,
+                  color: Palette.accentSurface,
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                   border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
                 ),
@@ -122,7 +122,7 @@ class _InputMarketplaceScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('AI Suggestion', style: AppTextStyles.labelMd.copyWith(color: AppColors.accent)),
-                          Text('Based on recent rains & your soil PH, we recommend Top Dressing Urea next week.', style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary)),
+                          Text('Based on recent rains & your soil PH, we recommend Top Dressing Urea next week.', style: AppTextStyles.caption.copyWith(color: Palette.textPrimary)),
                         ],
                       ),
                     ),
@@ -192,9 +192,9 @@ class _InputCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,13 +223,13 @@ class _InputCard extends StatelessWidget {
                       Text(
                         input.name,
                         style: AppTextStyles.labelLg.copyWith(
-                          color: AppColors.textPrimary,
+                          color: Palette.textPrimary,
                         ),
                       ),
                       Text(
                         input.supplier,
                         style: AppTextStyles.bodySm.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                     ],
@@ -239,7 +239,7 @@ class _InputCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: AppColors.successSurface,
+                      color: Palette.successSurface,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -254,7 +254,7 @@ class _InputCard extends StatelessWidget {
             Text(
               input.description,
               style: AppTextStyles.bodySm.copyWith(
-                color: AppColors.textSecondary,
+                color: Palette.textSecondary,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -269,7 +269,7 @@ class _InputCard extends StatelessWidget {
                 Text(
                   ' / ${input.unit}',
                   style: AppTextStyles.bodySm.copyWith(
-                    color: AppColors.textTertiary,
+                    color: Palette.textTertiary,
                   ),
                 ),
                 const Spacer(),
@@ -280,7 +280,7 @@ class _InputCard extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.accentSurface,
+                      color: Palette.accentSurface,
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                     child: Text(
@@ -299,7 +299,7 @@ class _InputCard extends StatelessWidget {
                       vertical: 3,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.errorSurface,
+                      color: Palette.errorSurface,
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                     child: Text(

@@ -36,7 +36,7 @@ class ExpertListScreen extends ConsumerWidget {
                 hintText: 'Search experts...',
                 prefixIcon: const Icon(Icons.search_rounded),
                 filled: true,
-                fillColor: AppColors.surfaceElevated,
+                fillColor: Palette.surfaceElevated,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppRadius.full),
                   borderSide: BorderSide.none,
@@ -61,7 +61,7 @@ class ExpertListScreen extends ConsumerWidget {
             child: Text(
               'Human Specialists',
               style: AppTextStyles.labelMd.copyWith(
-                color: AppColors.textTertiary,
+                color: Palette.textTertiary,
               ),
             ),
           ),
@@ -121,9 +121,9 @@ class _ExpertCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Row(
           children: [
@@ -154,7 +154,7 @@ class _ExpertCard extends StatelessWidget {
                         child: Text(
                           name,
                           style: AppTextStyles.labelLg.copyWith(
-                            color: AppColors.textPrimary,
+                            color: Palette.textPrimary,
                           ),
                         ),
                       ),
@@ -162,7 +162,7 @@ class _ExpertCard extends StatelessWidget {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: isOnline ? AppColors.success : AppColors.textTertiary,
+                          color: isOnline ? AppColors.success : Palette.textTertiary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -172,7 +172,7 @@ class _ExpertCard extends StatelessWidget {
                   Text(
                     specialty,
                     style: AppTextStyles.bodySm.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Palette.textSecondary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
@@ -184,14 +184,14 @@ class _ExpertCard extends StatelessWidget {
                       Text(
                         rating.toString(),
                         style: AppTextStyles.labelSm.copyWith(
-                          color: AppColors.textPrimary,
+                          color: Palette.textPrimary,
                         ),
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Text(
                         isOnline ? 'Available' : 'Offline',
                         style: AppTextStyles.caption.copyWith(
-                          color: isOnline ? AppColors.success : AppColors.textTertiary,
+                          color: isOnline ? AppColors.success : Palette.textTertiary,
                         ),
                       ),
                     ],
@@ -199,9 +199,9 @@ class _ExpertCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right_rounded,
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ],
         ),

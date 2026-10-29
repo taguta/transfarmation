@@ -32,12 +32,12 @@ class DiagnosisScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Text('Crop & Animal Check',
-                      style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                      style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Describe what you see and get likely causes, with an agronomist on call',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
               const SizedBox(height: AppSpacing.xxl),
               Row(
                 children: [
@@ -65,7 +65,7 @@ class DiagnosisScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xxl),
               const _HowItWorks(),
               const SizedBox(height: AppSpacing.xxl),
-              Text('History', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('History', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               history.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -77,10 +77,10 @@ class DiagnosisScreen extends ConsumerWidget {
                         padding: const EdgeInsets.all(AppSpacing.xxl),
                         child: Column(
                           children: [
-                            const Icon(Icons.history_rounded, size: 48, color: AppColors.textTertiary),
+                            Icon(Icons.history_rounded, size: 48, color: Palette.textTertiary),
                             const SizedBox(height: AppSpacing.md),
                             Text('No checks yet',
-                                style: AppTextStyles.bodyMd.copyWith(color: AppColors.textTertiary)),
+                                style: AppTextStyles.bodyMd.copyWith(color: Palette.textTertiary)),
                           ],
                         ),
                       ),
@@ -130,10 +130,10 @@ class _CaptureCard extends StatelessWidget {
           children: [
             Icon(icon, size: 36, color: color),
             const SizedBox(height: AppSpacing.sm),
-            Text(title, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+            Text(title, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
             Text(subtitle,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
           ],
         ),
       ),
@@ -149,7 +149,7 @@ class _HowItWorks extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.infoSurface,
+        color: Palette.infoSurface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(color: AppColors.info.withValues(alpha: 0.2)),
       ),
@@ -184,7 +184,7 @@ class _HowItWorks extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
-        Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary))),
+        Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary))),
       ],
     ),
   );
@@ -209,9 +209,9 @@ class _HistoryCard extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +227,7 @@ class _HistoryCard extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     top == null ? diagnosis.subjectName : '${diagnosis.subjectName}: ${top.name}',
-                    style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary),
+                    style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary),
                   ),
                 ),
                 if (top != null)
@@ -240,7 +240,7 @@ class _HistoryCard extends ConsumerWidget {
             if (diagnosis.symptoms.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.sm),
               Text(diagnosis.symptoms.join(', '),
-                  style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+                  style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis),
             ],
@@ -258,7 +258,7 @@ class _HistoryCard extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.successSurface,
+                  color: Palette.successSurface,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
@@ -295,7 +295,7 @@ class _HistoryCard extends ConsumerWidget {
                   ),
                 const Spacer(),
                 Text(DateFormat.yMMMd().format(diagnosis.timestamp),
-                    style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                    style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
               ],
             ),
           ],

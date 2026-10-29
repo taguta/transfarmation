@@ -27,14 +27,14 @@ class LoanStatusScreen extends StatelessWidget {
                         Text(
                           'My Financing',
                           style: AppTextStyles.h1.copyWith(
-                            color: AppColors.textPrimary,
+                            color: Palette.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           'Track your loans and repayments',
                           style: AppTextStyles.bodyMd.copyWith(
-                            color: AppColors.textSecondary,
+                            color: Palette.textSecondary,
                           ),
                         ),
                       ],
@@ -227,10 +227,10 @@ class _FilterChip extends StatelessWidget {
       label: Text(label),
       selected: selected,
       onSelected: (_) {},
-      selectedColor: AppColors.primarySurface,
+      selectedColor: Palette.primarySurface,
       checkmarkColor: AppColors.primary,
       labelStyle: AppTextStyles.labelMd.copyWith(
-        color: selected ? AppColors.primary : AppColors.textSecondary,
+        color: selected ? AppColors.primary : Palette.textSecondary,
       ),
     );
   }
@@ -277,9 +277,9 @@ class _LoanListItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,13 +306,13 @@ class _LoanListItem extends StatelessWidget {
                       Text(
                         title,
                         style: AppTextStyles.labelLg.copyWith(
-                          color: AppColors.textPrimary,
+                          color: Palette.textPrimary,
                         ),
                       ),
                       Text(
                         lender,
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                     ],
@@ -342,13 +342,13 @@ class _LoanListItem extends StatelessWidget {
                   Text(
                     '\$${amount.toStringAsFixed(0)}',
                     style: AppTextStyles.h3.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                   Text(
                     '${(repaidPercent * 100).toInt()}% repaid',
                     style: AppTextStyles.labelSm.copyWith(
-                      color: AppColors.textTertiary,
+                      color: Palette.textTertiary,
                     ),
                   ),
                 ],
@@ -358,7 +358,7 @@ class _LoanListItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.full),
                 child: LinearProgressIndicator(
                   value: repaidPercent,
-                  backgroundColor: AppColors.border,
+                  backgroundColor: Palette.border,
                   color: AppColors.primary,
                   minHeight: 4,
                 ),
@@ -371,13 +371,13 @@ class _LoanListItem extends StatelessWidget {
                   Text(
                     '\$${amount.toStringAsFixed(0)}',
                     style: AppTextStyles.h3.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                   Text(
                     date,
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textTertiary,
+                      color: Palette.textTertiary,
                     ),
                   ),
                 ],

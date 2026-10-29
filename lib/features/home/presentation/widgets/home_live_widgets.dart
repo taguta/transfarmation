@@ -99,12 +99,12 @@ class _StatCard extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   value,
-                  style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary),
+                  style: AppTextStyles.h3.copyWith(color: Palette.textPrimary),
                 ),
               ),
               Text(
                 label,
-                style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+                style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
               ),
             ],
           ),
@@ -134,9 +134,9 @@ class ActiveLoanCard extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class ActiveLoanCard extends ConsumerWidget {
                       Text(title, style: AppTextStyles.labelLg),
                       Text(
                         loan.lenderName ?? 'Lender pending',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+                        style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
                       ),
                     ],
                   ),
@@ -177,7 +177,7 @@ class ActiveLoanCard extends ConsumerWidget {
               borderRadius: BorderRadius.circular(AppRadius.full),
               child: LinearProgressIndicator(
                 value: loan.repaidPercent.toDouble(),
-                backgroundColor: AppColors.border,
+                backgroundColor: Palette.border,
                 color: AppColors.primary,
                 minHeight: 6,
               ),
@@ -185,7 +185,7 @@ class ActiveLoanCard extends ConsumerWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               '${(loan.repaidPercent * 100).round()}% repaid',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+              style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
             ),
           ],
         ),
@@ -196,9 +196,9 @@ class ActiveLoanCard extends ConsumerWidget {
   Widget _empty(BuildContext context) => Container(
     padding: const EdgeInsets.all(AppSpacing.lg),
     decoration: BoxDecoration(
-      color: AppColors.surface,
+      color: Palette.surface,
       borderRadius: BorderRadius.circular(AppRadius.lg),
-      border: Border.all(color: AppColors.border),
+      border: Border.all(color: Palette.border),
     ),
     child: Row(
       children: [
@@ -207,7 +207,7 @@ class ActiveLoanCard extends ConsumerWidget {
         Expanded(
           child: Text(
             'No active loans. Build a feasibility plan first, then apply with it.',
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
           ),
         ),
         TextButton(
@@ -221,7 +221,7 @@ class ActiveLoanCard extends ConsumerWidget {
   Widget _detail(String label, String value) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(label, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+      Text(label, style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
       Text(value, style: AppTextStyles.labelLg),
     ],
   );
@@ -262,7 +262,7 @@ class HomeMarketPrices extends ConsumerWidget {
 
   Widget _note(String text) => Padding(
     padding: const EdgeInsets.all(AppSpacing.md),
-    child: Text(text, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+    child: Text(text, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
   );
 }
 
@@ -280,19 +280,19 @@ class _PriceTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(c.name, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+            Text(c.name, style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
             Text(
               '\$${c.currentPrice.toStringAsFixed(2)}',
-              style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary),
             ),
-            Text(c.unit, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+            Text(c.unit, style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
             const SizedBox(height: 4),
             Row(
               children: [
@@ -399,7 +399,7 @@ class HomeSyncBanner extends ConsumerWidget {
                 style: AppTextStyles.labelMd.copyWith(color: color),
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.textTertiary),
+            Icon(Icons.chevron_right_rounded, size: 18, color: Palette.textTertiary),
           ],
         ),
       ),

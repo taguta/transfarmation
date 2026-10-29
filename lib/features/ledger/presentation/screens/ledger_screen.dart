@@ -67,7 +67,7 @@ class LedgerScreen extends ConsumerWidget {
                   child: Text(
                     'No entries yet. Record every sale and expense so lenders can see a verified history.',
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
                   ),
                 ),
               for (final e in list)
@@ -106,7 +106,7 @@ class LedgerScreen extends ConsumerWidget {
                         Icon(
                           e.isSynced ? Icons.cloud_done_rounded : Icons.cloud_upload_outlined,
                           size: 14,
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ],
                     ),

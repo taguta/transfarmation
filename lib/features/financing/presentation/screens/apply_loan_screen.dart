@@ -179,7 +179,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                   Expanded(
                     child: Container(
                       height: 2,
-                      color: isDone ? AppColors.primary : AppColors.border,
+                      color: isDone ? AppColors.primary : Palette.border,
                     ),
                   ),
                 Container(
@@ -190,8 +190,8 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                         isDone
                             ? AppColors.primary
                             : isActive
-                            ? AppColors.primarySurface
-                            : AppColors.surfaceElevated,
+                            ? Palette.primarySurface
+                            : Palette.surfaceElevated,
                     shape: BoxShape.circle,
                     border:
                         isActive
@@ -212,7 +212,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                                 color:
                                     isActive
                                         ? AppColors.primary
-                                        : AppColors.textTertiary,
+                                        : Palette.textTertiary,
                               ),
                             ),
                   ),
@@ -221,7 +221,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                   Expanded(
                     child: Container(
                       height: 2,
-                      color: isDone ? AppColors.primary : AppColors.border,
+                      color: isDone ? AppColors.primary : Palette.border,
                     ),
                   ),
               ],
@@ -255,13 +255,13 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
         children: [
           Text(
             'Farm Information',
-            style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Tell us about your farming operation',
             style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -320,13 +320,13 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
         children: [
           Text(
             'Crop Details',
-            style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'What are you growing this season?',
             style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -371,7 +371,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.infoSurface,
+              color: Palette.infoSurface,
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(color: AppColors.info.withValues(alpha: 0.3)),
             ),
@@ -405,13 +405,13 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
         children: [
           Text(
             'Loan Details',
-            style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'How much funding do you need?',
             style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -483,7 +483,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.accentSurface,
+              color: Palette.accentSurface,
               borderRadius: BorderRadius.circular(AppRadius.md),
             ),
             child: Column(
@@ -492,7 +492,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                 Text(
                   'Estimated Monthly Repayment',
                   style: AppTextStyles.labelMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -501,13 +501,13 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                       ? '\$${((double.tryParse(_amountController.text) ?? 0) * (1 + 0.12 * _months / 12) / _months).toStringAsFixed(0)}/month'
                       : '--',
                   style: AppTextStyles.h2.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 Text(
                   'at 12% annual interest (estimate only; the lender sets the real rate)',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textTertiary,
+                    color: Palette.textTertiary,
                   ),
                 ),
               ],
@@ -525,7 +525,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
     if (plans.isEmpty) {
       return Text(
         'Tip: build a feasibility plan first and you can attach it to strengthen this application.',
-        style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+        style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
       );
     }
     return Column(
@@ -574,13 +574,13 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
         children: [
           Text(
             'Review Application',
-            style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.h2.copyWith(color: Palette.textPrimary),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Please confirm all details before submitting',
             style: AppTextStyles.bodyMd.copyWith(
-              color: AppColors.textSecondary,
+              color: Palette.textSecondary,
             ),
           ),
           const SizedBox(height: AppSpacing.xxl),
@@ -619,8 +619,8 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
+        color: Palette.surface,
+        border: Border(top: BorderSide(color: Palette.border)),
       ),
       child: SafeArea(
         child: Row(
@@ -661,7 +661,7 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                   width: 100,
                   height: 100,
                   decoration: BoxDecoration(
-                    color: AppColors.successSurface,
+                    color: Palette.successSurface,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -674,14 +674,14 @@ class _ApplyLoanScreenState extends ConsumerState<ApplyLoanScreen> {
                 Text(
                   'Application Submitted!',
                   style: AppTextStyles.h1.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
                   'Your loan application has been saved locally and will be synced when connected. Lenders will review your application soon.',
                   style: AppTextStyles.bodyMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -724,9 +724,9 @@ class _ReviewSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Palette.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -738,7 +738,7 @@ class _ReviewSection extends StatelessWidget {
               Text(
                 title,
                 style: AppTextStyles.labelLg.copyWith(
-                  color: AppColors.textPrimary,
+                  color: Palette.textPrimary,
                 ),
               ),
             ],
@@ -753,13 +753,13 @@ class _ReviewSection extends StatelessWidget {
                   Text(
                     e.key,
                     style: AppTextStyles.bodySm.copyWith(
-                      color: AppColors.textTertiary,
+                      color: Palette.textTertiary,
                     ),
                   ),
                   Text(
                     e.value,
                     style: AppTextStyles.labelMd.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Palette.textPrimary,
                     ),
                   ),
                 ],

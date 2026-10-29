@@ -36,6 +36,7 @@ dependencies:
   pdf: ^3.13.1
   printing: ^5.15.1
   sqflite_common_ffi_web: ^1.2.0
+  crypto: ^3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -44,6 +45,7 @@ dev_dependencies:
   riverpod_generator: ^2.6.3
   build_runner: ^2.4.14
   flutter_launcher_icons: ^0.14.4
+  sqflite_common_ffi: ^2.4.5
 
 flutter:
   uses-material-design: true

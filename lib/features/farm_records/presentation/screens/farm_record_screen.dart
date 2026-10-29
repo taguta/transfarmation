@@ -52,10 +52,10 @@ class _FarmRecordScreenState extends ConsumerState<FarmRecordScreen> with Single
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Farm Records', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                          Text('Farm Records', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                           const SizedBox(height: 2),
                           Text('Track fields, livestock & expenses',
-                              style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                              style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
                           const SizedBox(height: AppSpacing.xxl),
 
                           // Farm info card
@@ -75,7 +75,7 @@ class _FarmRecordScreenState extends ConsumerState<FarmRecordScreen> with Single
                       TabBar(
                         controller: _tabController,
                         labelColor: AppColors.forestGreen,
-                        unselectedLabelColor: AppColors.textSecondary,
+                        unselectedLabelColor: Palette.textSecondary,
                         indicatorColor: AppColors.forestGreen,
                         tabs: const [
                           Tab(text: 'Fields'),
@@ -249,7 +249,7 @@ class _StatCard extends StatelessWidget {
             Icon(icon, size: 20, color: color),
             const SizedBox(height: 4),
             Text(value, style: AppTextStyles.h4.copyWith(color: color)),
-            Text(label, style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+            Text(label, style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
           ],
         ),
       ),
@@ -278,7 +278,7 @@ class _FieldsTabState extends State<_FieldsTab> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Field Layout', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('Field Layout', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               SegmentedButton<bool>(
                 segments: const [
                   ButtonSegment(value: true, icon: Icon(Icons.map_rounded), label: Text('GIS Map')),
@@ -396,9 +396,9 @@ class _FieldCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,7 +406,7 @@ class _FieldCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(field.name, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
+                child: Text(field.name, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -422,7 +422,7 @@ class _FieldCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Text(field.currentCrop, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+          Text(field.currentCrop, style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
@@ -467,7 +467,7 @@ class _FieldCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Expenses', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
+                Text('Expenses', style: AppTextStyles.labelMd.copyWith(color: Palette.textSecondary)),
                 Text(
                   '\$${field.totalExpenses.toStringAsFixed(0)}',
                   style: AppTextStyles.h4.copyWith(color: Colors.redAccent),
@@ -477,7 +477,7 @@ class _FieldCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.xs),
             Text(
               '\$${field.costPerHectare.toStringAsFixed(0)}/ha',
-              style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
             ),
           ],
         ],
@@ -496,9 +496,9 @@ class _FieldDetail extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 14, color: AppColors.textSecondary),
+        Icon(icon, size: 14, color: Palette.textSecondary),
         const SizedBox(width: 4),
-        Text(label, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+        Text(label, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
       ],
     );
   }
@@ -547,9 +547,9 @@ class _LivestockCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -571,11 +571,11 @@ class _LivestockCard extends StatelessWidget {
                   children: [
                     Text(
                       record.name ?? record.tagNumber ?? '${record.breed} ${record.sex}',
-                      style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary),
+                      style: AppTextStyles.h4.copyWith(color: Palette.textPrimary),
                     ),
                     Text(
                       '${record.type.toUpperCase()} • ${record.breed}',
-                      style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
                     ),
                   ],
                 ),
@@ -598,7 +598,7 @@ class _LivestockCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             const Divider(height: 1),
             const SizedBox(height: AppSpacing.sm),
-            Text('Recent Vet Events', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
+            Text('Recent Vet Events', style: AppTextStyles.labelMd.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.xs),
             ...record.vetEvents.take(2).map((v) => Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -610,11 +610,11 @@ class _LivestockCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Expanded(
-                    child: Text(v.description, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary)),
+                    child: Text(v.description, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary)),
                   ),
                   Text(
                     DateFormat('dd MMM').format(v.date),
-                    style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary),
                   ),
                 ],
               ),
@@ -653,7 +653,7 @@ class _ExpensesTab extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         // Category breakdown
-        Text('Expense Breakdown', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+        Text('Expense Breakdown', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
         const SizedBox(height: AppSpacing.md),
         ...sortedCats.map((cat) {
           final total = allExpenses.fold<double>(0, (s, e) => s + e.value.amount);
@@ -666,7 +666,7 @@ class _ExpensesTab extends StatelessWidget {
                   width: 90,
                   child: Text(
                     cat.key[0].toUpperCase() + cat.key.substring(1),
-                    style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+                    style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
                   ),
                 ),
                 Expanded(
@@ -674,7 +674,7 @@ class _ExpensesTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
                       value: pct,
-                      backgroundColor: AppColors.borderLight,
+                      backgroundColor: Palette.borderLight,
                       color: _categoryColor(cat.key),
                       minHeight: 8,
                     ),
@@ -686,7 +686,7 @@ class _ExpensesTab extends StatelessWidget {
                   child: Text(
                     '\$${cat.value.toStringAsFixed(0)}',
                     textAlign: TextAlign.right,
-                    style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
+                    style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary),
                   ),
                 ),
               ],
@@ -697,16 +697,16 @@ class _ExpensesTab extends StatelessWidget {
         const SizedBox(height: AppSpacing.xxl),
 
         // Recent transactions
-        Text('Recent Transactions', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+        Text('Recent Transactions', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
         const SizedBox(height: AppSpacing.md),
         ...allExpenses.take(10).map((entry) => Padding(
           padding: const EdgeInsets.only(bottom: AppSpacing.sm),
           child: Container(
             padding: const EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Palette.surface,
               borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(color: AppColors.borderLight),
+              border: Border.all(color: Palette.borderLight),
             ),
             child: Row(
               children: [
@@ -723,8 +723,8 @@ class _ExpensesTab extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(entry.value.description, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary)),
-                      Text(entry.key, style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                      Text(entry.value.description, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary)),
+                      Text(entry.key, style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                     ],
                   ),
                 ),
@@ -737,7 +737,7 @@ class _ExpensesTab extends StatelessWidget {
                     ),
                     Text(
                       DateFormat('dd MMM').format(entry.value.date),
-                      style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary),
                     ),
                   ],
                 ),
@@ -806,14 +806,14 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.landscape_rounded, size: 64, color: AppColors.textSecondary.withValues(alpha: 0.3)),
+            Icon(Icons.landscape_rounded, size: 64, color: Palette.textSecondary.withValues(alpha: 0.3)),
             const SizedBox(height: AppSpacing.lg),
-            Text('No Farm Records', style: AppTextStyles.h3.copyWith(color: AppColors.textSecondary)),
+            Text('No Farm Records', style: AppTextStyles.h3.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Add your first farm to start tracking fields, livestock and expenses.',
               textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
             ),
             const SizedBox(height: AppSpacing.xl),
             FilledButton.icon(

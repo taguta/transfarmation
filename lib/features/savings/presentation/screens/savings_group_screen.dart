@@ -31,12 +31,12 @@ class SavingsGroupScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Savings Groups', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Savings Groups', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Mukando — save together, grow together',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
 
               const SizedBox(height: AppSpacing.xxl),
 
@@ -66,14 +66,14 @@ class SavingsGroupScreen extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.xxl),
 
-              Text('My Farm Goals', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('My Farm Goals', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               Container(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: Palette.surface,
                   borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(color: AppColors.border),
+                  border: Border.all(color: Palette.border),
                 ),
                 child: Row(
                   children: [
@@ -84,7 +84,7 @@ class SavingsGroupScreen extends ConsumerWidget {
                           width: 60, height: 60,
                           child: CircularProgressIndicator(
                             value: 0.65,
-                            backgroundColor: AppColors.borderLight,
+                            backgroundColor: Palette.borderLight,
                             color: AppColors.primary,
                             strokeWidth: 6,
                           ),
@@ -97,9 +97,9 @@ class SavingsGroupScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('New Tractor Deposit', style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                          Text('New Tractor Deposit', style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
                           const SizedBox(height: 4),
-                          Text('\$650 / \$1,000 saved', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                          Text('\$650 / \$1,000 saved', style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                         ],
                       ),
                     ),
@@ -111,7 +111,7 @@ class SavingsGroupScreen extends ConsumerWidget {
               // Groups list
               Row(
                 children: [
-                  Text('My Groups', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                  Text('My Groups', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                   const Spacer(),
                   FilledButton.icon(
                     onPressed: () {
@@ -133,7 +133,7 @@ class SavingsGroupScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xxl),
 
               // Recent transactions
-              Text('Recent Activity', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+              Text('Recent Activity', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
               const SizedBox(height: AppSpacing.md),
               _TransactionsList(),
             ],
@@ -198,9 +198,9 @@ class _GroupCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +210,7 @@ class _GroupCard extends StatelessWidget {
                 Container(
                   width: 44, height: 44,
                   decoration: BoxDecoration(
-                    color: AppColors.primarySurface,
+                    color: Palette.primarySurface,
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: const Icon(Icons.group_rounded, color: AppColors.primary),
@@ -220,16 +220,16 @@ class _GroupCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(group.name, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
+                      Text(group.name, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
                       Text('${group.memberCount}/${group.maxMembers} members • ${group.frequency}',
-                          style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                          style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                     ],
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.successSurface,
+                    color: Palette.successSurface,
                     borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                   child: Text(group.status.toUpperCase(),
@@ -238,14 +238,14 @@ class _GroupCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
-            Text(group.description, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary), maxLines: 2),
+            Text(group.description, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary), maxLines: 2),
             const SizedBox(height: AppSpacing.md),
 
             // Contribution & next payout
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.surfaceElevated,
+                color: Palette.surfaceElevated,
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               child: Row(
@@ -254,24 +254,24 @@ class _GroupCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Contribution', style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                        Text('Contribution', style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                         Text('\$${group.contributionAmount.toStringAsFixed(2)}/${group.frequency}',
                             style: AppTextStyles.labelLg.copyWith(color: AppColors.primary)),
                       ],
                     ),
                   ),
-                  Container(width: 1, height: 32, color: AppColors.border),
+                  Container(width: 1, height: 32, color: Palette.border),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: AppSpacing.md),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Next Payout', style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                          Text('Next Payout', style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                           Text(DateFormat.yMMMd().format(group.nextPayoutDate),
                               style: AppTextStyles.labelLg.copyWith(color: AppColors.accent)),
                           Text(group.nextRecipient,
-                              style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                              style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                         ],
                       ),
                     ),
@@ -283,13 +283,13 @@ class _GroupCard extends StatelessWidget {
             // Members progress
             if (group.members.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.md),
-              Text('Payout Progress', style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+              Text('Payout Progress', style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
               const SizedBox(height: AppSpacing.xs),
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.full),
                 child: LinearProgressIndicator(
                   value: group.members.where((m) => m.hasReceivedPayout).length / group.members.length,
-                  backgroundColor: AppColors.surfaceElevated,
+                  backgroundColor: Palette.surfaceElevated,
                   valueColor: const AlwaysStoppedAnimation(AppColors.primary),
                   minHeight: 8,
                 ),
@@ -297,7 +297,7 @@ class _GroupCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 '${group.members.where((m) => m.hasReceivedPayout).length} of ${group.members.length} members received payout',
-                style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+                style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
               ),
             ],
 
@@ -332,9 +332,9 @@ class _TransactionsList extends ConsumerWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: Row(
             children: [
@@ -342,8 +342,8 @@ class _TransactionsList extends ConsumerWidget {
                 width: 36, height: 36,
                 decoration: BoxDecoration(
                   color: t.type == 'payout'
-                      ? AppColors.successSurface
-                      : AppColors.primarySurface,
+                      ? Palette.successSurface
+                      : Palette.primarySurface,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -357,9 +357,9 @@ class _TransactionsList extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(t.memberName, style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                    Text(t.memberName, style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
                     Text(t.type == 'payout' ? 'Payout received' : 'Contribution',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                        style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                   ],
                 ),
               ),
@@ -369,11 +369,11 @@ class _TransactionsList extends ConsumerWidget {
                   Text(
                     '${t.type == 'payout' ? '+' : '-'}\$${t.amount.toStringAsFixed(2)}',
                     style: AppTextStyles.labelLg.copyWith(
-                      color: t.type == 'payout' ? AppColors.success : AppColors.textPrimary,
+                      color: t.type == 'payout' ? AppColors.success : Palette.textPrimary,
                     ),
                   ),
                   Text(DateFormat.MMMd().format(t.date),
-                      style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                      style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                 ],
               ),
             ],

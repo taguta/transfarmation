@@ -12,7 +12,7 @@ import 'firebase_options.dart';
 import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
 import 'core/sync/connectivity_sync_notifier.dart';
-import 'core/sync/firestore_listener.dart';
+import 'theme/app_colors.dart' show Palette;
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
 import 'features/farm_records/infrastructure/datasource/local/farm_sqlite.dart';
@@ -74,6 +74,18 @@ class _TransfarmationAppState extends ConsumerState<TransfarmationApp> {
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       routerConfig: router,
+      builder: (context, child) {
+        final dark = Theme.of(context).brightness == Brightness.dark;
+        if (Palette.dark != dark) {
+          Palette.dark = dark;
+          // Screens read Palette directly and many are const, so they would
+          // not repaint on their own: ask every element to rebuild.
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => WidgetsBinding.instance.reassembleApplication(),
+          );
+        }
+        return child ?? const SizedBox.shrink();
+      },
     );
   }
 }

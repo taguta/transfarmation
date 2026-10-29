@@ -58,7 +58,7 @@ class ServicesScreen extends ConsumerWidget {
                     child: Text(
                       'All Services',
                       style: AppTextStyles.h1.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -69,7 +69,7 @@ class ServicesScreen extends ConsumerWidget {
               Text(
                 'Everything you need for your farming journey',
                 style: AppTextStyles.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Palette.textSecondary,
                 ),
               ),
 
@@ -134,9 +134,9 @@ class _ServiceTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: Palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: Palette.border),
           ),
           child: Row(
             children: [
@@ -157,22 +157,22 @@ class _ServiceTile extends StatelessWidget {
                     Text(
                       title,
                       style: AppTextStyles.labelLg.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Palette.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
                       style: AppTextStyles.bodySm.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Palette.textSecondary,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
-                color: AppColors.textTertiary,
+                color: Palette.textTertiary,
               ),
             ],
           ),

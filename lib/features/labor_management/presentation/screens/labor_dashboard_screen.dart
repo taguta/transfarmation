@@ -32,7 +32,7 @@ class LaborDashboardScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Labor & Tasks', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Labor & Tasks', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.person_add_alt_1_rounded, color: AppColors.primary),
@@ -46,7 +46,7 @@ class LaborDashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 2),
               Text('Manage farm workers and daily assignments',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
               
               const SizedBox(height: AppSpacing.lg),
 
@@ -54,7 +54,7 @@ class LaborDashboardScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
-                  color: AppColors.successSurface,
+                  color: Palette.successSurface,
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                   border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
                 ),
@@ -73,9 +73,9 @@ class LaborDashboardScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('GPS Auto-Checkin Active', style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary)),
+                          Text('GPS Auto-Checkin Active', style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary)),
                           Text('Workers crossing the farm perimeter geofence are logged automatically.', 
-                            style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                            style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
                         ],
                       ),
                     ),
@@ -114,7 +114,7 @@ class LaborDashboardScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Team Registry', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                  Text('Team Registry', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                   TextButton(
                     onPressed: () {},
                     child: const Text('View All'),
@@ -137,7 +137,7 @@ class LaborDashboardScreen extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Pending Tasks', style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary)),
+                  Text('Pending Tasks', style: AppTextStyles.h3.copyWith(color: Palette.textPrimary)),
                   IconButton(
                     icon: const Icon(Icons.add_task_rounded, color: AppColors.primary),
                     onPressed: () => showModalBottomSheet(
@@ -187,8 +187,8 @@ class _StatCard extends StatelessWidget {
         children: [
           Icon(icon, color: color, size: 24),
           const SizedBox(height: AppSpacing.md),
-          Text(value, style: AppTextStyles.h2.copyWith(color: AppColors.textPrimary)),
-          Text(title, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+          Text(value, style: AppTextStyles.h2.copyWith(color: Palette.textPrimary)),
+          Text(title, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
         ],
       ),
     );
@@ -207,9 +207,9 @@ class _WorkerCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Row(
           children: [
@@ -229,8 +229,8 @@ class _WorkerCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(worker.name, style: AppTextStyles.labelLg.copyWith(color: AppColors.textPrimary)),
-                  Text(worker.phone, style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                  Text(worker.name, style: AppTextStyles.labelLg.copyWith(color: Palette.textPrimary)),
+                  Text(worker.phone, style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                 ],
               ),
             ),
@@ -246,7 +246,7 @@ class _WorkerCard extends StatelessWidget {
                   child: Text(worker.role, style: AppTextStyles.caption.copyWith(color: roleColor, fontWeight: FontWeight.w600)),
                 ),
                 const SizedBox(height: 4),
-                Text('\$${worker.dailyWage.toStringAsFixed(2)}/day', style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary)),
+                Text('\$${worker.dailyWage.toStringAsFixed(2)}/day', style: AppTextStyles.caption.copyWith(color: Palette.textSecondary)),
               ],
             ),
           ],
@@ -269,15 +269,15 @@ class _TaskCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: Palette.border),
         ),
         child: Row(
           children: [
             Icon(
               isPending ? Icons.radio_button_unchecked_rounded : Icons.pending_actions_rounded,
-              color: isPending ? AppColors.textTertiary : AppColors.warning,
+              color: isPending ? Palette.textTertiary : AppColors.warning,
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -285,7 +285,7 @@ class _TaskCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(task.name, style: AppTextStyles.labelLg.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                     decoration: task.status == 'completed' ? TextDecoration.lineThrough : null,
                   )),
                   const SizedBox(height: 2),
@@ -295,9 +295,9 @@ class _TaskCard extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(workerName, style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
                       const SizedBox(width: 12),
-                      const Icon(Icons.calendar_today_rounded, size: 12, color: AppColors.textTertiary),
+                      Icon(Icons.calendar_today_rounded, size: 12, color: Palette.textTertiary),
                       const SizedBox(width: 4),
-                      Text(DateFormat('MMM d').format(task.date), style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary)),
+                      Text(DateFormat('MMM d').format(task.date), style: AppTextStyles.caption.copyWith(color: Palette.textTertiary)),
                     ],
                   ),
                 ],

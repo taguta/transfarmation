@@ -229,7 +229,7 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.lg),
             decoration: BoxDecoration(
-              color: AppColors.accentSurface,
+              color: Palette.accentSurface,
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
                 color: AppColors.accent.withValues(alpha: 0.3),
@@ -241,7 +241,7 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
                 Text(
                   'Estimated Total',
                   style: AppTextStyles.labelMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
                 Text(
@@ -271,12 +271,12 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
           onChanged: (v) => setState(() => _negotiable = v),
           title: Text(
             'Price is negotiable',
-            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary),
           ),
           subtitle: Text(
             'Buyers can make counter-offers',
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ),
           contentPadding: EdgeInsets.zero,
@@ -308,12 +308,12 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
           onChanged: (v) => setState(() => _deliveryAvailable = v),
           title: Text(
             'Delivery available',
-            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary),
           ),
           subtitle: Text(
             'You can deliver to the buyer',
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.textTertiary,
+              color: Palette.textTertiary,
             ),
           ),
           contentPadding: EdgeInsets.zero,
@@ -337,7 +337,7 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
         Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
-            color: AppColors.surfaceElevated,
+            color: Palette.surfaceElevated,
             borderRadius: BorderRadius.circular(AppRadius.lg),
           ),
           child: Column(
@@ -346,7 +346,7 @@ class _SellProduceScreenState extends ConsumerState<SellProduceScreen> {
               Text(
                 'Listing Preview',
                 style: AppTextStyles.labelLg.copyWith(
-                  color: AppColors.textPrimary,
+                  color: Palette.textPrimary,
                 ),
               ),
               const Divider(height: AppSpacing.xl),
@@ -468,11 +468,11 @@ class _PreviewRow extends StatelessWidget {
         children: [
           Text(
             label,
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textTertiary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textTertiary),
           ),
           Text(
             value,
-            style: AppTextStyles.labelMd.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.labelMd.copyWith(color: Palette.textPrimary),
           ),
         ],
       ),

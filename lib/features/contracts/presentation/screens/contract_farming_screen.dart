@@ -34,12 +34,12 @@ class ContractFarmingScreen extends ConsumerWidget {
                     onPressed: () => context.pop(),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Contract Farming', style: AppTextStyles.h1.copyWith(color: AppColors.textPrimary)),
+                  Text('Contract Farming', style: AppTextStyles.h1.copyWith(color: Palette.textPrimary)),
                 ],
               ),
               const SizedBox(height: 2),
               Text('Guaranteed markets with input support',
-                  style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
 
               const SizedBox(height: AppSpacing.lg),
 
@@ -61,13 +61,13 @@ class ContractFarmingScreen extends ConsumerWidget {
                           color: isSelected ? AppColors.forestGreen : Colors.transparent,
                           borderRadius: BorderRadius.circular(AppRadius.full),
                           border: Border.all(
-                            color: isSelected ? AppColors.forestGreen : AppColors.borderLight,
+                            color: isSelected ? AppColors.forestGreen : Palette.borderLight,
                           ),
                         ),
                         child: Text(
                           f[0].toUpperCase() + f.substring(1),
                           style: AppTextStyles.labelSm.copyWith(
-                            color: isSelected ? Colors.white : AppColors.textSecondary,
+                            color: isSelected ? Colors.white : Palette.textSecondary,
                           ),
                         ),
                       ),
@@ -89,7 +89,7 @@ class ContractFarmingScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxl),
                   child: Center(
                     child: Text('No contracts found for this filter',
-                        style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary)),
+                        style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary)),
                   ),
                 ),
 
@@ -125,8 +125,8 @@ class _ContractCard extends ConsumerWidget {
       case 'applied': return Colors.blue;
       case 'accepted': return AppColors.forestGreen;
       case 'active': return AppColors.forestGreen;
-      case 'completed': return AppColors.textSecondary;
-      default: return AppColors.textSecondary;
+      case 'completed': return Palette.textSecondary;
+      default: return Palette.textSecondary;
     }
   }
 
@@ -149,9 +149,9 @@ class _ContractCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.lg),
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Palette.borderLight),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,10 +172,10 @@ class _ContractCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(contract.buyerName, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
+                    Text(contract.buyerName, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
                     Text(
                       contract.buyerType[0].toUpperCase() + contract.buyerType.substring(1),
-                      style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary),
+                      style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary),
                     ),
                   ],
                 ),
@@ -209,15 +209,15 @@ class _ContractCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Commodity', style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
-                      Text(contract.commodity, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                      Text('Commodity', style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
+                      Text(contract.commodity, style: AppTextStyles.bodyMd.copyWith(color: Palette.textPrimary, fontWeight: FontWeight.w600)),
                     ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Price', style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary)),
+                    Text('Price', style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary)),
                     Text(
                       '\$${contract.pricePerUnit.toStringAsFixed(contract.pricePerUnit < 10 ? 2 : 0)} ${contract.unit}',
                       style: AppTextStyles.h4.copyWith(color: AppColors.forestGreen),
@@ -265,16 +265,16 @@ class _ContractCard extends ConsumerWidget {
           // Requirements
           if (contract.requirements.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.md),
-            Text('Requirements', style: AppTextStyles.labelMd.copyWith(color: AppColors.textSecondary)),
+            Text('Requirements', style: AppTextStyles.labelMd.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.xs),
             ...contract.requirements.map((r) => Padding(
               padding: const EdgeInsets.only(top: 2),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.check_circle_outline_rounded, size: 14, color: AppColors.textSecondary),
+                  Icon(Icons.check_circle_outline_rounded, size: 14, color: Palette.textSecondary),
                   const SizedBox(width: 6),
-                  Expanded(child: Text(r, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary))),
+                  Expanded(child: Text(r, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary))),
                 ],
               ),
             )),
@@ -289,7 +289,7 @@ class _ContractCard extends ConsumerWidget {
                 Text(
                   'Deadline: ${DateFormat('dd MMM yyyy').format(contract.deadline)} ($daysLeft days)',
                   style: AppTextStyles.labelSm.copyWith(
-                    color: daysLeft < 14 ? Colors.redAccent : AppColors.textSecondary,
+                    color: daysLeft < 14 ? Colors.redAccent : Palette.textSecondary,
                   ),
                 ),
               const Spacer(),
@@ -327,19 +327,19 @@ class _DetailChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.borderLight.withValues(alpha: 0.5),
+          color: Palette.borderLight.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 12, color: AppColors.textSecondary),
+            Icon(icon, size: 12, color: Palette.textSecondary),
             const SizedBox(width: 4),
             Flexible(
               child: Text(
                 label,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.labelSm.copyWith(color: AppColors.textSecondary),
+                style: AppTextStyles.labelSm.copyWith(color: Palette.textSecondary),
               ),
             ),
           ],
@@ -389,7 +389,7 @@ class _BenefitRow extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: AppColors.earthBrown),
           const SizedBox(width: AppSpacing.sm),
-          Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary))),
+          Expanded(child: Text(text, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary))),
         ],
       ),
     );

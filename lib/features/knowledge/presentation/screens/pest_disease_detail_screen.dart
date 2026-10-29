@@ -94,7 +94,7 @@ class _PestDetailBody extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  Text(item.description, style: AppTextStyles.bodyMd.copyWith(color: AppColors.textPrimary)),
+                  Text(item.description, style: AppTextStyles.bodyMd.copyWith(color: Palette.textPrimary)),
 
                   const SizedBox(height: AppSpacing.xxl),
                   _alertCard('Symptoms', item.symptoms, Icons.visibility_rounded, AppColors.warning),
@@ -114,7 +114,7 @@ class _PestDetailBody extends StatelessWidget {
                           .map((c) => Chip(
                                 avatar: const Icon(Icons.grass_rounded, size: 16),
                                 label: Text(c),
-                                backgroundColor: AppColors.primarySurface,
+                                backgroundColor: Palette.primarySurface,
                               ))
                           .toList(),
                     ),
@@ -131,7 +131,7 @@ class _PestDetailBody extends StatelessWidget {
                           .map((l) => Chip(
                                 avatar: const Icon(Icons.pets_rounded, size: 16),
                                 label: Text(l),
-                                backgroundColor: AppColors.secondarySurface,
+                                backgroundColor: Palette.secondarySurface,
                               ))
                           .toList(),
                     ),
@@ -148,7 +148,7 @@ class _PestDetailBody extends StatelessWidget {
   }
 
   Widget _section(String title) =>
-      Text(title, style: AppTextStyles.h3.copyWith(color: AppColors.textPrimary));
+      Text(title, style: AppTextStyles.h3.copyWith(color: Palette.textPrimary));
 
   Widget _badge(String text, Color color) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -177,7 +177,7 @@ class _PestDetailBody extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.sm),
-            Text(content, style: AppTextStyles.bodySm.copyWith(color: AppColors.textPrimary)),
+            Text(content, style: AppTextStyles.bodySm.copyWith(color: Palette.textPrimary)),
           ],
         ),
       );

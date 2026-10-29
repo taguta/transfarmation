@@ -96,14 +96,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Text(
                   'Welcome Back',
                   style: AppTextStyles.h1.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   'Sign in to sync your farm plan, ledger and loans',
                   style: AppTextStyles.bodyMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
 
@@ -190,7 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       child: Text(
                         'or',
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.textTertiary,
+                          color: Palette.textTertiary,
                         ),
                       ),
                     ),
@@ -223,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Text(
                       "Don't have an account? ",
                       style: AppTextStyles.bodyMd.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Palette.textSecondary,
                       ),
                     ),
                     TextButton(

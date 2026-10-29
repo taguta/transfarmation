@@ -140,7 +140,7 @@ class _SymptomCheckScreenState extends ConsumerState<SymptomCheckScreen> {
           const SizedBox(height: AppSpacing.xs),
           Text(
             'Tick everything that applies. More detail gives a better result.',
-            style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
           ),
           const SizedBox(height: AppSpacing.md),
           Wrap(
@@ -294,7 +294,7 @@ class _EscalationCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: AppColors.infoSurface,
+        color: Palette.infoSurface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
       child: Column(
@@ -353,7 +353,7 @@ class _MatchCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text('Matches: ${match.matchedSymptoms.join(', ')}', style: AppTextStyles.bodySm),
             const SizedBox(height: AppSpacing.sm),
-            Text(d.description, style: AppTextStyles.bodySm.copyWith(color: AppColors.textSecondary)),
+            Text(d.description, style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary)),
             const SizedBox(height: AppSpacing.md),
             Text('What to do', style: AppTextStyles.labelLg),
             Text(d.treatment, style: AppTextStyles.bodySm),
@@ -363,7 +363,7 @@ class _MatchCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Confirm the product and dose with an agronomist or vet before treating.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textTertiary),
+              style: AppTextStyles.caption.copyWith(color: Palette.textTertiary),
             ),
           ],
         ),

@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.italic,
-                color: isDark ? AppColors.textTertiary : const Color(0xFF777777),
+                color: isDark ? Palette.textTertiary : const Color(0xFF777777),
                 letterSpacing: 0.3,
               ),
             )
@@ -123,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   minHeight: 3,
                   backgroundColor: isDark
                       ? AppColors.primary.withValues(alpha: 0.15)
-                      : AppColors.primarySurface,
+                      : Palette.primarySurface,
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
               ),
@@ -139,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
-                color: isDark ? AppColors.textTertiary : const Color(0xFFAAAAAA),
+                color: isDark ? Palette.textTertiary : const Color(0xFFAAAAAA),
                 letterSpacing: 1.2,
               ),
             )

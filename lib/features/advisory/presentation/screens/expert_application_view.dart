@@ -51,12 +51,12 @@ class ExpertApplicationView extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: AppColors.textTertiary),
+          Icon(icon, size: 48, color: Palette.textTertiary),
           const SizedBox(height: AppSpacing.md),
           Text(title, style: AppTextStyles.h3, textAlign: TextAlign.center),
           const SizedBox(height: AppSpacing.sm),
           Text(text,
-              style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+              style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
               textAlign: TextAlign.center),
         ],
       ),
@@ -163,7 +163,7 @@ class _FormState extends ConsumerState<_Form> {
           const SizedBox(height: AppSpacing.xs),
           Text(
             widget.blurb,
-            style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
           ),
           const SizedBox(height: AppSpacing.lg),
           DropdownButtonFormField<String>(

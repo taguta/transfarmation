@@ -152,7 +152,7 @@ class _FeasibilityScreenState extends ConsumerState<FeasibilityScreen> {
         children: [
           Text(
             'Edit the numbers below. The 24-month plan updates as you type and works offline.',
-            style: AppTextStyles.bodyMd.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
           ),
           const SizedBox(height: AppSpacing.lg),
           _section('Crop'),
@@ -217,7 +217,7 @@ class _FeasibilityScreenState extends ConsumerState<FeasibilityScreen> {
 
   Widget _section(String t) => Padding(
     padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm),
-    child: Text(t, style: AppTextStyles.h4.copyWith(color: AppColors.textPrimary)),
+    child: Text(t, style: AppTextStyles.h4.copyWith(color: Palette.textPrimary)),
   );
 
   Widget _row(List<Widget> children) => Row(
