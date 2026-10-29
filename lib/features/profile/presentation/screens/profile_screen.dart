@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/providers/data_providers.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
@@ -286,25 +287,27 @@ class ProfileScreen extends ConsumerWidget {
               _SettingsTile(
                 icon: Icons.language_rounded,
                 title: 'Language',
-                subtitle: 'English',
+                subtitle: ref.watch(appLanguageProvider).label,
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (ctx) => SimpleDialog(
                       title: const Text('Select Language'),
                       children: [
-                        SimpleDialogOption(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: const Text('English (UK)'),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: const Text('Shona'),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () => Navigator.pop(ctx),
-                          child: const Text('Ndebele'),
-                        ),
+                        for (final l in AppLanguage.values)
+                          SimpleDialogOption(
+                            onPressed: AppStrings.isAvailable(l)
+                                ? () {
+                                    ref.read(appLanguageProvider.notifier).set(l);
+                                    Navigator.pop(ctx);
+                                  }
+                                : null,
+                            child: Text(
+                              AppStrings.isAvailable(l)
+                                  ? l.label
+                                  : '${l.label} (being translated with native speakers)',
+                            ),
+                          ),
                       ],
                     ),
                   );

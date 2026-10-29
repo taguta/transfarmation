@@ -15,6 +15,20 @@ class AppPrefs {
     }
   }
 
+  static Future<String> get language async {
+    try {
+      return (await _box()).get('language', defaultValue: 'en') as String;
+    } catch (_) {
+      return 'en';
+    }
+  }
+
+  static Future<void> setLanguage(String code) async {
+    try {
+      await (await _box()).put('language', code);
+    } catch (_) {}
+  }
+
   static Future<String> get role async {
     try {
       return (await _box()).get('role', defaultValue: 'Farmer') as String;

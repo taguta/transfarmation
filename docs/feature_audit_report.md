@@ -41,9 +41,20 @@ The April audit found these on hardcoded dummy data. A code search on 2026-10-29
 
 ---
 
+## 2a. Corrections found in the second pass (2026-10-29)
+My first re-check searched only for `_dummy` and so missed hard-coded data. A fuller read found:
+* **`/financing` ("My Financing") showed four invented loans, a made-up "Credit Score 72/100" and fixed totals.** It now reads the farmer's real loans, has working filters, an empty state and a loan-file PDF button. The invented credit score is gone, and nothing replaces it: a score is a regulated claim and needs a real method first.
+* **Demo data seeding** (`DataSeeder`, a farm and loans under the guest id `farmer-001`) ran on every start. It now runs only when `REQUIRE_AUTH=false`.
+* **Language picker did nothing.** Shona and Ndebele could be tapped but changed nothing. English is the only available language until reviewed translations exist.
+* **Sync queue:** three queued types (`savings_group_join`, `notification_read`, `notification_mark_all_read`) had no handler and were deleted from the queue without ever reaching the cloud, so savings-group joins were lost. Group joins now sync to `savings_group_members` (rule added, not yet deployed). Notification read state is device-only by design. Unknown types now stay queued instead of being dropped. A failed batch now counts retries properly (it used to reset them), and one run sends at most 400 items to stay under Firestore's 500-write limit.
+* **Still open in sync:** items are marked synced locally *before* the batch commits, so a failed commit can leave a row showing "synced" while still queued. Fix by marking after commit.
+* **Not checked:** other screens may still contain hard-coded sample values. Repayment and offers screens were not reviewed line by line.
+
 ## 2b. Added after the go-to-market audit (2026-10-29)
 * **Farmer Statement (`/statement`)** is built from the ledger and loans (`FarmerStatement`, unit tested). It shows money in, money spent, loans owed and projected take-home.
 * **Consent at registration** is stored as `consentVersion` and `consentAt` on the user profile.
+* **Loan file (PDF)** built from the loan, ledger and shared plan (`LoanFilePdf`, tested).
+* **Data deletion request**, **optional gender and age band** at registration, and **compressed chat photos**.
 * **Sign-in guard** is on by default. Use `--dart-define=REQUIRE_AUTH=false` for testing.
 
 ## 3. Read-Only / Reference Modules

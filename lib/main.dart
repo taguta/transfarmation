@@ -28,7 +28,11 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (kIsWeb) databaseFactory = databaseFactoryFfiWeb;
   final db = await initDatabase();
-  await DataSeeder(db, FarmLocalDataSource(db), LoanLocalDataSource(db)).seedIfEmpty();
+  // Demo farm and loans exist only for guest browsing (REQUIRE_AUTH=false).
+  // A signed-in farmer never sees them, and production builds do not create them.
+  if (!requireAuth) {
+    await DataSeeder(db, FarmLocalDataSource(db), LoanLocalDataSource(db)).seedIfEmpty();
+  }
 
   FlutterNativeSplash.remove();
 

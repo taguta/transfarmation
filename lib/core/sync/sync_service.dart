@@ -20,6 +20,9 @@ class SyncService {
       'sync_queue',
       where: 'retryCount < ?',
       whereArgs: [10],
+      // A Firestore batch holds at most 500 writes; leave headroom and let the
+      // next run pick up the rest.
+      limit: 400,
     );
     
     if (items.isEmpty) return;
@@ -86,8 +89,11 @@ class SyncService {
       }
     } catch (_) {
       // If batch fails, mark them all as failed for this round
+      final counts = {
+        for (final i in items) i['id'] as String: i['retryCount'] as int,
+      };
       for (final id in processedIds) {
-        failedIds[id] = 1; // reset or increment
+        failedIds[id] = (counts[id] ?? 0) + 1;
       }
     }
 
@@ -237,12 +243,27 @@ class SyncService {
         final ref = firestore.collection('ledger_entries').doc(payload['id']);
         batch.set(ref, _owned(payload));
 
+      case 'savings_group_join':
+        final ref = firestore
+            .collection('savings_group_members')
+            .doc('${payload['groupId']}_${payload['farmerId']}');
+        batch.set(ref, _owned(payload));
+
+      // Read state for notifications lives on the device only for now.
+      case 'notification_read':
+      case 'notification_mark_all_read':
+        break;
+
       case 'data_deletion_request':
         final ref = firestore.collection('deletion_requests').doc(payload['id']);
         batch.set(ref, _owned(payload));
 
       case 'ledger_delete':
         batch.delete(firestore.collection('ledger_entries').doc(payload['id']));
+
+      default:
+        // Never drop an item we do not understand: fail it so it stays queued.
+        throw ArgumentError('Unknown sync type: $type');
     }
   }
 

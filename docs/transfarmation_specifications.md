@@ -55,7 +55,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | ID | Requirement | Pri | Status |
 |---|---|---|---|
 | M1 | Loan application, offers and repayment tracking | P0 | Built |
-| M2 | Bank-ready loan file export from ledger and plan data, tested with a bank officer | P1 | Partial |
+| M2 | Bank-ready loan file export from ledger and plan data, tested with a bank officer | P1 | Partial (PDF built from the loan, ledger and shared plan; **not yet tested with a bank officer**) |
 | M3 | Input credit and payouts through a **licensed bank or PSP partner**. Transfarmation does not hold funds | P1 | Not built |
 | M4 | Escrow and settlement waterfall (levies, loan, freight, farmer) | P2 | Not built |
 | M5 | Contractor view of deliveries against contract and side-marketing risk flags | P1 | Partial |
@@ -67,7 +67,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 |---|---|---|---|
 | A1 | USSD/SMS fallback for: view balance, confirm a delivery, receive alerts | P0 | Not built |
 | A2 | Field-agent assisted onboarding that works fully offline, with consent recorded | P0 | Partial |
-| A3 | Shona and Ndebele for all farmer-facing text, reviewed by native speakers. Voice later | P1 | Not built |
+| A3 | Shona and Ndebele for all farmer-facing text, reviewed by native speakers. Voice later | P1 | Partial (translation mechanism and language setting built; only the statement screen is wired; **no Shona or Ndebele text exists yet**, so both are shown as unavailable) |
 | A4 | Low-data mode: compressed images, sync tolerant of days offline | P0 | Partial (photos in diagnosis and expert chat compressed to 1024px at quality 60; multi-day offline sync not yet stress-tested) |
 | A5 | Track women's and youth participation from day one | P1 | Partial (optional gender and age band collected at registration; no reporting view yet) |
 
@@ -170,3 +170,22 @@ See `go_to_market_audit.md` section 6 for the ranked table. The top five: TIMB a
 - Contractor default rates and the real size of side-marketing losses.
 - Funder exclusion policies for tobacco.
 - Acquisition cost and unit economics for comparable smallholder platforms.
+
+---
+
+## 12. Design notes for items not yet built
+
+### Per-recipient data-sharing consent (I4)
+- **Model:** a `data_shares` record per (farmer, recipient, scope) with `grantedAt`, `revokedAt`, and a consent version. Scopes: `ledger_summary`, `plan`, `farm_location`, `loan_file`.
+- **Rule of use:** a lender or contractor workspace may read a farmer's data only while an unrevoked share exists for that scope. Enforce this in Firestore rules, not only in the app.
+- **UX:** the farmer picks the recipient and sees, in plain words, exactly what will be shared. Revoking is one tap. Exporting the loan file to a named lender should create the share.
+- **Open question:** who counts as a recipient (a named bank branch, a contractor company, or an individual officer). Decide with the first pilot partners.
+
+### Local encryption (P1)
+- **Risk:** the SQLite database and the sync queue hold names, phone numbers, farm locations, ledger and loan data in clear text on the device. A lost or shared phone exposes them.
+- **Options:** an encrypted SQLite build (SQLCipher) on Android, with the key held in the platform keystore; on web, browser storage cannot be made secure against someone with the device, so keep sensitive fields minimal there.
+- **Constraints:** a key-loss path (the farmer forgets a PIN) must not destroy synced data, and encryption must not break offline start-up time on low-end phones. Needs a spike on a real low-end device before committing.
+
+### USSD/SMS (A1)
+- **Blocker:** choose an aggregator or telco (for example through Econet) first. Then build a small endpoint that maps a phone number to a farmer, returns the statement summary, and accepts a delivery confirmation.
+- **Data needed on the server:** ledger and loan data already sync to Firestore, so the endpoint can read them. Phone numbers are stored on the user profile.

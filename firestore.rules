@@ -147,6 +147,13 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // A farmer's request to join a savings group. Create-only for now.
+    match /savings_group_members/{id} {
+      allow read: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update, delete: if false;
+    }
+
     match /ledger_entries/{id} {
       allow read, delete: if ownsExisting('farmerId');
       allow create: if createsOwned('farmerId');

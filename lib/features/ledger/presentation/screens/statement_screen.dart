@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/i18n/app_strings.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../financing/presentation/providers/loan_providers.dart';
@@ -27,7 +28,7 @@ class StatementScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: () => context.canPop() ? context.pop() : context.go('/home'),
         ),
-        title: const Text('My Statement'),
+        title: Text(tr(ref, 'statement.title')),
       ),
       body: entries.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -40,29 +41,28 @@ class StatementScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(AppSpacing.lg),
             children: [
-              _TakeHomeCard(statement: s),
+              _TakeHomeCard(statement: s, ref: ref),
               const SizedBox(height: AppSpacing.lg),
-              _line('Money in (sales and other income)', s.income, AppColors.success),
-              _line('Money spent (inputs, labour, levies)', s.costs, AppColors.error),
-              _line('Still owed on loans', s.loanOutstanding, AppColors.error),
+              _line(tr(ref, 'statement.in'), s.income, AppColors.success),
+              _line(tr(ref, 'statement.spent'), s.costs, AppColors.error),
+              _line(tr(ref, 'statement.loans'), s.loanOutstanding, AppColors.error),
               if (s.costsByCategory.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xl),
-                Text('Where the money went', style: AppTextStyles.h3),
+                Text(tr(ref, 'statement.where'), style: AppTextStyles.h3),
                 const SizedBox(height: AppSpacing.sm),
                 for (final c in s.costsByCategory.entries)
                   _line(c.key, c.value, Palette.textPrimary),
               ],
               const SizedBox(height: AppSpacing.xl),
               Text(
-                'This is built from the entries in your Farm Ledger and your loans. '
-                'Add every sale and cost so the numbers match your real position.',
+                tr(ref, 'statement.note'),
                 style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
               ),
               const SizedBox(height: AppSpacing.md),
               OutlinedButton.icon(
                 onPressed: () => context.push('/ledger'),
                 icon: const Icon(Icons.menu_book_rounded),
-                label: const Text('Open Farm Ledger'),
+                label: Text(tr(ref, 'statement.openLedger')),
               ),
             ],
           );
@@ -87,7 +87,8 @@ class StatementScreen extends ConsumerWidget {
 
 class _TakeHomeCard extends StatelessWidget {
   final FarmerStatement statement;
-  const _TakeHomeCard({required this.statement});
+  final WidgetRef ref;
+  const _TakeHomeCard({required this.statement, required this.ref});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +105,7 @@ class _TakeHomeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            owing ? 'You currently owe' : 'You would take home',
+            tr(ref, owing ? 'statement.owe' : 'statement.takeHome'),
             style: AppTextStyles.bodyMd.copyWith(color: Palette.textSecondary),
           ),
           const SizedBox(height: AppSpacing.xs),
@@ -114,9 +115,7 @@ class _TakeHomeCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
-            owing
-                ? 'after counting what you spent and what you still owe on loans.'
-                : 'if everything were settled today, after costs and loans.',
+            tr(ref, owing ? 'statement.owe.sub' : 'statement.takeHome.sub'),
             style: AppTextStyles.bodySm.copyWith(color: Palette.textSecondary),
           ),
         ],
