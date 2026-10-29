@@ -30,6 +30,23 @@ void main() {
     expect(a.shouldEscalate, isTrue);
   });
 
+  test('the more symptoms ticked, the more confidence is allowed', () {
+    expect(SymptomMatcher.capFor(1), 0.5);
+    expect(SymptomMatcher.capFor(2), 0.7);
+    expect(SymptomMatcher.capFor(3), 0.8);
+    expect(SymptomMatcher.capFor(4), SymptomMatcher.maxConfidence);
+  });
+
+  test('two symptoms never score above 70%, even on a full match', () {
+    final a = SymptomMatcher.assess(
+      type: 'crop',
+      selectedTagIds: ['holes', 'larvae'],
+      knowledge: knowledge,
+      subject: 'Maize',
+    );
+    expect(a.matches.first.confidence, lessThanOrEqualTo(0.7));
+  });
+
   test('crop symptoms never return livestock conditions', () {
     final a = SymptomMatcher.assess(
       type: 'crop',

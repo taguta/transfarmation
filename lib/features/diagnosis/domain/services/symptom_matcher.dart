@@ -83,6 +83,15 @@ class SymptomMatcher {
   static const maxConfidence = 0.85;
   static const thinEvidenceCap = 0.5;
 
+  /// The most confidence a given number of ticked symptoms can justify: more
+  /// evidence, more room. Four or more symptoms reach [maxConfidence].
+  static double capFor(int symptomCount) => switch (symptomCount) {
+        <= 1 => thinEvidenceCap,
+        2 => 0.7,
+        3 => 0.8,
+        _ => maxConfidence,
+      };
+
   static List<SymptomTag> tagsFor(String type) =>
       symptomTags.where((t) => t.type == type).toList();
 
@@ -122,8 +131,8 @@ class SymptomMatcher {
       final precision = hits.length / selected.length;
       final recall = hits.length / diseaseTags.length;
       var confidence = (0.6 * precision + 0.4 * recall) * maxConfidence;
-      // One symptom can never justify a "likely" match.
-      if (selected.length < 2) confidence = confidence.clamp(0.0, thinEvidenceCap);
+      // Few symptoms can never justify a high-confidence match.
+      confidence = confidence.clamp(0.0, capFor(selected.length));
       matches.add(SymptomMatch(d, confidence, hits.map((t) => t.label).toList()));
     }
     matches.sort((a, b) => b.confidence.compareTo(a.confidence));

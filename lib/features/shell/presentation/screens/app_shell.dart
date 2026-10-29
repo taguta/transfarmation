@@ -72,7 +72,10 @@ class AppShell extends ConsumerWidget {
     if (location.startsWith('/services')) return 3;
     if (location.startsWith('/expert')) return 4;
     if (location.startsWith('/profile')) return 5;
-    return 0;
+    final path = Uri.parse(location).path;
+    if (path == '/' || path == '/home') return 0;
+    // A page that belongs to no tab (e.g. /ledger) highlights none.
+    return -1;
   }
 
   static const _mainRoots = {
@@ -88,7 +91,7 @@ class AppShell extends ConsumerWidget {
   /// (e.g. /farm-records → "Farm Records").
   static String _titleFor(String location, int index) {
     final segments = Uri.parse(location).pathSegments;
-    if (segments.isEmpty || _mainRoots.contains(segments.first)) {
+    if (index >= 0 && (segments.isEmpty || _mainRoots.contains(segments.first))) {
       return _destinations[index].label;
     }
     return segments.first

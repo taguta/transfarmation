@@ -47,17 +47,6 @@ class WorkspaceHeader extends ConsumerWidget {
             ],
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Palette.surface,
-            shape: BoxShape.circle,
-            border: Border.all(color: Palette.border),
-          ),
-          child: IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () => context.push('/notifications'),
-          ),
-        ),
       ],
     );
   }
