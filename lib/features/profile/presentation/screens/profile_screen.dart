@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/account/sign_out.dart';
 import '../../../../core/i18n/app_strings.dart';
 import '../../../../core/providers/data_providers.dart';
 import '../../../../theme/app_colors.dart';
@@ -413,26 +413,7 @@ class ProfileScreen extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  onPressed: () async {
-                    try {
-                      await FirebaseAuth.instance.signOut();
-                      try {
-                        await GoogleSignIn().signOut();
-                      } catch (_) {}
-                      if (context.mounted) {
-                        context.go('/login');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Signed out successfully.')),
-                        );
-                      }
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Error signing out: $e')),
-                        );
-                      }
-                    }
-                  },
+                  onPressed: () => signOutAndClear(context, ref),
                   icon: const Icon(Icons.logout_rounded),
                   label: const Text('Sign Out'),
                   style: OutlinedButton.styleFrom(

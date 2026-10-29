@@ -51,7 +51,12 @@ My first re-check searched only for `_dummy` and so missed hard-coded data. A fu
 * **Not checked:** other screens may still contain hard-coded sample values. Repayment and offers screens were not reviewed line by line.
 
 ## 2a-ii. Privacy gaps still open (found 2026-10-29)
-* **Local data is not scoped per farmer.** For example `LedgerRepository.getEntries()` reads every row in the local table with no `farmerId` filter. On a phone used by two people, the second person can see the first person's ledger until the data is cleared. Check every local repository, and either filter by `farmerId` or clear local data on sign-out.
+* **Local data was not scoped per farmer (fixed 2026-10-29).** `LedgerRepository.getEntries()` read every row with no `farmerId` filter, so on a shared phone the second person could see the first person's ledger. Now:
+  * The device remembers whose data it holds (`dataOwnerUid`). When a different account signs in, the previous person's per-farmer tables, sync queue and sync timestamps are cleared first (`AccountGuard`, `LocalDataCleaner`), so queued items can never be sent under someone else's account.
+  * **Sign out** first tries to send pending changes. If some cannot be sent (no signal) the person must confirm that they will be deleted. It then clears the data and forgets the owner.
+  * The app's providers are rebuilt whenever a signed-in person leaves, so nothing stays in memory.
+  * The ledger query is also filtered by farmer, as a second layer.
+  * **Residual gaps:** other local repositories still read without a farmer filter and rely on the clearing above. A device that held data before this change has no recorded owner and is treated as belonging to the first account that signs in. Guest mode (`REQUIRE_AUTH=false`) shares one demo identity. A person who force-closes the app without signing out leaves their data on the phone until the next person signs in, when it is cleared.
 * **Sharing is recorded, not enforced.** The new sharing screen records who the farmer has shared with. Lenders and contractors are not yet restricted to active shares on the server.
 
 ## 2b. Added after the go-to-market audit (2026-10-29)

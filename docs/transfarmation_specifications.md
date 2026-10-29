@@ -79,6 +79,7 @@ One identity can hold several roles. Each role sees its own workspace (a configu
 | I2 | Role-based access in the app and in Firestore rules | P0 | Built |
 | I3 | Explicit consent at registration, stored with a version and timestamp (`consentVersion`, `consentAt`) | P0 | Built |
 | I4 | Consent for sharing farmer data with a named lender or contractor, per recipient, revocable | P1 | Partial (farmer can share four scopes with a named recipient, stop in one tap, history kept, synced; exporting a loan file asks who it is for and records the share. **Not yet enforced on the server for lender or contractor reads**) |
+| I6 | One person's data is removed from a shared device when they sign out or another account signs in; unsent changes are warned about, never sent under another account | P0 | Built (see feature audit for residual gaps) |
 | I5 | Data deletion request handled within a stated period | P1 | Partial (in-app request queued and synced to `deletion_requests`; rules need deploying; staff process and the stated period are still to be defined) |
 
 ## 4. Regulatory and legal requirements
