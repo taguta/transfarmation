@@ -119,7 +119,10 @@ class AppShell extends ConsumerWidget {
     final content = Expanded(
       child: ResponsiveCenter(
         maxWidth: context.isDesktop ? Breakpoints.maxContentWidth : 1100,
-        child: child,
+        // Its own semantic scope: the Navigator's modal barrier blocks the
+        // accessibility nodes of everything painted before it, which would
+        // otherwise hide the sidebar and top bar from screen readers.
+        child: Semantics(container: true, explicitChildNodes: true, child: child),
       ),
     );
 
@@ -344,6 +347,8 @@ class _FloatingNavItem extends StatelessWidget {
       button: true,
       selected: selected,
       label: destination.label,
+      onTap: onTap,
+      excludeSemantics: true,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         onTap: onTap,
@@ -446,6 +451,8 @@ class _RailItem extends StatelessWidget {
       button: true,
       selected: selected,
       label: destination.label,
+      onTap: onTap,
+      excludeSemantics: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
         child: InkWell(
@@ -638,6 +645,8 @@ class _SidebarItem extends StatelessWidget {
       button: true,
       selected: selected,
       label: destination.label,
+      onTap: onTap,
+      excludeSemantics: true,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
         child: InkWell(
