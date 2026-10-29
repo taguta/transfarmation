@@ -32,20 +32,19 @@ These modules have been successfully transitioned from scattered networks/snapsh
 
 ---
 
-## 2. Modules Requiring Database/Repository Migration
-These modules currently contain visually stunning Flutter UI screens, but a manual sweep of their `presentation` folders reveals they are actively using `StateProvider<List<T>>` with hardcoded **dummy mock data**. They need to be given SQlite tables and Repositories to align with the core.
+## 2. Previously Mock-Data Modules (now migrated)
+The April audit found these on hardcoded dummy data. A code search on 2026-10-29 finds no `_dummy` lists and no `StateProvider<List<...>>` mocks; each now has a repository and provider. **Review depth before pilot:** data is local-first, but sync coverage and screens have not been re-audited end to end.
 
-* **Labor Management (`/labor_management`)**
-  * **Current State:** UI complete. Relies on `_dummyWorkers` and `_dummyTasks` in `labor_providers.dart` line 4.
-  * **Next Step:** Model `FarmTask` and `Worker` tables in `SqliteService`, and create `LaborRepositoryImpl` to query them.
-* **IoT Devices Dashboard (`/iot_devices`)**
-  * **Current State:** Real-time visual dashboard complete. Relies on `_dummySensors` in `iot_dashboard_screen.dart` line 9.
-  * **Next Step:** Require a remote IoT data pipeline (either MQTT over WebSockets or regular Firestore streams for real-time telemetry).
-* **Community Forum (`/community`)**
-  * **Current State:** Feed screen complete. Relies on `_dummyPosts` in `community_board_screen.dart` line 8.
-  * **Next Step:** Implement standard offline repository for threads and replies.
+* **Labor Management (`/labor_management`)** uses `LaborRepositoryImpl` with `labor_sqlite.dart`.
+* **IoT Devices (`/iot_devices`)** reads `sensorsProvider`. Not needed for the pilot; no live telemetry pipeline yet.
+* **Community Forum (`/community`)** uses `CommunityRepositoryImpl` with local SQLite.
 
 ---
+
+## 2b. Added after the go-to-market audit (2026-10-29)
+* **Farmer Statement (`/statement`)** is built from the ledger and loans (`FarmerStatement`, unit tested). It shows money in, money spent, loans owed and projected take-home.
+* **Consent at registration** is stored as `consentVersion` and `consentAt` on the user profile.
+* **Sign-in guard** is on by default. Use `--dart-define=REQUIRE_AUTH=false` for testing.
 
 ## 3. Read-Only / Reference Modules
 These modules query data from external references or read-only Firebase collections. They require minimal writes and adhere successfully.
@@ -59,7 +58,14 @@ These modules query data from external references or read-only Firebase collecti
 
 ---
 
-## Conclusion & Recommended Next Pipeline
-The primary ERP system and critical transactional features are entirely disconnected from networking bottlenecks. A farmer with no signal can manage their farm, join savings groups, request loans, and log harvested traceability batches with 0 milliseconds of loading screens. 
+## Conclusion and Next Steps
+Core farmer features work offline. Remaining work before real farmers use it, in priority order (details in `transfarmation_specifications.md`):
 
-**Recommended Next Goal:** Address the dummy nodes in **Labor Management** by adding its schema to the v4 SQLite Migration, effectively bringing the farm operational tasks offline.
+1. **USSD/SMS fallback** for balance, delivery confirmation and alerts (A1).
+2. **Shona and Ndebele** for farmer-facing text (A3).
+3. **Per-recipient data-sharing consent** and deletion requests (I4, I5).
+4. **Local encryption** of sensitive data.
+5. **Partner-bank payments** (M3). Do not build funds-holding.
+6. **Re-audit** every module for sync coverage, plus load testing on low-end Android devices.
+
+Nothing in this list should be marketed as live until it ships.

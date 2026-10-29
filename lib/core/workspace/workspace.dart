@@ -37,6 +37,7 @@ const workspaces = <String, Workspace>{
     actions: [
       WorkspaceAction('Feasibility\nPlan', Icons.request_quote_rounded, '/feasibility'),
       WorkspaceAction('Farm\nLedger', Icons.menu_book_rounded, '/ledger'),
+      WorkspaceAction('My\nStatement', Icons.receipt_long_rounded, '/statement'),
       WorkspaceAction('Apply\nLoan', Icons.add_card_rounded, '/financing/apply'),
       WorkspaceAction('Sell\nProduce', Icons.sell_rounded, '/marketplace/sell'),
       WorkspaceAction('My\nFarm', Icons.landscape_rounded, '/farm-records'),

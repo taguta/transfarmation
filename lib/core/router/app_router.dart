@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/contracts/presentation/screens/contract_farming_screen.dart';
@@ -12,6 +13,7 @@ import '../../features/advisory/presentation/screens/advisory_desk_screen.dart';
 import '../../features/feasibility/presentation/screens/feasibility_screen.dart';
 import '../../features/ledger/presentation/screens/ledger_screen.dart';
 import '../../features/ledger/presentation/screens/sale_screen.dart';
+import '../../features/ledger/presentation/screens/statement_screen.dart';
 import '../../features/expert/presentation/screens/expert_chat_screen.dart';
 import '../../features/expert/presentation/screens/expert_list_screen.dart';
 import '../../features/farm_records/presentation/screens/farm_record_screen.dart';
@@ -43,18 +45,20 @@ import '../../features/services/presentation/screens/services_screen.dart';
 import '../../features/shell/presentation/screens/app_shell.dart';
 import '../../features/splash/presentation/screens/splash_screen.dart';
 import '../../features/weather/presentation/screens/weather_screen.dart';
-import '../../features/auth/presentation/providers/auth_providers.dart';
+
+/// Set false with --dart-define=REQUIRE_AUTH=false to browse without signing in.
+const requireAuth = bool.fromEnvironment('REQUIRE_AUTH', defaultValue: true);
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   // We strictly use the architecture's provider stream, never direct SDK calls
-  // final authState = ref.watch(authStateProvider); // Unused while auth is disabled for testing
+  final authState = ref.watch(authStateProvider);
 
   return GoRouter(
     initialLocation: '/',
-    // Authentication redirect logic is commented out for testing purposes.
-    // This allows navigation to all pages and test data visibility.
-    /*
+    // Sign-in is required by default. For local testing without an account,
+    // run with --dart-define=REQUIRE_AUTH=false.
     redirect: (context, state) {
+      if (!requireAuth) return null;
       // Wait for auth to initialize
       if (authState.isLoading) return null;
 
@@ -78,7 +82,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
-    */
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(
@@ -252,6 +255,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/feasibility',
             builder: (context, state) => const FeasibilityScreen(),
+          ),
+          GoRoute(
+            path: '/statement',
+            builder: (context, state) => const StatementScreen(),
           ),
           GoRoute(
             path: '/ledger',

@@ -29,6 +29,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   String _selectedRole = 'Farmer';
   bool _obscurePassword = true;
   bool _isLoading = false;
+  bool _consent = false;
+  bool _consentError = false;
+
+  /// Bump when the wording below changes, so stored consents stay traceable.
+  static const _consentVersion = '2026-10-v1';
 
   @override
   void initState() {
@@ -48,7 +53,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _register() async {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
+    final formOk = _formKey.currentState?.validate() ?? false;
+    setState(() => _consentError = !_consent);
+    if (!formOk || !_consent) return;
     setState(() => _isLoading = true);
     try {
       await ref.read(authRepositoryProvider).register(
@@ -90,6 +97,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         'name': _nameController.text.trim(),
         'phone': _phoneController.text.trim(),
         'role': _selectedRole,
+        'consentVersion': _consentVersion,
+        'consentAt': DateTime.now().toIso8601String(),
         'updatedAt': DateTime.now().toIso8601String(),
       }),
       'retryCount': 0,
@@ -126,14 +135,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 Text(
                   'Create Account',
                   style: AppTextStyles.h1.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Palette.textPrimary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   'One account for your farm, finances and markets',
                   style: AppTextStyles.bodyMd.copyWith(
-                    color: AppColors.textSecondary,
+                    color: Palette.textSecondary,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxxl),
@@ -222,7 +231,38 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               : null,
                 ),
 
-                const SizedBox(height: AppSpacing.xxxl),
+                const SizedBox(height: AppSpacing.lg),
+
+                CheckboxListTile(
+                  value: _consent,
+                  onChanged: _isLoading
+                      ? null
+                      : (v) => setState(() {
+                          _consent = v ?? false;
+                          _consentError = false;
+                        }),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'I agree that Transfarmation may store my name, phone number, '
+                    'farm and location details to run my account. My details are only '
+                    'shared with a lender, contractor or regulator when I choose to '
+                    'share them, and I can ask for them to be deleted.',
+                    style: AppTextStyles.bodySm.copyWith(
+                      color: _consentError ? AppColors.error : Palette.textSecondary,
+                    ),
+                  ),
+                ),
+                if (_consentError)
+                  Padding(
+                    padding: const EdgeInsets.only(left: AppSpacing.sm),
+                    child: Text(
+                      'Please agree to continue',
+                      style: AppTextStyles.bodySm.copyWith(color: AppColors.error),
+                    ),
+                  ),
+
+                const SizedBox(height: AppSpacing.xxl),
 
                 SizedBox(
                   height: 56,
@@ -249,7 +289,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     Text(
                       'Already have an account? ',
                       style: AppTextStyles.bodyMd.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Palette.textSecondary,
                       ),
                     ),
                     TextButton(
