@@ -216,7 +216,7 @@ class SyncService {
 
       case 'marketplace_listing':
         final ref = firestore.collection('marketplace_listings').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'marketplace_product':
         final ref = firestore.collection('marketplace_products').doc(payload['id']);
@@ -236,23 +236,23 @@ class SyncService {
 
       case 'iot_sensor':
         final ref = firestore.collection('iot_sensors').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'worker':
         final ref = firestore.collection('farm_workers').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'farm_task':
         final ref = firestore.collection('farm_tasks').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'booking':
         final ref = firestore.collection('bookings').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'feasibility_plan':
         final ref = firestore.collection('feasibility_plans').doc(payload['id']);
-        batch.set(ref, payload);
+        batch.set(ref, _owned(payload));
 
       case 'ledger_entry':
         final ref = firestore.collection('ledger_entries').doc(payload['id']);

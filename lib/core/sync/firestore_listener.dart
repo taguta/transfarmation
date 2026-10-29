@@ -345,7 +345,7 @@ class FirestoreListener {
 
   Future<void> _pullFarmWorkers(String farmerId) async {
     final lastSync = await _getLastSync('farm_workers');
-    Query<Map<String, dynamic>> query = firestore.collection('farm_workers').where('farmId', isEqualTo: farmerId);
+    Query<Map<String, dynamic>> query = firestore.collection('farm_workers').where('farmerId', isEqualTo: farmerId);
     if (lastSync != null) query = query.where('updatedAt', isGreaterThan: lastSync);
     
     final snap = await query.get();
@@ -367,7 +367,7 @@ class FirestoreListener {
 
   Future<void> _pullFarmTasks(String farmerId) async {
     final lastSync = await _getLastSync('farm_tasks');
-    Query<Map<String, dynamic>> query = firestore.collection('farm_tasks').where('farmId', isEqualTo: farmerId);
+    Query<Map<String, dynamic>> query = firestore.collection('farm_tasks').where('farmerId', isEqualTo: farmerId);
     if (lastSync != null) query = query.where('updatedAt', isGreaterThan: lastSync);
     
     final snap = await query.get();
@@ -389,7 +389,7 @@ class FirestoreListener {
   }
 
   Future<void> _pullIotSensors(String farmerId) async {
-    final snap = await firestore.collection('iot_sensors').where('farmId', isEqualTo: farmerId).get();
+    final snap = await firestore.collection('iot_sensors').where('farmerId', isEqualTo: farmerId).get();
     if (snap.docs.isNotEmpty) {
       for (final doc in snap.docs) {
         final d = doc.data();

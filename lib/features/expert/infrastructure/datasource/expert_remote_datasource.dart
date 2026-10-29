@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../domain/entities/expert_entity.dart';
 
 abstract class ExpertRemoteDataSource {
@@ -60,7 +61,10 @@ class ExpertRemoteDataSourceImpl implements ExpertRemoteDataSource {
 
   @override
   Future<void> bookConsultation(String expertId, DateTime slot) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) throw StateError('Sign in to book a consultation');
     await firestore.collection('bookings').add({
+      'farmerId': uid,
       'expertId': expertId,
       'slot': slot.toIso8601String(),
       'status': 'pending',

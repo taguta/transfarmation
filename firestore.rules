@@ -222,18 +222,28 @@ service cloud.firestore {
     match /cooperatives/{id}      { allow read: if signedIn(); allow write: if false; }
     match /savings_groups/{id}    { allow read: if signedIn(); allow create: if signedIn(); allow update, delete: if false; }
 
-    // ── Signed-in only for now ───────────────────────────────
-    // These collections are written by the app without an owner field in the
-    // document, so ownership cannot be enforced yet. Add farmerId to each sync
-    // payload, then move them to the owner rules above.
-    match /farm_workers/{id}           { allow read, write: if signedIn(); }
-    match /farm_tasks/{id}             { allow read, write: if signedIn(); }
-    match /iot_sensors/{id}            { allow read, write: if signedIn(); }
-    match /iot_devices/{id}            { allow read, write: if signedIn(); }
-    match /bookings/{id}               { allow read, write: if signedIn(); }
-    match /marketplace_listings/{id}   { allow read, write: if signedIn(); }
-    match /traceability_logs/{id}      { allow read, write: if signedIn(); }
-    match /notifications/{id}          { allow read, write: if signedIn(); }
+    // ── Farmer-owned data ────────────────────────────────────
+    // The sync service stamps farmerId on each of these, so they follow the
+    // same owner rules as the collections above.
+    match /farm_workers/{id}         { allow read, delete: if ownsExisting('farmerId'); allow create: if createsOwned('farmerId'); allow update: if ownsExisting('farmerId') && keepsOwner('farmerId'); }
+    match /farm_tasks/{id}           { allow read, delete: if ownsExisting('farmerId'); allow create: if createsOwned('farmerId'); allow update: if ownsExisting('farmerId') && keepsOwner('farmerId'); }
+    match /iot_sensors/{id}          { allow read, delete: if ownsExisting('farmerId'); allow create: if createsOwned('farmerId'); allow update: if ownsExisting('farmerId') && keepsOwner('farmerId'); }
+    match /marketplace_listings/{id} { allow read, delete: if ownsExisting('farmerId'); allow create: if createsOwned('farmerId'); allow update: if ownsExisting('farmerId') && keepsOwner('farmerId'); }
+
+    // A consultation booking: the farmer creates and reads their own.
+    match /bookings/{id} {
+      allow read: if ownsExisting('farmerId');
+      allow create: if createsOwned('farmerId');
+      allow update, delete: if false;
+    }
+
+    // Notifications are generated on the device; the cloud copy is read-only
+    // for the farmer it belongs to. Nothing writes these from a client yet.
+    match /notifications/{id} { allow read: if ownsExisting('farmerId'); allow write: if false; }
+
+    // Nothing in the app reads or writes these any more.
+    match /iot_devices/{id}      { allow read, write: if false; }
+    match /traceability_logs/{id} { allow read, write: if false; }
 
     // Community content: anyone can read, signed-in users can post, no edits.
     match /forum_posts/{id}     { allow read: if true; allow create: if signedIn(); allow update, delete: if false; }
