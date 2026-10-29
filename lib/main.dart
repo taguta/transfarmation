@@ -17,6 +17,7 @@ import 'core/account/local_data_cleaner.dart';
 import 'core/providers/data_providers.dart';
 import 'core/router/app_router.dart';
 import 'core/sync/connectivity_sync_notifier.dart';
+import 'core/utils/app_prefs.dart';
 import 'theme/app_colors.dart' show Palette;
 import 'theme/app_theme.dart';
 import 'theme/theme_provider.dart';
@@ -51,6 +52,7 @@ void main() async {
         ?.uid;
   } catch (_) {}
   await guard.reconcile(startUid);
+  if (startUid != null) await AppPrefs.markOnboardingSeen();
 
   FlutterNativeSplash.remove();
 
@@ -89,6 +91,7 @@ class _AccountScopeState extends State<AccountScope> {
     final previous = _uid;
     _uid = uid;
     final cleared = await _guard.reconcile(uid);
+    if (uid != null) await AppPrefs.markOnboardingSeen();
     if ((previous != null || cleared) && mounted) setState(() => _epoch++);
   }
 

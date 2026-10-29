@@ -82,6 +82,14 @@ class AppPrefs {
     } catch (_) {}
   }
 
+  /// Someone who has an account has already been through the introduction, so
+  /// after signing out they should land on the login screen, not the intro.
+  static Future<void> markOnboardingSeen() async {
+    try {
+      await (await _box()).put('onboardingDone', true);
+    } catch (_) {}
+  }
+
   static Future<void> completeOnboarding(String role) async {
     try {
       final box = await _box();
